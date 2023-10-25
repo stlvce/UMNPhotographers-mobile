@@ -1,11 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 
 const TimetableScreen = () => {
-  return (
-    <View style={styles.container}>
-      <Text>РАСПИСАНИЕ МЕРОПРИЯТИЯ</Text>
-    </View>
-  );
+  return <View style={styles.container}></View>;
 };
 
 const styles = StyleSheet.create({

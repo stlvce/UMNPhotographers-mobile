@@ -1,10 +1,15 @@
 import { Dialog, Button, Text } from "react-native-paper";
 
-const EndRegisterDialog = ({ visible, changeVisible, handleSubmit }) => {
+const ActionConfirmDialog = ({
+  question,
+  visible,
+  changeVisible,
+  handleSubmit,
+}) => {
   return (
     <Dialog visible={visible} onDismiss={changeVisible}>
       <Dialog.Content>
-        <Text variant="bodyLarge">Завершить регистрацию?</Text>
+        <Text variant="bodyLarge">{question}</Text>
       </Dialog.Content>
       <Dialog.Actions>
         <Button onPress={changeVisible}>Нет</Button>
@@ -14,4 +19,4 @@ const EndRegisterDialog = ({ visible, changeVisible, handleSubmit }) => {
   );
 };
 
-export default EndRegisterDialog;
+export default ActionConfirmDialog;

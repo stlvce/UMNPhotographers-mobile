@@ -1,13 +1,15 @@
 import { useCallback, useMemo, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { Avatar, Button, Portal } from "react-native-paper";
-import SaveSettingProfileModal from "../modals/SaveSettingsProfileModal";
-import ChangePasswordModal from "../modals/ChangePasswordModal";
+import { Button, Portal, useTheme } from "react-native-paper";
+import UploadAvatarForm from "../components/forms/UploadAvatarForm";
 import FullNameForm from "../components/forms/FullNameForm";
 import ContactForm from "../components/forms/ContactForm";
 import PortfolioForm from "../components/forms/PortfolioForm";
+import ChangePasswordModal from "../modals/ChangePasswordModal";
+import ActionConfirmDialog from "../modals/ActionConfirmDialog";
 
 const ProfileScreen = ({ navigation }) => {
+  const theme = useTheme();
   const [userData, setUserData] = useState({
     firstName: "",
     surname: "",
@@ -17,55 +19,77 @@ const ProfileScreen = ({ navigation }) => {
     email: "",
     password: "",
   });
-  const [visibleSave, setVisibleSave] = useState(false);
   const [visibleChangePass, setVisibleChangePass] = useState(false);
+  const [visibleSaveDialog, setVisibleSaveDialog] = useState(false);
+  const [visibleExitDialog, setVisibleExitDialog] = useState(false);
 
-  const openCloseSaveModal = useCallback(
-    () => setVisibleSave((prev) => !prev),
-    [visibleSave]
-  );
+  const handleChange = useCallback(() => {}, [setUserData]);
 
-  const openCloseChangePassModal = useCallback(
-    () => setVisibleChangePass((prev) => !prev),
-    [visibleChangePass]
-  );
+  const handleSave = useCallback(() => {
+    changeVisibleSaveDialog();
+  }, [userData]);
 
   const handleLogout = useCallback(() => {
     navigation.navigate("Вход");
   }, []);
 
-  const initials = useMemo(
-    () => userData.firstName.slice(0, 1) + userData.surname.slice(0, 1),
-    [userData.firstName, userData.surname]
+  const changeVisibleChangePassModal = useCallback(
+    () => setVisibleChangePass((prev) => !prev),
+    [visibleChangePass]
   );
+
+  const changeVisibleSaveDialog = useCallback(() => {
+    setVisibleSaveDialog((prev) => !prev);
+  }, [setVisibleSaveDialog]);
+
+  const changeVisibleExitDialog = useCallback(() => {
+    setVisibleExitDialog((prev) => !prev);
+  }, [setVisibleExitDialog]);
+
+  // const initials = useMemo(
+  //   () => userData.firstName.slice(0, 1) + userData.surname.slice(0, 1),
+  //   [userData.firstName, userData.surname]
+  // );
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.containerImage}>
-        <Avatar.Text size={100} label={initials} />
-      </View>
+      <UploadAvatarForm />
       <FullNameForm containerTitle="ФИО" />
       <ContactForm />
       <PortfolioForm />
       <View style={styles.containerForm}>
-        <Button onPress={openCloseChangePassModal} mode="outlined">
+        <Button onPress={changeVisibleChangePassModal} mode="outlined">
           Сменить пароль
         </Button>
-        <Button onPress={openCloseSaveModal} mode="contained">
+        <Button onPress={changeVisibleSaveDialog} mode="contained">
           Сохранить
         </Button>
-        <Button onPress={handleLogout} mode="contained">
+        <Button
+          style={styles.exit}
+          onPress={changeVisibleExitDialog}
+          mode="outlined"
+          textColor={theme.colors.error}
+          icon="logout"
+        >
           Выйти
         </Button>
       </View>
       <Portal>
         <ChangePasswordModal
           visible={visibleChangePass}
-          closeModal={openCloseChangePassModal}
+          closeModal={changeVisibleChangePassModal}
         />
-        <SaveSettingProfileModal
-          visible={visibleSave}
-          closeModal={openCloseSaveModal}
+        <ActionConfirmDialog
+          question="Сохранить изменения?"
+          visible={visibleSaveDialog}
+          changeVisible={changeVisibleSaveDialog}
+          handleSubmit={handleSave}
+        />
+        <ActionConfirmDialog
+          question="Вы уверены, что хотите выйти?"
+          visible={visibleExitDialog}
+          changeVisible={changeVisibleExitDialog}
+          handleSubmit={handleLogout}
         />
       </Portal>
     </ScrollView>
@@ -78,13 +102,13 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#FFF",
   },
-  containerImage: {
-    alignItems: "center",
-    marginBottom: 20,
-  },
   containerForm: {
     gap: 10,
     marginBottom: 20,
+  },
+  exit: {
+    marginVertical: 20,
+    borderColor: "#B3261E",
   },
 });
 

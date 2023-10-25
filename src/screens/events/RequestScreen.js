@@ -1,11 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 
 const RequestScreen = () => {
-  return (
-    <View style={styles.container}>
-      <Text>REQUEST SCREEN</Text>
-    </View>
-  );
+  return <View style={styles.container}></View>;
 };
 
 const styles = StyleSheet.create({

@@ -1,13 +1,19 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import AuthScreen from "./screens/AuthScreen";
-import BottomNavigator from "./navigation/BottomNavigator";
-import RegisterScreen from "./screens/RegisterScreen";
+import AuthScreen from "../screens/AuthScreen";
+import RegisterScreen from "../screens/RegisterScreen";
+import BottomNavigator from "./BottomNavigator";
+import RootAppBar from "../components/RootAppBar";
 
 const Stack = createNativeStackNavigator();
 
-const Main = () => {
+const RootNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="Вход">
+    <Stack.Navigator
+      initialRouteName="Auth"
+      screenOptions={{
+        header: (props) => <RootAppBar {...props} />,
+      }}
+    >
       <Stack.Screen name="Вход" component={AuthScreen} />
       <Stack.Screen name="Регистрация" component={RegisterScreen} />
       <Stack.Screen
@@ -19,4 +25,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default RootNavigator;

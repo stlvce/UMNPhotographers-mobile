@@ -1,23 +1,33 @@
 import { useCallback, useState } from "react";
-import { View, StyleSheet } from "react-native";
-import { Button, Banner } from "react-native-paper";
+import { View, StyleSheet, ScrollView } from "react-native";
+import { Button } from "react-native-paper";
 import EmailInput from "../components/inputs/EmailInput";
 import PassInput from "../components/inputs/PassInput";
+import StatusBanner from "../components/StatusBanner";
 
 const AuthScreen = ({ navigation }) => {
   const [authData, setAuthData] = useState({
     email: "",
     password: "",
   });
-  const [isVisibleBanner, setIsVisibleBanner] = useState(true);
+  const [isVisibleBanner, setIsVisibleBanner] = useState(false);
 
-  const handleChange = (name, value) => {
-    setAuthData({ ...authData, [name]: value });
-  };
+  const handleChange = useCallback(
+    (name, value) => {
+      setAuthData({ ...authData, [name]: value });
+    },
+    [setAuthData]
+  );
 
-  const handleSubmit = () => {
-    navigation.push("Main");
-  };
+  const handleSubmit = useCallback(() => {
+    // TODO: убрать возможность возвращения здесь и в RegisterScreen
+    // navigation.replace("Main");
+    navigation.navigate("Main");
+  }, [authData]);
+
+  const changeVisibleBanner = useCallback(() => {
+    setIsVisibleBanner((prev) => !prev);
+  }, [setIsVisibleBanner]);
 
   const startRegister = useCallback(() => {
     navigation.push("Регистрация");
@@ -25,25 +35,19 @@ const AuthScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* TODO: из-за названия есть доп. отступ */}
-      {/* TODO: соброс фокуса при нажатии на другое место */}
-      <EmailInput value={authData.email} handler={handleChange} />
-      <PassInput value={authData.password} handler={handleChange} />
+      {/* TODO: соброс фокуса при нажатии на другое место не работает (из-за View) */}
+      <View style={styles.containerForm}>
+        <EmailInput value={authData.email} handler={handleChange} />
+        <PassInput value={authData.password} handler={handleChange} />
+      </View>
       <Button mode="contained" onPress={handleSubmit}>
         Войти
       </Button>
-      {/* TODO: написать табличку статуса */}
-      <Banner
+      <StatusBanner
+        status="Ошибка"
         visible={isVisibleBanner}
-        actions={[
-          {
-            label: "Закрыть",
-            onPress: () => setIsVisibleBanner(false),
-          },
-        ]}
-      >
-        There was a problem processing a transaction on your credit card.
-      </Banner>
+        changeVisible={changeVisibleBanner}
+      />
       <Button mode="outlined" onPress={startRegister}>
         Регистрация
       </Button>
@@ -60,6 +64,9 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
     paddingTop: 20,
     backgroundColor: "#FFF",
+  },
+  containerForm: {
+    gap: 10,
   },
 });
 

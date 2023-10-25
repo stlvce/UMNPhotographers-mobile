@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { Text, TextInput, Button } from "react-native-paper";
+import { Text, TextInput, Button, useTheme } from "react-native-paper";
 import EmailInput from "../inputs/EmailInput";
 
 const ContactForm = ({ value, handler }) => {
-  const [addedContact, setAddedContact] = useState([]);
+  const theme = useTheme();
+  const [addedContact, setAddedContact] = useState(0);
 
-  const addContact = () => {
-    addedContact.length < 5 &&
-      setAddedContact([...addedContact, addedContact.length + 1]);
-  };
+  const addContact = useCallback(() => {
+    addedContact < 5 && setAddedContact((prev) => ++prev);
+  }, [setAddedContact]);
+
+  const deleteContact = useCallback(() => {
+    setAddedContact((prev) => --prev);
+  }, [setAddedContact]);
 
   return (
     <View style={styles.containerForm}>
@@ -18,15 +22,22 @@ const ContactForm = ({ value, handler }) => {
       <TextInput label="Номер телефона" mode="outlined" />
       <TextInput label="@telegram" mode="outlined" />
       <TextInput label="Ссылка на вк" mode="outlined" />
-      {addedContact?.map((number) => (
+      {[...Array(addedContact).keys()]?.map((number) => (
         <TextInput
-          label={`Доп. контакт №${number}`}
+          label={`Доп. контакт №${number + 1}`}
           mode="outlined"
-          key={number}
+          key={number + 1}
+          right={
+            <TextInput.Icon
+              icon="delete"
+              color={theme.colors.error}
+              onPress={deleteContact}
+            />
+          }
         />
       ))}
       <Button icon="plus" onPress={addContact}>
-        Добавить контакт (Доступно: {5 - addedContact.length})
+        Добавить контакт (Доступно: {5 - addedContact})
       </Button>
     </View>
   );

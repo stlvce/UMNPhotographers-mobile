@@ -1,15 +1,24 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import EventsScreen from "../screens/events/EventsScreen";
 import TechScreen from "../screens/TechScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import EventsNavigator from "./EventsNavigator";
-import { Icon } from "react-native-paper";
+import { Icon, useTheme, Text } from "react-native-paper";
+import RootAppBar from "../components/RootAppBar";
 
 const Tab = createBottomTabNavigator();
 
+// TODO: Связать с цветом react native paper
 const BottomNavigator = () => {
+  const theme = useTheme();
+
   return (
-    <Tab.Navigator initialRouteName="Events">
+    <Tab.Navigator
+      initialRouteName="Events"
+      screenOptions={{
+        header: (props) => <RootAppBar {...props} />,
+        tabBarActiveTintColor: theme.colors.primary,
+      }}
+    >
       <Tab.Screen
         name="Events"
         component={EventsNavigator}
@@ -19,7 +28,7 @@ const BottomNavigator = () => {
             <Icon
               source="calendar-search"
               size={25}
-              color={focused ? "#0AF" : "#000"}
+              color={focused ? theme.colors.primary : "#000"}
             />
           ),
         }}
@@ -32,7 +41,7 @@ const BottomNavigator = () => {
             <Icon
               source="camera-iris"
               size={25}
-              color={focused ? "#0AF" : "#000"}
+              color={focused ? theme.colors.primary : "#000"}
             />
           ),
         }}
@@ -45,7 +54,7 @@ const BottomNavigator = () => {
             <Icon
               source="account"
               size={25}
-              color={focused ? "#0AF" : "#000"}
+              color={focused ? theme.colors.primary : "#000"}
             />
           ),
         }}

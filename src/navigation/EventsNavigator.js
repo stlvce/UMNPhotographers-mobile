@@ -1,16 +1,21 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Appbar } from "react-native-paper";
 import EventsScreen from "../screens/events/EventsScreen";
 import EventScreen from "../screens/events/EventScreen";
 import ReqeustScreen from "../screens/events/RequestScreen";
 import YourCalendarScreen from "../screens/events/YourCalendarScreen";
 import TimetableScreen from "../screens/events/TimetableScreen";
+import RootAppBar from "../components/RootAppBar";
 
 const Stack = createNativeStackNavigator();
 
 const EventsNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="Мероприятия">
+    <Stack.Navigator
+      initialRouteName="Мероприятия"
+      screenOptions={{
+        header: (props) => <RootAppBar {...props} />,
+      }}
+    >
       <Stack.Screen name="Мероприятия" component={EventsScreen} />
       <Stack.Screen
         name="Мероприятие"

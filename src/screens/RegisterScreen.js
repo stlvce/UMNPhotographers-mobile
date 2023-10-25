@@ -5,7 +5,7 @@ import FullNameForm from "../components/forms/FullNameForm";
 import ContactForm from "../components/forms/ContactForm";
 import PortfolioForm from "../components/forms/PortfolioForm";
 import PassForm from "../components/forms/PassForm";
-import EndRegisterDialog from "../modals/EndRegisterDialog";
+import ActionConfirmDialog from "../modals/ActionConfirmDialog";
 import BirthdateInput from "../components/inputs/BirthdateInput";
 
 const RegisterScreen = ({ navigation }) => {
@@ -26,6 +26,7 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleSubmit = useCallback(() => {
     changeVisibleDialog();
+    // navigation.replace("Main");
     navigation.navigate("Main");
   }, [userData]);
 
@@ -38,7 +39,6 @@ const RegisterScreen = ({ navigation }) => {
       <FullNameForm containerTitle="О себе" />
       <View style={styles.containerForm}>
         <Text variant="titleLarge">Дата рождения</Text>
-        {/* TODO: установить бибилиотеку дата пикера */}
         <BirthdateInput />
       </View>
       <View style={{ ...styles.containerImage, ...styles.containerForm }}>
@@ -62,7 +62,8 @@ const RegisterScreen = ({ navigation }) => {
         Отправить
       </Button>
       <Portal>
-        <EndRegisterDialog
+        <ActionConfirmDialog
+          question="Завершить регистрацию?"
           visible={visibleDialog}
           changeVisible={changeVisibleDialog}
           handleSubmit={handleSubmit}
