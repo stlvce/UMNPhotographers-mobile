@@ -5,8 +5,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ru, registerTranslation } from "react-native-paper-dates";
 registerTranslation("ru", ru);
 
-const BirthdateInput = () => {
-  const [date, setDate] = useState(undefined);
+const BirthdateInput = ({ value, handler }) => {
   const [open, setOpen] = useState(false);
 
   const onDismissSingle = useCallback(() => {
@@ -14,24 +13,24 @@ const BirthdateInput = () => {
   }, [setOpen]);
 
   const onConfirmSingle = useCallback(
-    (params) => {
+    ({ date }) => {
       setOpen(false);
-      setDate(params.date);
+      handler("birthdate", date);
     },
-    [setOpen, setDate]
+    [setOpen, handler]
   );
 
   return (
     <SafeAreaProvider>
       <Button onPress={() => setOpen(true)} uppercase={false} mode="outlined">
-        {Boolean(date) ? date.toLocaleDateString() : "Выбрать дату"}
+        {Boolean(value) ? value.toLocaleDateString() : "Выбрать дату"}
       </Button>
       <DatePickerModal
         locale="ru"
         mode="single"
         visible={open}
         onDismiss={onDismissSingle}
-        date={date}
+        date={value}
         onConfirm={onConfirmSingle}
         presentationStyle="pageSheet"
       />

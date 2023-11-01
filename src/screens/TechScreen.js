@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet } from "react-native";
-import { Card, List, Text, Button, useTheme } from "react-native-paper";
+import { Card, List, Text, Button, useTheme, Portal } from "react-native-paper";
+import AddTechModal from "../modals/AddTechModal";
 import iconPng from "../../assets/icon.png";
 
 const items = [
@@ -66,6 +67,9 @@ const TechScreen = () => {
           </Card.Actions>
         </Card>
       ))}
+      <Portal>
+        <AddTechModal />
+      </Portal>
     </ScrollView>
   );
 };

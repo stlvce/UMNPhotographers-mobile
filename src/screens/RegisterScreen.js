@@ -1,6 +1,14 @@
-import { useCallback, useState } from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
-import { Button, Text, TextInput, Avatar, Portal } from "react-native-paper";
+import { useCallback, useRef, useState } from "react";
+import {
+  ScrollView,
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
+import { Button, Text, Avatar, Portal } from "react-native-paper";
 import FullNameForm from "../components/forms/FullNameForm";
 import ContactForm from "../components/forms/ContactForm";
 import PortfolioForm from "../components/forms/PortfolioForm";
@@ -8,26 +16,35 @@ import PassForm from "../components/forms/PassForm";
 import ActionConfirmDialog from "../modals/ActionConfirmDialog";
 import BirthdateInput from "../components/inputs/BirthdateInput";
 
-const RegisterScreen = ({ navigation }) => {
-  const [userData, setUserData] = useState({
-    firstName: "",
-    surname: "",
-    middleName: "",
-    birthdate: "",
-    contacts: {},
-    email: "",
-    password: "",
-  });
-  const [visibleDialog, setVisibleDialog] = useState(false);
+const initialUserData = {
+  firstName: "",
+  surname: "",
+  middleName: "",
+  birthdate: "",
+  email: "",
+  phone: "",
+  tg: "",
+  vk: "",
+  password: "",
+};
 
-  const handleChange = (name, value) => {
-    setUserData({ ...userData, [name]: value });
-  };
+const RegisterScreen = ({ navigation }) => {
+  const [userData, setUserData] = useState(initialUserData);
+  const [visibleDialog, setVisibleDialog] = useState(false);
+  const isValidFullNameRef = useRef(null);
+  const isValidContactsRef = useRef(null);
+  const isValidPasswordRef = useRef(null);
+
+  const handleChange = useCallback(
+    (name, value) => {
+      setUserData({ ...userData, [name]: value });
+    },
+    [userData]
+  );
 
   const handleSubmit = useCallback(() => {
     changeVisibleDialog();
-    // navigation.replace("Main");
-    navigation.navigate("Main");
+    navigation.goBack();
   }, [userData]);
 
   const changeVisibleDialog = useCallback(() => {
@@ -35,45 +52,70 @@ const RegisterScreen = ({ navigation }) => {
   }, [setVisibleDialog]);
 
   return (
-    <ScrollView style={styles.container}>
-      <FullNameForm containerTitle="О себе" />
-      <View style={styles.containerForm}>
-        <Text variant="titleLarge">Дата рождения</Text>
-        <BirthdateInput />
-      </View>
-      <View style={{ ...styles.containerImage, ...styles.containerForm }}>
-        <Text variant="titleLarge">Фотография</Text>
-        <Avatar.Text
-          size={100}
-          label={userData.firstName.slice(0, 1) + userData.surname.slice(0, 1)}
-        />
-      </View>
-      <ContactForm />
-      <PortfolioForm />
-      <PassForm />
-      <Button
-        mode="contained"
-        style={styles.button}
-        onPress={() => {
-          console.log(visibleDialog);
-          changeVisibleDialog();
-        }}
-      >
-        Отправить
-      </Button>
-      <Portal>
-        <ActionConfirmDialog
-          question="Завершить регистрацию?"
-          visible={visibleDialog}
-          changeVisible={changeVisibleDialog}
-          handleSubmit={handleSubmit}
-        />
-      </Portal>
-    </ScrollView>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.containerKeyboard}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView
+          style={{
+            ...styles.container,
+            marginBottom: Keyboard.isVisible() ? 20 : 20,
+          }}
+        >
+          <FullNameForm
+            containerTitle="О себе"
+            value={[userData.firstName, userData.surname, userData.middleName]}
+            handler={handleChange}
+            ref={isValidFullNameRef}
+          />
+          <View style={styles.containerForm}>
+            <Text variant="titleLarge">Дата рождения</Text>
+            <BirthdateInput value={userData.birthdate} handler={handleChange} />
+          </View>
+          {/* TODO: сделать загрузку фотографии */}
+          <View style={{ ...styles.containerImage, ...styles.containerForm }}>
+            <Text variant="titleLarge">Фотография</Text>
+            <Avatar.Image size={100} />
+          </View>
+          <ContactForm
+            value={[userData.email, userData.phone, userData.tg, userData.vk]}
+            handler={handleChange}
+            ref={isValidContactsRef}
+          />
+          {/* TODO: доделать ссылку на портфолио */}
+          <PortfolioForm value="" />
+          <PassForm
+            password={userData.password}
+            handler={handleChange}
+            ref={isValidPasswordRef}
+          />
+          <Button
+            mode="contained"
+            style={styles.button}
+            onPress={changeVisibleDialog}
+          >
+            Отправить
+          </Button>
+          <Portal>
+            <ActionConfirmDialog
+              question="Завершить регистрацию?"
+              visible={visibleDialog}
+              changeVisible={changeVisibleDialog}
+              handleSubmit={handleSubmit}
+            />
+          </Portal>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
+  containerKeyboard: {
+    flex: 1,
+    backgroundColor: "#FFF",
+  },
   container: {
     flex: 1,
     backgroundColor: "#FFF",

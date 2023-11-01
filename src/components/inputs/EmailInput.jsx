@@ -1,15 +1,22 @@
-import { TextInput } from "react-native-paper";
+import { forwardRef } from "react";
+import MainInput from "./MainInput";
+import validateEmail from "../../utils/validators/validateEmail";
 
-const EmailInput = ({ value, handler }) => {
+const EmailInput = ({ value, handler }, ref) => {
   return (
-    <TextInput
+    <MainInput
       label="Яндекс почта"
-      mode="outlined"
       textContentType="emailAddress"
+      inputMode="email"
+      autoCapitalize="none"
+      maxLength={30}
+      varName="email"
       value={value}
-      onChangeText={(e) => handler("email", e)}
+      handler={handler}
+      validator={validateEmail}
+      ref={ref}
     />
   );
 };
 
-export default EmailInput;
+export default forwardRef(EmailInput);

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { Button, Portal, useTheme } from "react-native-paper";
 import UploadAvatarForm from "../components/forms/UploadAvatarForm";
@@ -14,16 +14,23 @@ const ProfileScreen = ({ navigation }) => {
     firstName: "",
     surname: "",
     middleName: "",
-    birthdate: "",
-    contacts: {},
     email: "",
-    password: "",
+    phone: "",
+    tg: "",
+    vk: "",
   });
   const [visibleChangePass, setVisibleChangePass] = useState(false);
   const [visibleSaveDialog, setVisibleSaveDialog] = useState(false);
   const [visibleExitDialog, setVisibleExitDialog] = useState(false);
+  const isValidFullNameRef = useRef(null);
+  const isValidContactsRef = useRef(null);
 
-  const handleChange = useCallback(() => {}, [setUserData]);
+  const handleChange = useCallback(
+    (name, value) => {
+      setUserData({ ...userData, [name]: value });
+    },
+    [userData]
+  );
 
   const handleSave = useCallback(() => {
     changeVisibleSaveDialog();
@@ -46,16 +53,21 @@ const ProfileScreen = ({ navigation }) => {
     setVisibleExitDialog((prev) => !prev);
   }, [setVisibleExitDialog]);
 
-  // const initials = useMemo(
-  //   () => userData.firstName.slice(0, 1) + userData.surname.slice(0, 1),
-  //   [userData.firstName, userData.surname]
-  // );
-
   return (
     <ScrollView style={styles.container}>
       <UploadAvatarForm />
-      <FullNameForm containerTitle="ФИО" />
-      <ContactForm />
+      <FullNameForm
+        containerTitle="ФИО"
+        value={[userData.firstName, userData.surname, userData.middleName]}
+        handler={handleChange}
+        ref={isValidFullNameRef}
+      />
+      <ContactForm
+        value={[userData.email, userData.phone, userData.tg, userData.vk]}
+        handler={handleChange}
+        ref={isValidContactsRef}
+      />
+      {/* TODO: доделать ссылку на портфолио x2 */}
       <PortfolioForm />
       <View style={styles.containerForm}>
         <Button onPress={changeVisibleChangePassModal} mode="outlined">

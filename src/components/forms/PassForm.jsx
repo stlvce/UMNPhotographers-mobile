@@ -1,17 +1,25 @@
+import { forwardRef, useState, useRef } from "react";
 import { View, StyleSheet } from "react-native";
-import { Text, TextInput } from "react-native-paper";
+import { Text } from "react-native-paper";
 import PassInput from "../inputs/PassInput";
+import ConfPassInput from "../inputs/ConfPassInput";
 
-const PassForm = ({ value, handler }) => {
+const PassForm = ({ password, handler, label = true }, ref) => {
+  const isValidPasswordRef = useRef(null);
+  const isPassEqualRef = useRef(null);
+  ref.current = isValidPasswordRef.current && isPassEqualRef.current;
+
   return (
     <View style={styles.containerForm}>
-      <Text variant="titleLarge">Пароль</Text>
-      <PassInput />
-      <TextInput
-        label="Подтверждение пароля"
-        mode="outlined"
-        textContentType="password"
+      {label && <Text variant="titleLarge">Пароль</Text>}
+      <PassInput
+        label="Пароль"
+        varName="password"
+        value={password}
+        handler={handler}
+        ref={isValidPasswordRef}
       />
+      <ConfPassInput password={password} ref={isPassEqualRef} />
     </View>
   );
 };
@@ -23,4 +31,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PassForm;
+export default forwardRef(PassForm);

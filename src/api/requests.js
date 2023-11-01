@@ -1,5 +1,13 @@
 class RequestsAPI {
-  static method() {
+  static register() {
+    
+  }
+
+  static login() {
+  
+  }
+
+  static logout() {
     
   }
 }

@@ -1,28 +1,47 @@
-import { useCallback, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { useCallback, useState, forwardRef, useRef } from "react";
+import { View, StyleSheet, TextInputMask } from "react-native";
 import { Text, TextInput, Button, useTheme } from "react-native-paper";
 import EmailInput from "../inputs/EmailInput";
+import PhoneNumberInput from "../inputs/PhoneNumberInput";
+import TgInput from "../inputs/TgInput";
+import VkInput from "../inputs/VkInput";
 
-const ContactForm = ({ value, handler }) => {
+const ContactForm = ({ value, handler }, ref) => {
   const theme = useTheme();
+  const [email, phone, tg, vk] = value;
   const [addedContact, setAddedContact] = useState(0);
+  const isValidEmailRef = useRef(null);
+  const isValidNumberRef = useRef(null);
+  const isValidTgRef = useRef(null);
+  const isValidVkRef = useRef(null);
+
+  ref.current =
+    isValidEmailRef && isValidNumberRef && isValidTgRef && isValidVkRef;
 
   const addContact = useCallback(() => {
-    addedContact < 5 && setAddedContact((prev) => ++prev);
-  }, [setAddedContact]);
+    if (addedContact < 5) {
+      setAddedContact((prev) => ++prev);
+    }
+  }, [addedContact]);
 
   const deleteContact = useCallback(() => {
     setAddedContact((prev) => --prev);
-  }, [setAddedContact]);
+  }, [addedContact]);
 
   return (
     <View style={styles.containerForm}>
       <Text variant="titleLarge">Контакты</Text>
-      <EmailInput />
-      <TextInput label="Номер телефона" mode="outlined" />
-      <TextInput label="@telegram" mode="outlined" />
-      <TextInput label="Ссылка на вк" mode="outlined" />
-      {[...Array(addedContact).keys()]?.map((number) => (
+      <EmailInput value={email} handler={handler} ref={isValidEmailRef} />
+      <PhoneNumberInput
+        value={phone}
+        handler={handler}
+        ref={isValidNumberRef}
+      />
+      <TgInput value={tg} handler={handler} ref={isValidTgRef} />
+      <VkInput value={vk} handler={handler} ref={isValidVkRef} />
+
+      {/* TODO: убрать */}
+      {/* {[...Array(addedContact).keys()]?.map((number) => (
         <TextInput
           label={`Доп. контакт №${number + 1}`}
           mode="outlined"
@@ -32,13 +51,14 @@ const ContactForm = ({ value, handler }) => {
               icon="delete"
               color={theme.colors.error}
               onPress={deleteContact}
+              forceTextInputFocus={false}
             />
           }
         />
       ))}
       <Button icon="plus" onPress={addContact}>
         Добавить контакт (Доступно: {5 - addedContact})
-      </Button>
+      </Button> */}
     </View>
   );
 };
@@ -50,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ContactForm;
+export default forwardRef(ContactForm);
