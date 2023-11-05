@@ -7,18 +7,26 @@ import ContactForm from "../components/forms/ContactForm";
 import PortfolioForm from "../components/forms/PortfolioForm";
 import ChangePasswordModal from "../modals/ChangePasswordModal";
 import ActionConfirmDialog from "../modals/ActionConfirmDialog";
+import { useUserInfoQuery } from "../api/userApi";
+import { useSelector } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProfileScreen = ({ navigation }) => {
   const theme = useTheme();
-  const [userData, setUserData] = useState({
-    firstName: "",
-    surname: "",
-    middleName: "",
-    email: "",
-    phone: "",
-    tg: "",
-    vk: "",
-  });
+  const { data, error } = useUserInfoQuery();
+  const user = useSelector((state) => state.user.user);
+  // TODO: говно
+  const [userData, setUserData] = useState(
+    user || {
+      firstname: "",
+      surname: "",
+      middleName: "",
+      email: "",
+      phone: "",
+      tg: "",
+      vk: "",
+    }
+  );
   const [visibleChangePass, setVisibleChangePass] = useState(false);
   const [visibleSaveDialog, setVisibleSaveDialog] = useState(false);
   const [visibleExitDialog, setVisibleExitDialog] = useState(false);
@@ -36,8 +44,9 @@ const ProfileScreen = ({ navigation }) => {
     changeVisibleSaveDialog();
   }, [userData]);
 
-  const handleLogout = useCallback(() => {
-    navigation.navigate("Вход");
+  const handleLogout = useCallback(async () => {
+    await AsyncStorage.removeItem("SESSION");
+    navigation.replace("Вход");
   }, []);
 
   const changeVisibleChangePassModal = useCallback(
@@ -58,7 +67,7 @@ const ProfileScreen = ({ navigation }) => {
       <UploadAvatarForm />
       <FullNameForm
         containerTitle="ФИО"
-        value={[userData.firstName, userData.surname, userData.middleName]}
+        value={[userData.firstname, userData.surname, userData.middleName]}
         handler={handleChange}
         ref={isValidFullNameRef}
       />

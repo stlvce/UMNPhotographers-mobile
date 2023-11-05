@@ -15,9 +15,10 @@ import PortfolioForm from "../components/forms/PortfolioForm";
 import PassForm from "../components/forms/PassForm";
 import ActionConfirmDialog from "../modals/ActionConfirmDialog";
 import BirthdateInput from "../components/inputs/BirthdateInput";
+import { useAuthRegisterMutatuin } from "../api/authApi";
 
 const initialUserData = {
-  firstName: "",
+  firstname: "",
   surname: "",
   middleName: "",
   birthdate: "",
@@ -34,6 +35,8 @@ const RegisterScreen = ({ navigation }) => {
   const isValidFullNameRef = useRef(null);
   const isValidContactsRef = useRef(null);
   const isValidPasswordRef = useRef(null);
+  const [handleAuthRegister, { data, isError, error, isLoading, status }] =
+    useAuthRegisterMutatuin();
 
   const handleChange = useCallback(
     (name, value) => {
@@ -44,7 +47,14 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleSubmit = useCallback(() => {
     changeVisibleDialog();
-    navigation.goBack();
+    if (
+      isValidFullNameRef.current &&
+      isValidContactsRef.current &&
+      isValidPasswordRef.current
+    ) {
+      handleAuthRegister;
+      navigation.goBack();
+    }
   }, [userData]);
 
   const changeVisibleDialog = useCallback(() => {
@@ -65,7 +75,7 @@ const RegisterScreen = ({ navigation }) => {
         >
           <FullNameForm
             containerTitle="О себе"
-            value={[userData.firstName, userData.surname, userData.middleName]}
+            value={[userData.firstname, userData.surname, userData.middleName]}
             handler={handleChange}
             ref={isValidFullNameRef}
           />

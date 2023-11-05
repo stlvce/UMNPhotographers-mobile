@@ -1,6 +1,6 @@
 import { Modal, Text } from "react-native-paper";
 import { useSelector, useDispatch } from "react-redux";
-import { changeVisibleAddTechModal } from "../store/reducers/techSlice";
+import { changeVisibleAddTechModal } from "../store/slices/techSlice";
 
 const AddTechModal = () => {
   const dispatch = useDispatch();

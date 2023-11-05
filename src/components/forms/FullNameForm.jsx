@@ -4,7 +4,7 @@ import { Text, TextInput } from "react-native-paper";
 import NameInput from "../inputs/NameInput";
 
 const FullNameForm = ({ containerTitle, value, handler }, ref) => {
-  const [firstName, surname, middleName] = value;
+  const [firstname, surname, middleName] = value;
   const isValidSurnameRef = useRef(null);
   const isValidFirstnameRef = useRef(null);
   const isValidMiddlenameRef = useRef(null);
@@ -25,8 +25,8 @@ const FullNameForm = ({ containerTitle, value, handler }, ref) => {
       />
       <NameInput
         label="Имя*"
-        varName="firstName"
-        value={firstName}
+        varName="firstname"
+        value={firstname}
         handler={handler}
         ref={isValidFirstnameRef}
       />

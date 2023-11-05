@@ -1,17 +1,18 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
-  ScrollView,
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
+  ActivityIndicator,
 } from "react-native";
 import { Button } from "react-native-paper";
 import EmailInput from "../components/inputs/EmailInput";
 import PassInput from "../components/inputs/PassInput";
 import StatusBanner from "../components/StatusBanner";
+import { useAuthLoginMutation } from "../api/authApi";
 
 const AuthScreen = ({ navigation }) => {
   const [authData, setAuthData] = useState({
@@ -21,6 +22,8 @@ const AuthScreen = ({ navigation }) => {
   const [isVisibleBanner, setIsVisibleBanner] = useState(false);
   const isValidEmailRef = useRef(null);
   const isValidPasswordRef = useRef(null);
+  const [handleAuthLogin, { data, isError, error, isLoading, status }] =
+    useAuthLoginMutation();
 
   const handleChange = useCallback(
     (name, value) => {
@@ -29,10 +32,25 @@ const AuthScreen = ({ navigation }) => {
     [authData]
   );
 
+  useEffect(() => {
+    if (
+      status === "fulfilled" &&
+      data.authenticate &&
+      data.status === "approved"
+    ) {
+      navigation.replace("Main");
+    } else {
+      if (isError || data?.status === "blocked" || data?.status === "created") {
+        setIsVisibleBanner(true);
+      }
+    }
+  }, [status]);
+
   const handleSubmit = useCallback(() => {
-    // TODO: убрать возможность возвращения
-    // navigation.replace("Main");
-    navigation.navigate("Main");
+    if (isValidEmailRef.current && isValidPasswordRef.current) {
+      setIsVisibleBanner(false);
+      handleAuthLogin(authData);
+    }
   }, [authData]);
 
   const changeVisibleBanner = useCallback(() => {
@@ -50,31 +68,37 @@ const AuthScreen = ({ navigation }) => {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
-          {/* TODO: соброс фокуса при нажатии на другое место не работает (из-за View) */}
-          <View style={styles.containerForm}>
-            <EmailInput
-              value={authData.email}
-              handler={handleChange}
-              ref={isValidEmailRef}
-            />
-            <PassInput
-              label="Пароль"
-              value={authData.password}
-              handler={handleChange}
-              ref={isValidPasswordRef}
-            />
-          </View>
-          <Button mode="contained" onPress={handleSubmit}>
-            Войти
-          </Button>
-          <StatusBanner
-            status="Ошибка"
-            visible={isVisibleBanner}
-            changeVisible={changeVisibleBanner}
-          />
-          <Button mode="outlined" onPress={startRegister}>
-            Регистрация
-          </Button>
+          {isLoading ? (
+            <ActivityIndicator animating={true} size="large" />
+          ) : (
+            <>
+              <View style={styles.containerForm}>
+                <EmailInput
+                  value={authData.email}
+                  handler={handleChange}
+                  ref={isValidEmailRef}
+                />
+                <PassInput
+                  label="Пароль"
+                  value={authData.password}
+                  handler={handleChange}
+                  ref={isValidPasswordRef}
+                />
+              </View>
+              <Button mode="contained" onPress={handleSubmit}>
+                Войти
+              </Button>
+              <StatusBanner
+                data={data}
+                error={error}
+                visible={isVisibleBanner}
+                changeVisible={changeVisibleBanner}
+              />
+              <Button mode="outlined" onPress={startRegister}>
+                Регистрация
+              </Button>
+            </>
+          )}
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>

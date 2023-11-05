@@ -7,7 +7,6 @@ import RootAppBar from "../components/RootAppBar";
 
 const Tab = createBottomTabNavigator();
 
-// TODO: Связать с цветом react native paper
 const BottomNavigator = () => {
   const theme = useTheme();
 

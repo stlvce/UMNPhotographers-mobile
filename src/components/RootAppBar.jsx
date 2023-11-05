@@ -2,7 +2,7 @@ import React from "react";
 import { Appbar } from "react-native-paper";
 import { getHeaderTitle } from "@react-navigation/elements";
 import { useDispatch } from "react-redux";
-import { changeVisibleAddTechModal } from "../store/reducers/techSlice";
+import { changeVisibleAddTechModal } from "../store/slices/techSlice";
 
 const RootAppBar = ({ navigation, route, options, back }) => {
   const dispatch = useDispatch();

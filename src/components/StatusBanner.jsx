@@ -1,6 +1,9 @@
 import { Banner } from "react-native-paper";
+import statusAuth from "../utils/statusAuth";
 
-const StatusBanner = ({ status, visible, changeVisible }) => {
+const StatusBanner = ({ data, error, visible, changeVisible }) => {
+  let bannerMessage = (bannerMessage = statusAuth(data, error));
+
   return (
     <Banner
       visible={visible}
@@ -11,7 +14,7 @@ const StatusBanner = ({ status, visible, changeVisible }) => {
         },
       ]}
     >
-      {status}
+      {bannerMessage}
     </Banner>
   );
 };
