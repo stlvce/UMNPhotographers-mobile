@@ -1,11 +1,21 @@
+import { forwardRef } from "react";
 import { View, StyleSheet } from "react-native";
-import { Text, TextInput } from "react-native-paper";
+import { Text } from "react-native-paper";
+import MainInput from "../inputs/MainInput";
+import validateLink from "../../utils/validators/validateLink";
 
-const PortfolioForm = ({ value, handler }) => {
+const PortfolioForm = ({ value, handler }, ref) => {
   return (
     <View style={styles.containerForm}>
       <Text variant="titleLarge">Портфолио</Text>
-      <TextInput label="Ссылка на портфолио" mode="outlined" />
+      <MainInput
+        label="Ссылка на портфолио"
+        varName="portfolio"
+        value={value}
+        handler={handler}
+        validator={validateLink}
+        ref={ref}
+      />
     </View>
   );
 };
@@ -17,4 +27,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PortfolioForm;
+export default forwardRef(PortfolioForm);

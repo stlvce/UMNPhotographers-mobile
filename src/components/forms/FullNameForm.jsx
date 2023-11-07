@@ -10,8 +10,10 @@ const FullNameForm = ({ containerTitle, value, handler }, ref) => {
   const isValidMiddlenameRef = useRef(null);
 
   ref.current = Boolean(middleName)
-    ? isValidSurnameRef && isValidFirstnameRef && isValidMiddlenameRef
-    : isValidSurnameRef && isValidFirstnameRef;
+    ? isValidSurnameRef.current &&
+      isValidFirstnameRef.current &&
+      isValidMiddlenameRef.current
+    : isValidSurnameRef.current && isValidFirstnameRef.current;
 
   return (
     <View style={styles.container}>

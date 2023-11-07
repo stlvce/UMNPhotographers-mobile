@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { Button, Portal, useTheme } from "react-native-paper";
 import UploadAvatarForm from "../components/forms/UploadAvatarForm";
@@ -7,26 +7,24 @@ import ContactForm from "../components/forms/ContactForm";
 import PortfolioForm from "../components/forms/PortfolioForm";
 import ChangePasswordModal from "../modals/ChangePasswordModal";
 import ActionConfirmDialog from "../modals/ActionConfirmDialog";
-import { useUserInfoQuery } from "../api/userApi";
-import { useSelector } from "react-redux";
+import { useUserInfoQuery, useUpdateUserInfoMutation } from "../api/userApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useSelector } from "react-redux";
 
 const ProfileScreen = ({ navigation }) => {
   const theme = useTheme();
-  const { data, error } = useUserInfoQuery();
   const user = useSelector((state) => state.user.user);
-  // TODO: говно
-  const [userData, setUserData] = useState(
-    user || {
-      firstname: "",
-      surname: "",
-      middleName: "",
-      email: "",
-      phone: "",
-      tg: "",
-      vk: "",
-    }
-  );
+  const { data, error } = useUserInfoQuery();
+  const [handleUpdateUser, { newData }] = useUpdateUserInfoMutation();
+  const [userData, setUserData] = useState({
+    firstname: "",
+    surname: "",
+    middleName: "",
+    email: "",
+    phone: "",
+    tg: "",
+    vk: "",
+  });
   const [visibleChangePass, setVisibleChangePass] = useState(false);
   const [visibleSaveDialog, setVisibleSaveDialog] = useState(false);
   const [visibleExitDialog, setVisibleExitDialog] = useState(false);
@@ -41,7 +39,10 @@ const ProfileScreen = ({ navigation }) => {
   );
 
   const handleSave = useCallback(() => {
-    changeVisibleSaveDialog();
+    if (isValidFullNameRef.current && isValidContactsRef.current) {
+      handleUpdateUser(userData);
+      changeVisibleSaveDialog();
+    }
   }, [userData]);
 
   const handleLogout = useCallback(async () => {
@@ -55,12 +56,22 @@ const ProfileScreen = ({ navigation }) => {
   );
 
   const changeVisibleSaveDialog = useCallback(() => {
-    setVisibleSaveDialog((prev) => !prev);
-  }, [setVisibleSaveDialog]);
+    console.log(isValidFullNameRef.current, isValidContactsRef.current);
+    if (isValidFullNameRef.current && isValidContactsRef.current) {
+      setVisibleSaveDialog((prev) => !prev);
+    }
+  }, [setVisibleSaveDialog, isValidFullNameRef, isValidContactsRef]);
 
   const changeVisibleExitDialog = useCallback(() => {
     setVisibleExitDialog((prev) => !prev);
   }, [setVisibleExitDialog]);
+
+  useEffect(() => {
+    if (data) {
+      setUserData(user);
+    }
+    console.log(user);
+  }, [user]);
 
   return (
     <ScrollView style={styles.container}>

@@ -16,6 +16,12 @@ const userSlice = createSlice({
         state.user = action.payload;
       }
     );
+    builder.addMatcher(
+      userApi.endpoints.updateUserInfo.matchFulfilled,
+      (state, action) => {
+        state.user = action.payload;
+      }
+    );
   },
 });
 

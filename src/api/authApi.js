@@ -2,14 +2,6 @@ import api from ".";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const authApi = api.injectEndpoints({
-  // reducerPath: "authApi",
-  // tagTypes: ["Auth"],
-  // baseQuery: fetchBaseQuery({
-  //   baseUrl: "http://158.160.32.142:8080/api/auth/",
-  //   prepareHeaders: (headers, { getState }) => {
-  //     console.log(getState().auth.sessionId);
-  //   },
-  // }),
   endpoints: (builder) => ({
     authLogin: builder.mutation({
       query: (data) => ({
@@ -21,21 +13,50 @@ export const authApi = api.injectEndpoints({
         },
       }),
       transformResponse: async (response, meta, arg) => {
-        await AsyncStorage.setItem(
-          "SESSION",
-          meta.response.headers.map["set-cookie"]
-            .split(" ")[0]
-            .replace(";", "")
-            .replace("SESSION=", "")
-        );
+        // TODO: при выходе установленные куки остаются на запросе,
+        // поэтому set-cookie заново с сервера не приходят из-за этого ошибка
+        const cookie = meta.response.headers.map["set-cookie"]
+          ?.split(" ")[0]
+          .replace(";", "")
+          .replace("SESSION=", "");
+        if (cookie) {
+          await AsyncStorage.setItem("SESSION", cookie);
+        }
         return response;
       },
     }),
     authRegister: builder.mutation({
-      query: (data) => ({
-        url: "/auth/register",
-        method: "POST",
-      }),
+      query: (formData) => {
+        // console.log({
+        //   ...formData,
+        //   tg,
+        //   vk,
+        //   contacts: { tg: formData.tg, vk: formData.vk },
+        // });
+        const body = {
+          firstname: formData.firstname,
+          surname: formData.surname,
+          middleName: formData.middleName,
+          birthdate: formData.birthdate,
+          phone: formData.phone,
+          contacts: {
+            vk: formData.vk,
+            tg: formData.tg,
+          },
+          email: formData.email,
+          password: formData.password,
+          // portfolio: formData.portfolio,
+        };
+
+        return {
+          url: "/auth/register",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body,
+        };
+      },
     }),
     authLogout: builder.mutation({
       query: () => ({

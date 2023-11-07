@@ -1,5 +1,6 @@
 import { useState, forwardRef } from "react";
-import { TextInput } from "react-native-paper";
+import { TextInput, HelperText } from "react-native-paper";
+import { View } from "react-native";
 
 const MainInput = ({ varName, value, handler, validator, ...props }, ref) => {
   const [isBlur, setIsBlur] = useState(false);
@@ -20,14 +21,19 @@ const MainInput = ({ varName, value, handler, validator, ...props }, ref) => {
   };
 
   return (
-    <TextInput
-      mode="outlined"
-      value={value}
-      onChangeText={handleChange}
-      onBlur={handleBlur}
-      error={isError}
-      {...props}
-    />
+    <View>
+      <TextInput
+        mode="outlined"
+        value={value}
+        onChangeText={handleChange}
+        onBlur={handleBlur}
+        error={isError}
+        {...props}
+      />
+      {/* <HelperText type="error" visible={isError} padding="none">
+        Data is invalid!
+      </HelperText> */}
+    </View>
   );
 };
 

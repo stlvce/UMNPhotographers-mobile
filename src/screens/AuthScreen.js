@@ -22,6 +22,7 @@ const AuthScreen = ({ navigation }) => {
   const [isVisibleBanner, setIsVisibleBanner] = useState(false);
   const isValidEmailRef = useRef(null);
   const isValidPasswordRef = useRef(null);
+  const isValid = isValidEmailRef.current && isValidPasswordRef.current;
   const [handleAuthLogin, { data, isError, error, isLoading, status }] =
     useAuthLoginMutation();
 
@@ -46,8 +47,9 @@ const AuthScreen = ({ navigation }) => {
     }
   }, [status]);
 
+  // TODO: blur password при нажатии на кнопку
   const handleSubmit = useCallback(() => {
-    if (isValidEmailRef.current && isValidPasswordRef.current) {
+    if (isValid) {
       setIsVisibleBanner(false);
       handleAuthLogin(authData);
     }
@@ -94,7 +96,11 @@ const AuthScreen = ({ navigation }) => {
                 visible={isVisibleBanner}
                 changeVisible={changeVisibleBanner}
               />
-              <Button mode="outlined" onPress={startRegister}>
+              <Button
+                style={styles.buttonRegister}
+                mode="outlined"
+                onPress={startRegister}
+              >
                 Регистрация
               </Button>
             </>
@@ -120,6 +126,9 @@ const styles = StyleSheet.create({
   },
   containerForm: {
     gap: 10,
+  },
+  buttonRegister: {
+    marginTop: 20,
   },
 });
 

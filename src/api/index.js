@@ -7,7 +7,9 @@ const api = createApi({
     baseUrl: "http://158.160.32.142:8080/api",
     // baseUrl: process.env.REACT_APP_API_USER_URL,
     prepareHeaders: (headers, { getState }) => {
-      console.log(getState().auth.sessionId);
+      // Cookie: SESSION=YTg5ZjgyNjctYTlmYS00MzFjLTljNDUtMTk0MzhkOTczOTRj
+      headers.set("cookie", `SESSION=${getState().auth.sessionId}`);
+      return headers;
     },
   }),
   endpoints: (builder) => ({}),

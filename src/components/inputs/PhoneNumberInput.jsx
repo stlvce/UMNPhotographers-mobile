@@ -6,7 +6,7 @@ import validatePhone from "../../utils/validators/validatePhone";
 const PhoneNumberInput = ({ value, handler }, ref) => {
   return (
     <View style={styles.numberPhone}>
-      <Text style={styles.numberPhoneStart} variant="titleMedium">
+      <Text style={styles.numberPhoneStart} variant="titleLarge">
         +7
       </Text>
       <MainInput

@@ -15,28 +15,50 @@ import PortfolioForm from "../components/forms/PortfolioForm";
 import PassForm from "../components/forms/PassForm";
 import ActionConfirmDialog from "../modals/ActionConfirmDialog";
 import BirthdateInput from "../components/inputs/BirthdateInput";
-import { useAuthRegisterMutatuin } from "../api/authApi";
+import { useAuthRegisterMutation } from "../api/authApi";
 
+// const initialUserData = {
+//   firstname: "",
+//   surname: "",
+//   middleName: "",
+//   birthdate: "",
+//   email: "",
+//   phone: "",
+//   tg: "",
+//   vk: "",
+//   password: "",
+//   portfolio: "",
+// };
 const initialUserData = {
-  firstname: "",
-  surname: "",
-  middleName: "",
+  firstname: "Ыйцуйцушцйу",
+  surname: "Ыйцуйцушцйу",
+  middleName: "Ыйцуйцушцйу",
   birthdate: "",
-  email: "",
-  phone: "",
-  tg: "",
-  vk: "",
-  password: "",
+  phone: "9333333333",
+  vk: "string",
+  tg: "string",
+  email: `${Math.random()}@yandex.ru`,
+  password: "password",
+  portfolio: "http://qwewq.ru",
 };
 
 const RegisterScreen = ({ navigation }) => {
   const [userData, setUserData] = useState(initialUserData);
   const [visibleDialog, setVisibleDialog] = useState(false);
+  const [handleAuthRegister, { data }] = useAuthRegisterMutation();
   const isValidFullNameRef = useRef(null);
   const isValidContactsRef = useRef(null);
   const isValidPasswordRef = useRef(null);
-  const [handleAuthRegister, { data, isError, error, isLoading, status }] =
-    useAuthRegisterMutatuin();
+  const isValidPortfolioRef = useRef(null);
+
+  const isValid =
+    (isValidFullNameRef.current &&
+      isValidContactsRef.current &&
+      isValidPasswordRef.current &&
+      isValidPortfolioRef.current &&
+      userData.birthdate !== "") ||
+    !Object.values(userData).includes("");
+  console.log(isValid);
 
   const handleChange = useCallback(
     (name, value) => {
@@ -47,19 +69,17 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleSubmit = useCallback(() => {
     changeVisibleDialog();
-    if (
-      isValidFullNameRef.current &&
-      isValidContactsRef.current &&
-      isValidPasswordRef.current
-    ) {
-      handleAuthRegister;
+    if (isValid) {
+      handleAuthRegister(userData);
       navigation.goBack();
     }
-  }, [userData]);
+  }, [userData, isValid]);
 
   const changeVisibleDialog = useCallback(() => {
-    setVisibleDialog((prev) => !prev);
-  }, [setVisibleDialog]);
+    if (isValid) {
+      setVisibleDialog((prev) => !prev);
+    }
+  }, [visibleDialog, isValid]);
 
   return (
     <KeyboardAvoidingView
@@ -70,7 +90,7 @@ const RegisterScreen = ({ navigation }) => {
         <ScrollView
           style={{
             ...styles.container,
-            marginBottom: Keyboard.isVisible() ? 20 : 20,
+            marginBottom: Keyboard.isVisible() ? 100 : 20,
           }}
         >
           <FullNameForm
@@ -94,7 +114,11 @@ const RegisterScreen = ({ navigation }) => {
             ref={isValidContactsRef}
           />
           {/* TODO: доделать ссылку на портфолио */}
-          <PortfolioForm value="" />
+          <PortfolioForm
+            value={userData.portfolio}
+            handler={handleChange}
+            ref={isValidPortfolioRef}
+          />
           <PassForm
             password={userData.password}
             handler={handleChange}
@@ -104,6 +128,7 @@ const RegisterScreen = ({ navigation }) => {
             mode="contained"
             style={styles.button}
             onPress={changeVisibleDialog}
+            disabled={!isValid}
           >
             Отправить
           </Button>
