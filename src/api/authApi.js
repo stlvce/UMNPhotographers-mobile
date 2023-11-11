@@ -13,7 +13,7 @@ export const authApi = api.injectEndpoints({
         },
       }),
       transformResponse: async (response, meta, arg) => {
-        // TODO: при выходе установленные куки остаются на запросе,
+        // При выходе установленные куки остаются на запросе,
         // поэтому set-cookie заново с сервера не приходят из-за этого ошибка
         const cookie = meta.response.headers.map["set-cookie"]
           ?.split(" ")[0]

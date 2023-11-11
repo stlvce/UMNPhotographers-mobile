@@ -1,15 +1,14 @@
 import { forwardRef, useState } from "react";
 import { TextInput } from "react-native-paper";
 
-const ConfPassInput = ({ password }, ref) => {
-  const [confPassword, setConfPassword] = useState("");
+const ConfPassInput = ({ value, handler, password }, ref) => {
   const [isVisiblePassword, setIsVisiblePassword] = useState(false);
   const [isBlur, setIsBlur] = useState(false);
-  const isError = confPassword !== "" && isBlur && !ref.current;
+  const isError = value !== "" && isBlur && !ref.current;
 
   const handleChange = (e) => {
     setIsBlur(false);
-    setConfPassword(e);
+    handler("confPass", e);
   };
 
   const handleChangeVisiblePass = () => {
@@ -17,7 +16,7 @@ const ConfPassInput = ({ password }, ref) => {
   };
 
   const handleBlur = () => {
-    ref.current = password === confPassword;
+    ref.current = password === value;
     if (ref.current) {
       setIsBlur(false);
     } else {
@@ -40,7 +39,7 @@ const ConfPassInput = ({ password }, ref) => {
           forceTextInputFocus={false}
         />
       }
-      value={confPassword}
+      value={value}
       onChangeText={handleChange}
       onBlur={handleBlur}
       error={isError}

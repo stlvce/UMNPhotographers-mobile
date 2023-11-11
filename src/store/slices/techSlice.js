@@ -1,18 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-  isVisibleAddTechModal: false,
-};
+const initialState = {};
 
 const techSlice = createSlice({
   name: "tech",
   initialState,
-  reducers: {
-    changeVisibleAddTechModal: (state) => {
-      state.isVisibleAddTechModal = !state.isVisibleAddTechModal;
-    },
-  },
+  reducers: {},
 });
 
 export default techSlice.reducer;
-export const { changeVisibleAddTechModal } = techSlice.actions;
+// export const {  } = techSlice.actions;

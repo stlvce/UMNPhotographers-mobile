@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import TechScreen from "../screens/TechScreen";
-import ProfileScreen from "../screens/ProfileScreen";
 import EventsNavigator from "./EventsNavigator";
-import { Icon, useTheme, Text } from "react-native-paper";
+import TechNavigator from "./TechNavigator";
+import ProfileScreen from "../screens/ProfileScreen";
+import { Icon, useTheme } from "react-native-paper";
 import RootAppBar from "../components/RootAppBar";
 
 const Tab = createBottomTabNavigator();
@@ -10,6 +10,7 @@ const Tab = createBottomTabNavigator();
 const BottomNavigator = () => {
   const theme = useTheme();
 
+  // TODO: изменить язык на нажнем английский
   return (
     <Tab.Navigator
       initialRouteName="Events"
@@ -33,9 +34,10 @@ const BottomNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Техника"
-        component={TechScreen}
+        name="Tech"
+        component={TechNavigator}
         options={{
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Icon
               source="camera-iris"

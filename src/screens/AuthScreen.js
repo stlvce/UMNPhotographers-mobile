@@ -13,6 +13,7 @@ import EmailInput from "../components/inputs/EmailInput";
 import PassInput from "../components/inputs/PassInput";
 import StatusBanner from "../components/StatusBanner";
 import { useAuthLoginMutation } from "../api/authApi";
+import validatePassword from "../utils/validators/validatePassword";
 
 const AuthScreen = ({ navigation }) => {
   const [authData, setAuthData] = useState({
@@ -22,7 +23,7 @@ const AuthScreen = ({ navigation }) => {
   const [isVisibleBanner, setIsVisibleBanner] = useState(false);
   const isValidEmailRef = useRef(null);
   const isValidPasswordRef = useRef(null);
-  const isValid = isValidEmailRef.current && isValidPasswordRef.current;
+  // const isValid = isValidEmailRef.current && isValidPasswordRef.current;
   const [handleAuthLogin, { data, isError, error, isLoading, status }] =
     useAuthLoginMutation();
 
@@ -32,6 +33,24 @@ const AuthScreen = ({ navigation }) => {
     },
     [authData]
   );
+
+  const handleSubmit = useCallback(() => {
+    // вместо валидации при blur на пароле
+    isValidPasswordRef.current = validatePassword(authData.password);
+    const isValid = isValidEmailRef.current && isValidPasswordRef.current;
+    if (isValid) {
+      setIsVisibleBanner(false);
+      handleAuthLogin(authData);
+    }
+  }, [authData]);
+
+  const changeVisibleBanner = useCallback(() => {
+    setIsVisibleBanner((prev) => !prev);
+  }, [setIsVisibleBanner]);
+
+  const startRegister = useCallback(() => {
+    navigation.push("Регистрация");
+  }, []);
 
   useEffect(() => {
     if (
@@ -46,22 +65,6 @@ const AuthScreen = ({ navigation }) => {
       }
     }
   }, [status]);
-
-  // TODO: blur password при нажатии на кнопку
-  const handleSubmit = useCallback(() => {
-    if (isValid) {
-      setIsVisibleBanner(false);
-      handleAuthLogin(authData);
-    }
-  }, [authData]);
-
-  const changeVisibleBanner = useCallback(() => {
-    setIsVisibleBanner((prev) => !prev);
-  }, [setIsVisibleBanner]);
-
-  const startRegister = useCallback(() => {
-    navigation.push("Регистрация");
-  }, []);
 
   return (
     <KeyboardAvoidingView

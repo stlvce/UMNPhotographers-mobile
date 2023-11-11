@@ -1,14 +1,13 @@
 import { useCallback, useRef, useState } from "react";
 import {
   ScrollView,
-  View,
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import { Button, Text, Avatar, Portal } from "react-native-paper";
+import { Button, Portal } from "react-native-paper";
 import FullNameForm from "../components/forms/FullNameForm";
 import ContactForm from "../components/forms/ContactForm";
 import PortfolioForm from "../components/forms/PortfolioForm";
@@ -16,30 +15,20 @@ import PassForm from "../components/forms/PassForm";
 import ActionConfirmDialog from "../modals/ActionConfirmDialog";
 import BirthdateInput from "../components/inputs/BirthdateInput";
 import { useAuthRegisterMutation } from "../api/authApi";
+import UploadAvatarInput from "../components/forms/UploadAvatarInput";
 
-// const initialUserData = {
-//   firstname: "",
-//   surname: "",
-//   middleName: "",
-//   birthdate: "",
-//   email: "",
-//   phone: "",
-//   tg: "",
-//   vk: "",
-//   password: "",
-//   portfolio: "",
-// };
 const initialUserData = {
-  firstname: "Ыйцуйцушцйу",
-  surname: "Ыйцуйцушцйу",
-  middleName: "Ыйцуйцушцйу",
+  firstname: "",
+  surname: "",
+  middleName: "",
   birthdate: "",
-  phone: "9333333333",
-  vk: "string",
-  tg: "string",
-  email: `${Math.random()}@yandex.ru`,
-  password: "password",
-  portfolio: "http://qwewq.ru",
+  email: "",
+  phone: "",
+  tg: "",
+  vk: "",
+  portfolio: "",
+  password: "",
+  confPass: "",
 };
 
 const RegisterScreen = ({ navigation }) => {
@@ -52,24 +41,23 @@ const RegisterScreen = ({ navigation }) => {
   const isValidPortfolioRef = useRef(null);
 
   const isValid =
-    (isValidFullNameRef.current &&
-      isValidContactsRef.current &&
-      isValidPasswordRef.current &&
-      isValidPortfolioRef.current &&
-      userData.birthdate !== "") ||
-    !Object.values(userData).includes("");
-  console.log(isValid);
+    isValidFullNameRef.current &&
+    isValidContactsRef.current &&
+    isValidPasswordRef.current &&
+    isValidPortfolioRef.current &&
+    userData.birthdate !== "" &&
+    userData.password === userData.confPass;
 
   const handleChange = useCallback(
     (name, value) => {
       setUserData({ ...userData, [name]: value });
     },
-    [userData]
+    [userData],
   );
 
   const handleSubmit = useCallback(() => {
-    changeVisibleDialog();
     if (isValid) {
+      changeVisibleDialog();
       handleAuthRegister(userData);
       navigation.goBack();
     }
@@ -99,28 +87,20 @@ const RegisterScreen = ({ navigation }) => {
             handler={handleChange}
             ref={isValidFullNameRef}
           />
-          <View style={styles.containerForm}>
-            <Text variant="titleLarge">Дата рождения</Text>
-            <BirthdateInput value={userData.birthdate} handler={handleChange} />
-          </View>
-          {/* TODO: сделать загрузку фотографии */}
-          <View style={{ ...styles.containerImage, ...styles.containerForm }}>
-            <Text variant="titleLarge">Фотография</Text>
-            <Avatar.Image size={100} />
-          </View>
+          <BirthdateInput value={userData.birthdate} handler={handleChange} />
+          <UploadAvatarInput />
           <ContactForm
             value={[userData.email, userData.phone, userData.tg, userData.vk]}
             handler={handleChange}
             ref={isValidContactsRef}
           />
-          {/* TODO: доделать ссылку на портфолио */}
           <PortfolioForm
             value={userData.portfolio}
             handler={handleChange}
             ref={isValidPortfolioRef}
           />
           <PassForm
-            password={userData.password}
+            value={[userData.password, userData.confPass]}
             handler={handleChange}
             ref={isValidPasswordRef}
           />
@@ -155,14 +135,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFF",
     padding: 20,
-  },
-  containerImage: {
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  containerForm: {
-    gap: 10,
-    marginBottom: 20,
   },
   button: {
     marginTop: 20,

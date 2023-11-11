@@ -1,8 +1,9 @@
 import { useState, forwardRef } from "react";
-import { TextInput, HelperText } from "react-native-paper";
+import { TextInput, HelperText, useTheme } from "react-native-paper";
 import { View } from "react-native";
 
 const MainInput = ({ varName, value, handler, validator, ...props }, ref) => {
+  const theme = useTheme();
   const [isBlur, setIsBlur] = useState(false);
   const isError = value !== "" && isBlur && !ref.current;
 
@@ -12,12 +13,8 @@ const MainInput = ({ varName, value, handler, validator, ...props }, ref) => {
   };
 
   const handleBlur = () => {
+    setIsBlur(true);
     ref.current = validator(value);
-    if (ref.current) {
-      setIsBlur(false);
-    } else {
-      setIsBlur(true);
-    }
   };
 
   return (
@@ -28,6 +25,10 @@ const MainInput = ({ varName, value, handler, validator, ...props }, ref) => {
         onChangeText={handleChange}
         onBlur={handleBlur}
         error={isError}
+        right={
+          ref.current && isBlur && <TextInput.Icon icon="check" color="green" />
+        }
+        outlineColor={ref.current && isBlur ? "green" : theme.colors.secondary}
         {...props}
       />
       {/* <HelperText type="error" visible={isError} padding="none">

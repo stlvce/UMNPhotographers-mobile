@@ -1,16 +1,9 @@
 import React from "react";
 import { Appbar } from "react-native-paper";
 import { getHeaderTitle } from "@react-navigation/elements";
-import { useDispatch } from "react-redux";
-import { changeVisibleAddTechModal } from "../store/slices/techSlice";
 
 const RootAppBar = ({ navigation, route, options, back }) => {
-  const dispatch = useDispatch();
   const title = getHeaderTitle(options, route.name);
-
-  const handleAddTech = () => {
-    dispatch(changeVisibleAddTechModal());
-  };
 
   return (
     <Appbar.Header>
@@ -23,7 +16,11 @@ const RootAppBar = ({ navigation, route, options, back }) => {
         />
       )}
       {route.name === "Техника" && (
-        <Appbar.Action onPress={handleAddTech} icon="plus" mode="contained" />
+        <Appbar.Action
+          onPress={() => navigation.push("Добавление техники")}
+          icon="plus"
+          mode="contained"
+        />
       )}
     </Appbar.Header>
   );

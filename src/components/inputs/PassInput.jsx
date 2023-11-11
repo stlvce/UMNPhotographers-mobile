@@ -16,7 +16,7 @@ const PassInput = ({ value, handler }, ref) => {
       textContentType="password"
       maxLength={25}
       autoCapitalize="none"
-      // TODO: при скрытии и вводе стирается предыдущий текст
+      // TODO: при скрытии и вводе стирается предыдущий текст (Возможно такое только на IOS)
       secureTextEntry={!isVisiblePassword}
       right={
         <TextInput.Icon

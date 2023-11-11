@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState, useEffect } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { Button, Portal, useTheme } from "react-native-paper";
-import UploadAvatarForm from "../components/forms/UploadAvatarForm";
+import UploadAvatarInput from "../components/forms/UploadAvatarInput";
 import FullNameForm from "../components/forms/FullNameForm";
 import ContactForm from "../components/forms/ContactForm";
 import PortfolioForm from "../components/forms/PortfolioForm";
@@ -24,18 +24,20 @@ const ProfileScreen = ({ navigation }) => {
     phone: "",
     tg: "",
     vk: "",
+    portfolio: "",
   });
   const [visibleChangePass, setVisibleChangePass] = useState(false);
   const [visibleSaveDialog, setVisibleSaveDialog] = useState(false);
   const [visibleExitDialog, setVisibleExitDialog] = useState(false);
   const isValidFullNameRef = useRef(null);
   const isValidContactsRef = useRef(null);
+  const isValidPortfolioRef = useRef(null);
 
   const handleChange = useCallback(
     (name, value) => {
       setUserData({ ...userData, [name]: value });
     },
-    [userData]
+    [userData],
   );
 
   const handleSave = useCallback(() => {
@@ -52,7 +54,7 @@ const ProfileScreen = ({ navigation }) => {
 
   const changeVisibleChangePassModal = useCallback(
     () => setVisibleChangePass((prev) => !prev),
-    [visibleChangePass]
+    [visibleChangePass],
   );
 
   const changeVisibleSaveDialog = useCallback(() => {
@@ -75,7 +77,7 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <UploadAvatarForm />
+      <UploadAvatarInput />
       <FullNameForm
         containerTitle="ФИО"
         value={[userData.firstname, userData.surname, userData.middleName]}
@@ -87,8 +89,11 @@ const ProfileScreen = ({ navigation }) => {
         handler={handleChange}
         ref={isValidContactsRef}
       />
-      {/* TODO: доделать ссылку на портфолио x2 */}
-      <PortfolioForm />
+      <PortfolioForm
+        value={userData.portfolio}
+        handler={handleChange}
+        ref={isValidPortfolioRef}
+      />
       <View style={styles.containerForm}>
         <Button onPress={changeVisibleChangePassModal} mode="outlined">
           Сменить пароль

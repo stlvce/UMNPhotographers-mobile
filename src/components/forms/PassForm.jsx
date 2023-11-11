@@ -4,10 +4,11 @@ import { Text } from "react-native-paper";
 import PassInput from "../inputs/PassInput";
 import ConfPassInput from "../inputs/ConfPassInput";
 
-const PassForm = ({ password, handler, label = true }, ref) => {
+const PassForm = ({ value, handler, label = true }, ref) => {
+  const [password, confPass] = value;
   const isValidPasswordRef = useRef(null);
   const isPassEqualRef = useRef(null);
-  ref.current = isValidPasswordRef.current && isPassEqualRef.current;
+  ref.current = isValidPasswordRef.current;
 
   return (
     <View style={styles.containerForm}>
@@ -19,7 +20,12 @@ const PassForm = ({ password, handler, label = true }, ref) => {
         handler={handler}
         ref={isValidPasswordRef}
       />
-      <ConfPassInput password={password} ref={isPassEqualRef} />
+      <ConfPassInput
+        value={confPass}
+        handler={handler}
+        password={password}
+        ref={isPassEqualRef}
+      />
     </View>
   );
 };

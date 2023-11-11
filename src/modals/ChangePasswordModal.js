@@ -1,4 +1,5 @@
 import { forwardRef, useState, useRef } from "react";
+import { View } from "react-native";
 import { Modal, Text, Button } from "react-native-paper";
 import { StyleSheet } from "react-native";
 import PassForm from "../components/forms/PassForm";
@@ -28,7 +29,7 @@ const ChangePasswordModal = ({ visible, closeModal }, ref) => {
         label={false}
         ref={isValidPasswordRef}
       />
-      <Button mode="contained" style={styles.button} onPress={handleSubmit}>
+      <Button style={styles.button} mode="contained" onPress={handleSubmit}>
         Отправить
       </Button>
     </Modal>

@@ -6,9 +6,9 @@ const EventScreen = ({ route, navigation }) => {
   return (
     <ScrollView style={styles.containerScroll}>
       <View style={styles.container}>
-        <View style={styles.containerImage}>
+        {/* <View style={styles.containerImage}>
           <Image source={event.imgSrc} style={styles.img} />
-        </View>
+        </View> */}
         <Text variant="bodyLarge">{event.description}</Text>
         <View style={styles.containerButtons}>
           <Button

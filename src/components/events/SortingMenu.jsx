@@ -20,10 +20,21 @@ const sortVariants = [
 const SortingMenu = ({ visible, changeVisible }) => {
   const [sortStatus, setSortStatus] = useState("");
 
+  const resetSort = () => {
+    setSortStatus("");
+    changeVisible();
+  };
+
+  const chooseSortType = (type) => {
+    setSortStatus(type);
+    changeVisible();
+  };
+
   return (
     <Menu
       visible={visible}
       onDismiss={changeVisible}
+      anchorPosition="bottom"
       anchor={
         <Button
           style={styles.button}
@@ -36,23 +47,17 @@ const SortingMenu = ({ visible, changeVisible }) => {
       }
     >
       <Menu.Item
-        onPress={() => {
-          setSortStatus("");
-          changeVisible();
-        }}
+        onPress={resetSort}
         title="Сбросить сортировку"
         disabled={!Boolean(sortStatus)}
       />
       <Divider />
       {sortVariants.map((variant) => (
         <Menu.Item
-          onPress={() => {
-            setSortStatus(variant.title);
-            changeVisible();
-          }}
+          onPress={() => chooseSortType(variant.title)}
           title={variant.title}
-          key={variant.title}
           disabled={variant.title === sortStatus}
+          key={variant.title}
         />
       ))}
     </Menu>
