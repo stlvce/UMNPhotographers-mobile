@@ -17,7 +17,7 @@ import BirthdateInput from "../components/inputs/BirthdateInput";
 import { useAuthRegisterMutation } from "../api/authApi";
 import UploadAvatarInput from "../components/forms/UploadAvatarInput";
 
-const initialUserData = {
+const initialStateUserData = {
   firstname: "",
   surname: "",
   middleName: "",
@@ -32,7 +32,7 @@ const initialUserData = {
 };
 
 const RegisterScreen = ({ navigation }) => {
-  const [userData, setUserData] = useState(initialUserData);
+  const [userData, setUserData] = useState(initialStateUserData);
   const [visibleDialog, setVisibleDialog] = useState(false);
   const [handleAuthRegister, { data }] = useAuthRegisterMutation();
   const isValidFullNameRef = useRef(null);
@@ -70,6 +70,7 @@ const RegisterScreen = ({ navigation }) => {
   }, [visibleDialog, isValid]);
 
   return (
+    // TODO: настроить высоту инпута при открыктии клавиатуры
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.containerKeyboard}
@@ -88,7 +89,7 @@ const RegisterScreen = ({ navigation }) => {
             ref={isValidFullNameRef}
           />
           <BirthdateInput value={userData.birthdate} handler={handleChange} />
-          <UploadAvatarInput />
+          <UploadAvatarInput hasTitle />
           <ContactForm
             value={[userData.email, userData.phone, userData.tg, userData.vk]}
             handler={handleChange}

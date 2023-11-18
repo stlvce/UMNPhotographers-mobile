@@ -4,10 +4,10 @@ import { Avatar, Text } from "react-native-paper";
 {
   /* TODO: сделать загрузку фотографии */
 }
-const UploadAvatarInput = () => {
+const UploadAvatarInput = ({ hasTitle = false }) => {
   return (
     <View style={styles.container}>
-      <Text variant="titleLarge">Фотография</Text>
+      {hasTitle && <Text variant="titleLarge">Фотография</Text>}
       <Avatar.Image size={100} />
     </View>
   );

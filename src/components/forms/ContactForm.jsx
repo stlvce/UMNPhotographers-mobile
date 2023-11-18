@@ -20,7 +20,7 @@ const ContactForm = ({ value, handler }, ref) => {
     isValidVkRef.current;
 
   return (
-    <View style={styles.containerForm}>
+    <View style={styles.container}>
       <Text variant="titleLarge">Контакты</Text>
       <EmailInput value={email} handler={handler} ref={isValidEmailRef} />
       <PhoneNumberInput
@@ -35,7 +35,7 @@ const ContactForm = ({ value, handler }, ref) => {
 };
 
 const styles = StyleSheet.create({
-  containerForm: {
+  container: {
     gap: 10,
     marginBottom: 20,
   },

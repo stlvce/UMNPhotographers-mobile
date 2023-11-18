@@ -11,21 +11,23 @@ import { useUserInfoQuery, useUpdateUserInfoMutation } from "../api/userApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSelector } from "react-redux";
 
+const initialStateUserData = {
+  firstname: "",
+  surname: "",
+  middleName: "",
+  email: "",
+  phone: "",
+  tg: "",
+  vk: "",
+  portfolio: "",
+};
+
 const ProfileScreen = ({ navigation }) => {
   const theme = useTheme();
   const user = useSelector((state) => state.user.user);
-  const { data, error } = useUserInfoQuery();
-  const [handleUpdateUser, { newData }] = useUpdateUserInfoMutation();
-  const [userData, setUserData] = useState({
-    firstname: "",
-    surname: "",
-    middleName: "",
-    email: "",
-    phone: "",
-    tg: "",
-    vk: "",
-    portfolio: "",
-  });
+  const { data } = useUserInfoQuery();
+  const [handleUpdateUser] = useUpdateUserInfoMutation();
+  const [userData, setUserData] = useState(initialStateUserData);
   const [visibleChangePass, setVisibleChangePass] = useState(false);
   const [visibleSaveDialog, setVisibleSaveDialog] = useState(false);
   const [visibleExitDialog, setVisibleExitDialog] = useState(false);
@@ -72,10 +74,10 @@ const ProfileScreen = ({ navigation }) => {
     if (data) {
       setUserData(user);
     }
-    console.log(user);
   }, [user]);
 
   return (
+    // TODO: настроить высоту инпута при открыктии клавиатуры x2
     <ScrollView style={styles.container}>
       <UploadAvatarInput />
       <FullNameForm
@@ -94,7 +96,7 @@ const ProfileScreen = ({ navigation }) => {
         handler={handleChange}
         ref={isValidPortfolioRef}
       />
-      <View style={styles.containerForm}>
+      <View style={styles.buttonContainer}>
         <Button onPress={changeVisibleChangePassModal} mode="outlined">
           Сменить пароль
         </Button>
@@ -139,7 +141,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#FFF",
   },
-  containerForm: {
+  buttonContainer: {
     gap: 10,
     marginBottom: 20,
   },

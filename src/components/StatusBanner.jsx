@@ -2,7 +2,7 @@ import { Banner } from "react-native-paper";
 import statusAuth from "../utils/statusAuth";
 
 const StatusBanner = ({ data, error, visible, changeVisible }) => {
-  let bannerMessage = (bannerMessage = statusAuth(data, error));
+  let bannerMessage = statusAuth(data, error);
 
   return (
     <Banner
