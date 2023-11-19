@@ -9,6 +9,7 @@ export const updateUserInfo = createAsyncThunk(
   "user/updateUser",
   async (formData, { rejectWithValue }) => {
     try {
+      console.log(formData)
       await userApi.updateUserInfo(formData);
       const response = await userApi.userInfo();
       return response;

@@ -7,9 +7,10 @@ import ContactForm from "../components/forms/ContactForm";
 import PortfolioForm from "../components/forms/PortfolioForm";
 import ChangePasswordModal from "../modals/ChangePasswordModal";
 import ActionConfirmDialog from "../modals/ActionConfirmDialog";
-import { useUserInfoQuery, useUpdateUserInfoMutation } from "../api/userApi";
+import { useUserInfoQuery } from "../api/userApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { updateUserInfo } from "../store/slices/userSlice";
 
 const initialStateUserData = {
   firstname: "",
@@ -24,9 +25,9 @@ const initialStateUserData = {
 
 const ProfileScreen = ({ navigation }) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-  const { data } = useUserInfoQuery();
-  const [handleUpdateUser] = useUpdateUserInfoMutation();
+  const { data, error } = useUserInfoQuery();
   const [userData, setUserData] = useState(initialStateUserData);
   const [visibleChangePass, setVisibleChangePass] = useState(false);
   const [visibleSaveDialog, setVisibleSaveDialog] = useState(false);
@@ -44,10 +45,10 @@ const ProfileScreen = ({ navigation }) => {
 
   const handleSave = useCallback(() => {
     if (isValidFullNameRef.current && isValidContactsRef.current) {
-      handleUpdateUser(userData);
+      dispatch(updateUserInfo(userData));
       changeVisibleSaveDialog();
     }
-  }, [userData]);
+  }, [userData, , isValidFullNameRef.current, isValidContactsRef.current]);
 
   const handleLogout = useCallback(async () => {
     await AsyncStorage.removeItem("SESSION");
@@ -60,11 +61,10 @@ const ProfileScreen = ({ navigation }) => {
   );
 
   const changeVisibleSaveDialog = useCallback(() => {
-    console.log(isValidFullNameRef.current, isValidContactsRef.current);
     if (isValidFullNameRef.current && isValidContactsRef.current) {
       setVisibleSaveDialog((prev) => !prev);
     }
-  }, [setVisibleSaveDialog, isValidFullNameRef, isValidContactsRef]);
+  }, [userData, isValidFullNameRef.current, isValidContactsRef.current]);
 
   const changeVisibleExitDialog = useCallback(() => {
     setVisibleExitDialog((prev) => !prev);
@@ -74,7 +74,7 @@ const ProfileScreen = ({ navigation }) => {
     if (data) {
       setUserData(user);
     }
-  }, [user]);
+  }, [data]);
 
   return (
     // TODO: настроить высоту инпута при открыктии клавиатуры x2

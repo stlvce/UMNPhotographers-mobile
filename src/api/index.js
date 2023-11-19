@@ -5,9 +5,6 @@ const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.EXPO_PUBLIC_API_URL,
     prepareHeaders: (headers, { getState }) => {
-      if (getState().auth.sessionId) {
-        headers.set("cookie", `SESSION=${getState().auth.sessionId}`);
-      }
       return headers;
     },
   }),

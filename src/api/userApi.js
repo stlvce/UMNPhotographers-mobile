@@ -10,11 +10,11 @@ export const userApi = api.injectEndpoints({
         },
       }),
       transformResponse: (response) => {
-        console.log(response, "USER INFO");
+        const { contacts, ...data } = response;
         return {
-          ...response,
-          phone: response.phone.slice(1),
-          ...response?.contacts,
+          ...data,
+          phone: data.phone.slice(2),
+          ...contacts,
         };
       },
     }),
@@ -25,12 +25,12 @@ export const userApi = api.injectEndpoints({
           surname: formData.surname,
           middleName: formData.middleName,
           birthdate: formData.birthdate,
-          phone: formData?.phone || "",
+          phone: "+7" + formData.phone,
           contacts: {
-            vk: formData?.vk || "",
-            tg: formData?.tg || "",
+            vk: formData.vk,
+            tg: formData.tg,
           },
-          portfolio: formData.portfolio || "",
+          portfolio: formData.portfolio,
         };
         return {
           url: "/photographer/info",
@@ -39,14 +39,6 @@ export const userApi = api.injectEndpoints({
             "Content-Type": "application/json",
           },
           body,
-        };
-      },
-      transformResponse: (response) => {
-        console.log(response, "USER INFO");
-        return {
-          ...response,
-          phone: response.phone.slice(1),
-          ...response?.contacts,
         };
       },
     }),

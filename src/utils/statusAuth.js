@@ -8,6 +8,5 @@ export default function (data, error) {
   }
   // TODO: Добавить статус при плохом соединении:
   // У вас нестабильное интернет соединение. Попробуйте подключитьтся к другой сети или повторите попытку позднее.
-
-  return error?.status + " " + error?.error;
+  return error?.status + " " + error?.data?.message;
 }

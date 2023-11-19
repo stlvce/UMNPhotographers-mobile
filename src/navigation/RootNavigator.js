@@ -5,7 +5,7 @@ import RegisterScreen from "../screens/RegisterScreen";
 import BottomNavigator from "./BottomNavigator";
 import RootAppBar from "../components/RootAppBar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { checkSessionId } from "../store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
