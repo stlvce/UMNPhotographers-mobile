@@ -11,6 +11,7 @@ import { useUserInfoQuery } from "../api/userApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUserInfo } from "../store/slices/userSlice";
+import validateAll from "../utils/validators/validateAll";
 
 const initialStateUserData = {
   firstname: "",
@@ -27,7 +28,7 @@ const ProfileScreen = ({ navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-  const { data, error } = useUserInfoQuery();
+  const { data } = useUserInfoQuery();
   const [userData, setUserData] = useState(initialStateUserData);
   const [visibleChangePass, setVisibleChangePass] = useState(false);
   const [visibleSaveDialog, setVisibleSaveDialog] = useState(false);
@@ -43,32 +44,41 @@ const ProfileScreen = ({ navigation }) => {
     [userData],
   );
 
-  const handleSave = useCallback(() => {
-    if (isValidFullNameRef.current && isValidContactsRef.current) {
-      dispatch(updateUserInfo(userData));
-      changeVisibleSaveDialog();
+  const changeVisibleSaveDialog = useCallback(() => {
+    const isValidAll = validateAll(userData);
+    if (
+      (isValidFullNameRef.current &&
+        isValidContactsRef.current &&
+        isValidPortfolioRef.current) ||
+      isValidAll === "Valid"
+    ) {
+      setVisibleSaveDialog((prev) => !prev);
     }
-  }, [userData, , isValidFullNameRef.current, isValidContactsRef.current]);
+  }, [
+    userData,
+    isValidFullNameRef.current,
+    isValidContactsRef.current,
+    isValidPortfolioRef.current,
+  ]);
 
-  const handleLogout = useCallback(async () => {
-    await AsyncStorage.removeItem("SESSION");
-    navigation.replace("Вход");
-  }, []);
+  const handleSave = useCallback(() => {
+    dispatch(updateUserInfo(userData));
+    changeVisibleSaveDialog();
+  }, [userData]);
 
   const changeVisibleChangePassModal = useCallback(
     () => setVisibleChangePass((prev) => !prev),
     [visibleChangePass],
   );
 
-  const changeVisibleSaveDialog = useCallback(() => {
-    if (isValidFullNameRef.current && isValidContactsRef.current) {
-      setVisibleSaveDialog((prev) => !prev);
-    }
-  }, [userData, isValidFullNameRef.current, isValidContactsRef.current]);
-
   const changeVisibleExitDialog = useCallback(() => {
     setVisibleExitDialog((prev) => !prev);
   }, [setVisibleExitDialog]);
+
+  const handleLogout = useCallback(async () => {
+    await AsyncStorage.removeItem("SESSION");
+    navigation.replace("Вход");
+  }, []);
 
   useEffect(() => {
     if (data) {

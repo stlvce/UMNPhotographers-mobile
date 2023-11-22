@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { userApi } from "../../api/userApi";
+import api from "../../api";
 
 const initialState = {
   user: "",
@@ -9,9 +10,8 @@ export const updateUserInfo = createAsyncThunk(
   "user/updateUser",
   async (formData, { rejectWithValue }) => {
     try {
-      console.log(formData)
-      await userApi.updateUserInfo(formData);
-      const response = await userApi.userInfo();
+      await api.updateUserInfo(formData);
+      const response = await api.userInfo();
       return response;
     } catch (error) {
       return rejectWithValue(error);

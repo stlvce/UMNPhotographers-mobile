@@ -1,14 +1,29 @@
-import { StyleSheet, View } from "react-native";
+import { useState } from "react";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { Avatar, Text } from "react-native-paper";
+import * as ImagePicker from "expo-image-picker";
 
-{
-  /* TODO: сделать загрузку фотографии */
-}
 const UploadAvatarInput = ({ hasTitle = false }) => {
+  const [image, setImage] = useState(null);
+
+  const imagePick = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
   return (
     <View style={styles.container}>
       {hasTitle && <Text variant="titleLarge">Фотография</Text>}
-      <Avatar.Image size={100} />
+      <TouchableOpacity onPress={imagePick} activeOpacity={0.9}>
+        <Avatar.Image size={100} source={image && { uri: image }} />
+      </TouchableOpacity>
     </View>
   );
 };
