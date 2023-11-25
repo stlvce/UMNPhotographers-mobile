@@ -31,9 +31,9 @@ const MainInput = ({ varName, value, handler, validator, ...props }, ref) => {
         outlineColor={ref.current && isBlur ? "green" : theme.colors.secondary}
         {...props}
       />
-      {/* <HelperText type="error" visible={isError} padding="none">
+      {/*      <HelperText type="error" visible={isError} padding="none">
         Data is invalid!
-      </HelperText> */}
+      </HelperText>*/}
     </View>
   );
 };

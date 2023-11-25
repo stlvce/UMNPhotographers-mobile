@@ -9,4 +9,3 @@ const techSlice = createSlice({
 });
 
 export default techSlice.reducer;
-// export const {  } = techSlice.actions;

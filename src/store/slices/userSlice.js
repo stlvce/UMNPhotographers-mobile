@@ -1,18 +1,16 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { userApi } from "../../api/userApi";
-import api from "../../api";
 
 const initialState = {
-  user: "",
+  user: {},
 };
 
 export const updateUserInfo = createAsyncThunk(
   "user/updateUser",
-  async (formData, { rejectWithValue }) => {
+  async (formData, { rejectWithValue, dispatch }) => {
     try {
-      await api.updateUserInfo(formData);
-      const response = await api.userInfo();
-      return response;
+      await dispatch(userApi.endpoints.updateUserInfo.initiate(formData));
+      return await dispatch(userApi.endpoints.userInfo.initiate());
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -25,7 +23,7 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(updateUserInfo.fulfilled, (state, action) => {
-      console.log(action.payload);
+      state.user = action.payload.data;
     });
     builder.addMatcher(
       userApi.endpoints.userInfo.matchFulfilled,
@@ -37,4 +35,3 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-// export const { changeVisibleAddTechModal } = authSlice.actions;

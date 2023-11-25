@@ -1,56 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ScrollView, StyleSheet } from "react-native";
-import { Card, List, Text, Button, useTheme } from "react-native-paper";
+import {
+  Card,
+  List,
+  Text,
+  Button,
+  useTheme,
+  ActivityIndicator,
+} from "react-native-paper";
 import { useTechniqueInfoQuery } from "../../api/techApi";
 
-const items = [
-  {
-    id: 0,
-    manufacturerId: 0,
-    modelId: 0,
-    rating: 0,
-    type: "camera",
-    crop: "string",
-  },
-  {
-    id: 1,
-    manufacturerId: 0,
-    modelId: 0,
-    rating: 0,
-    type: "camera",
-    crop: "string",
-  },
-  {
-    id: 2,
-    manufacturerId: 0,
-    modelId: 0,
-    rating: 0,
-    type: "camera",
-    crop: "string",
-  },
-  {
-    id: 3,
-    manufacturerId: 0,
-    modelId: 0,
-    rating: 0,
-    type: "camera",
-    crop: "string",
-  },
-];
-
-const TechScreen = ({ navigation }) => {
+const TechScreen = () => {
   const theme = useTheme();
-  const { data } = useTechniqueInfoQuery();
-  const [tech, setTech] = useState(items);
+  const [tech, setTech] = useState([]);
+  const { data, isLoading, error } = useTechniqueInfoQuery();
+
+  useEffect(() => {
+    if (data) {
+      setTech(data.technique);
+    }
+  }, [data]);
 
   return (
     <ScrollView style={styles.container}>
-      {tech.length === 0 ? (
+      {isLoading ? (
+        <ActivityIndicator animating={true} size="large" />
+      ) : tech.length === 0 ? (
         <Text
           variant="bodyMedium"
           style={{ textAlign: "center", marginTop: 20 }}
         >
-          Нет техники
+          {error ? "Ошибка" : "Нет техники"}
         </Text>
       ) : (
         tech.map((item) => (

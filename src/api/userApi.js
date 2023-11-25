@@ -13,7 +13,7 @@ export const userApi = api.injectEndpoints({
         const { contacts, ...data } = response;
         return {
           ...data,
-          phone: data.phone.slice(2),
+          phone: data.phone.slice(1),
           ...contacts,
         };
       },
@@ -25,7 +25,7 @@ export const userApi = api.injectEndpoints({
           surname: formData.surname,
           middleName: formData.middleName,
           birthdate: formData.birthdate,
-          phone: "+7" + formData.phone,
+          phone: "7" + formData.phone,
           contacts: {
             vk: formData.vk,
             tg: formData.tg,
@@ -42,8 +42,17 @@ export const userApi = api.injectEndpoints({
         };
       },
     }),
+    uploadAvatar: builder.mutation({
+      query: (image) => {
+        console.log(image, "image");
+      },
+    }),
   }),
   overrideExisting: true,
 });
 
-export const { useUserInfoQuery, useUpdateUserInfoMutation } = userApi;
+export const {
+  useUserInfoQuery,
+  useUpdateUserInfoMutation,
+  useUploadAvatarMutation,
+} = userApi;

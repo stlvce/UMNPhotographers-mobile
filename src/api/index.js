@@ -4,9 +4,6 @@ const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.EXPO_PUBLIC_API_URL,
-    prepareHeaders: (headers, { getState }) => {
-      return headers;
-    },
   }),
   endpoints: (builder) => ({}),
 });

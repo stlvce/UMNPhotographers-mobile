@@ -7,7 +7,7 @@ import ContactForm from "../components/forms/ContactForm";
 import PortfolioForm from "../components/forms/PortfolioForm";
 import ChangePasswordModal from "../modals/ChangePasswordModal";
 import ActionConfirmDialog from "../modals/ActionConfirmDialog";
-import { useUserInfoQuery } from "../api/userApi";
+import { useUserInfoQuery, useUploadAvatarMutation } from "../api/userApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUserInfo } from "../store/slices/userSlice";
@@ -28,8 +28,10 @@ const ProfileScreen = ({ navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-  const { data } = useUserInfoQuery();
   const [userData, setUserData] = useState(initialStateUserData);
+  const [image, setImage] = useState(null);
+  const { data } = useUserInfoQuery();
+  const [handleUploadAvatar] = useUploadAvatarMutation();
   const [visibleChangePass, setVisibleChangePass] = useState(false);
   const [visibleSaveDialog, setVisibleSaveDialog] = useState(false);
   const [visibleExitDialog, setVisibleExitDialog] = useState(false);
@@ -42,6 +44,13 @@ const ProfileScreen = ({ navigation }) => {
       setUserData({ ...userData, [name]: value });
     },
     [userData],
+  );
+
+  const handleChangeImage = useCallback(
+    (newValue) => {
+      setImage(newValue);
+    },
+    [image],
   );
 
   const changeVisibleSaveDialog = useCallback(() => {
@@ -63,6 +72,7 @@ const ProfileScreen = ({ navigation }) => {
 
   const handleSave = useCallback(() => {
     dispatch(updateUserInfo(userData));
+    handleUploadAvatar(image);
     changeVisibleSaveDialog();
   }, [userData]);
 
@@ -89,7 +99,7 @@ const ProfileScreen = ({ navigation }) => {
   return (
     // TODO: настроить высоту инпута при открыктии клавиатуры x2
     <ScrollView style={styles.container}>
-      <UploadAvatarInput />
+      <UploadAvatarInput value={image} handleChange={handleChangeImage} />
       <FullNameForm
         containerTitle="ФИО"
         value={[userData.firstname, userData.surname, userData.middleName]}

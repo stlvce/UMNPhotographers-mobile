@@ -3,18 +3,16 @@ import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { Avatar, Text } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 
-const UploadAvatarInput = ({ hasTitle = false }) => {
-  const [image, setImage] = useState(null);
-
+const UploadAvatarInput = ({ hasTitle = false, value, handleChange }) => {
   const imagePick = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      quality: 1,
+      quality: 0.1,
     });
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      handleChange(result.assets[0].uri);
     }
   };
 
@@ -22,7 +20,7 @@ const UploadAvatarInput = ({ hasTitle = false }) => {
     <View style={styles.container}>
       {hasTitle && <Text variant="titleLarge">Фотография</Text>}
       <TouchableOpacity onPress={imagePick} activeOpacity={0.9}>
-        <Avatar.Image size={100} source={image && { uri: image }} />
+        <Avatar.Image size={100} source={value && { uri: value }} />
       </TouchableOpacity>
     </View>
   );

@@ -11,12 +11,12 @@ const Stack = createNativeStackNavigator();
 const EventsNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Мероприятия"
+      initialRouteName="Events"
       screenOptions={{
         header: (props) => <RootAppBar {...props} />,
       }}
     >
-      <Stack.Screen name="Мероприятия" component={EventsScreen} />
+      <Stack.Screen name="Events" component={EventsScreen} />
       <Stack.Screen
         name="Мероприятие"
         component={EventScreen}

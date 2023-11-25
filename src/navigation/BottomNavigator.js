@@ -10,17 +10,16 @@ const Tab = createBottomTabNavigator();
 const BottomNavigator = () => {
   const theme = useTheme();
 
-  // TODO: изменить язык на нажнем английский
   return (
     <Tab.Navigator
-      initialRouteName="Events"
+      initialRouteName="Мероприятия"
       screenOptions={{
         header: (props) => <RootAppBar {...props} />,
         tabBarActiveTintColor: theme.colors.primary,
       }}
     >
       <Tab.Screen
-        name="Events"
+        name="Мероприятия"
         component={EventsNavigator}
         options={{
           headerShown: false,
@@ -34,7 +33,7 @@ const BottomNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Tech"
+        name="Техника"
         component={TechNavigator}
         options={{
           headerShown: false,

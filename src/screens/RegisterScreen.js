@@ -16,6 +16,7 @@ import ActionConfirmDialog from "../modals/ActionConfirmDialog";
 import BirthdateInput from "../components/inputs/BirthdateInput";
 import { useAuthRegisterMutation } from "../api/authApi";
 import UploadAvatarInput from "../components/forms/UploadAvatarInput";
+import { useUploadAvatarMutation } from "../api/userApi";
 
 const initialStateUserData = {
   firstname: "",
@@ -33,8 +34,10 @@ const initialStateUserData = {
 
 const RegisterScreen = ({ navigation }) => {
   const [userData, setUserData] = useState(initialStateUserData);
+  const [image, setImage] = useState(null);
   const [visibleDialog, setVisibleDialog] = useState(false);
   const [handleAuthRegister, { data }] = useAuthRegisterMutation();
+  const [handleUploadAvatar] = useUploadAvatarMutation();
   const isValidFullNameRef = useRef(null);
   const isValidContactsRef = useRef(null);
   const isValidPasswordRef = useRef(null);
@@ -55,10 +58,18 @@ const RegisterScreen = ({ navigation }) => {
     [userData],
   );
 
+  const handleChangeImage = useCallback(
+    (newValue) => {
+      setImage(newValue);
+    },
+    [image],
+  );
+
   const handleSubmit = useCallback(() => {
     if (isValid) {
       changeVisibleDialog();
       handleAuthRegister(userData);
+      handleUploadAvatar(image);
       navigation.goBack();
     }
   }, [userData, isValid]);
@@ -89,7 +100,11 @@ const RegisterScreen = ({ navigation }) => {
             ref={isValidFullNameRef}
           />
           <BirthdateInput value={userData.birthdate} handler={handleChange} />
-          <UploadAvatarInput hasTitle />
+          <UploadAvatarInput
+            hasTitle
+            value={image}
+            handleChange={handleChangeImage}
+          />
           <ContactForm
             value={[userData.email, userData.phone, userData.tg, userData.vk]}
             handler={handleChange}

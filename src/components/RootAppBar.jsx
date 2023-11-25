@@ -8,14 +8,22 @@ const RootAppBar = ({ navigation, route, options, back }) => {
   return (
     <Appbar.Header>
       {back ? <Appbar.BackAction onPress={navigation.goBack} /> : null}
-      <Appbar.Content title={title} />
+      <Appbar.Content
+        title={
+          title === "Events"
+            ? "Мероприятия"
+            : title === "Tech"
+              ? "Техника"
+              : title
+        }
+      />
       {route.name === "Мероприятие" && (
         <Appbar.Action
           icon="calendar"
           onPress={() => navigation.push("Ваш календарь")}
         />
       )}
-      {route.name === "Техника" && (
+      {route.name === "Tech" && (
         <Appbar.Action
           onPress={() => navigation.push("Добавление техники")}
           icon="plus"

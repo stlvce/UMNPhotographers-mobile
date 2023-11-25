@@ -1,4 +1,4 @@
-import CamerForm from "../forms/tech/CameraForm";
+import CameraForm from "../forms/tech/CameraForm";
 import BatteryForm from "../forms/tech/BatteryForm";
 import FlashForm from "../forms/tech/FlashForm";
 import LeensForm from "../forms/tech/LeensForm";
@@ -6,7 +6,7 @@ import MemoryForm from "../forms/tech/MemoryForm";
 
 const FormReturner = ({ type }) => {
   if (type === "Камера") {
-    return <CamerForm />;
+    return <CameraForm />;
   }
 
   if (type === "Батарея") {

@@ -9,25 +9,20 @@ export const authApi = api.injectEndpoints({
         method: "POST",
         body: JSON.stringify(data),
         headers: {
-          Accept: "application/json",
-          "Accept-Encoding": "gzip, deflate, br",
-          "Accept-Language": "ru,en;q=0.9,en-GB;q=0.8,en-US;q=0.7",
-          Connection: "keep-alive",
           "Content-Type": "application/json",
-          "Sec-Fetch-Mode": "cors",
           Cookie: "",
         },
       }),
       transformResponse: async (response, meta) => {
-        // При выходе установленные куки остаются на запросе,
-        // поэтому set-cookie заново с сервера не приходят из-за этого ошибка
         const cookie = meta.response.headers.map["set-cookie"]
           ?.split(" ")[0]
           .replace(";", "")
           .replace("SESSION=", "");
+
         if (cookie) {
           await AsyncStorage.setItem("SESSION", cookie);
         }
+
         return response;
       },
     }),
@@ -67,4 +62,8 @@ export const authApi = api.injectEndpoints({
   overrideExisting: true,
 });
 
-export const { useAuthLoginMutation, useAuthRegisterMutation } = authApi;
+export const {
+  useAuthLoginMutation,
+  useAuthRegisterMutation,
+  useAuthLogoutMutation,
+} = authApi;
