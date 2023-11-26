@@ -16,7 +16,7 @@ import ActionConfirmDialog from "../modals/ActionConfirmDialog";
 import BirthdateInput from "../components/inputs/BirthdateInput";
 import { useAuthRegisterMutation } from "../api/authApi";
 import UploadAvatarInput from "../components/forms/UploadAvatarInput";
-import { useUploadAvatarMutation } from "../api/userApi";
+import * as FileSystem from "expo-file-system";
 
 const initialStateUserData = {
   firstname: "",
@@ -37,7 +37,6 @@ const RegisterScreen = ({ navigation }) => {
   const [image, setImage] = useState(null);
   const [visibleDialog, setVisibleDialog] = useState(false);
   const [handleAuthRegister, { data }] = useAuthRegisterMutation();
-  const [handleUploadAvatar] = useUploadAvatarMutation();
   const isValidFullNameRef = useRef(null);
   const isValidContactsRef = useRef(null);
   const isValidPasswordRef = useRef(null);
@@ -65,11 +64,22 @@ const RegisterScreen = ({ navigation }) => {
     [image],
   );
 
-  const handleSubmit = useCallback(() => {
-    if (isValid) {
-      changeVisibleDialog();
+  const handleSubmit = useCallback(async () => {
+    try {
+      await FileSystem.uploadAsync(
+        process.env.EXPO_PUBLIC_API_URL + "/photographer/upload",
+        image.uri,
+        {
+          fieldName: "file",
+          httpMethod: "POST",
+          uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+        },
+      );
       handleAuthRegister(userData);
-      handleUploadAvatar(image);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      changeVisibleDialog();
       navigation.goBack();
     }
   }, [userData, isValid]);

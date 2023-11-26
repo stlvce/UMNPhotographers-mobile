@@ -33,7 +33,7 @@ export const authApi = api.injectEndpoints({
           surname: formData.surname,
           middleName: formData.middleName,
           birthdate: formData.birthdate,
-          phone: formData.phone,
+          phone: "7" + formData.phone,
           contacts: {
             vk: formData.vk,
             tg: formData.tg,

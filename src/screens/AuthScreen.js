@@ -14,25 +14,18 @@ import PassInput from "../components/inputs/PassInput";
 import StatusBanner from "../components/StatusBanner";
 import { useAuthLoginMutation } from "../api/authApi";
 import validatePassword from "../utils/validators/validatePassword";
+import useFormUser from "../hooks/useFormUser";
 
 const AuthScreen = ({ navigation }) => {
-  const [authData, setAuthData] = useState({
+  const [authData, handleChange] = useFormUser({
     email: "",
     password: "",
   });
   const [isVisibleBanner, setIsVisibleBanner] = useState(false);
   const isValidEmailRef = useRef(null);
   const isValidPasswordRef = useRef(null);
-  // const isValid = isValidEmailRef.current && isValidPasswordRef.current;
   const [handleAuthLogin, { data, isError, error, isLoading, status }] =
     useAuthLoginMutation();
-
-  const handleChange = useCallback(
-    (name, value) => {
-      setAuthData({ ...authData, [name]: value });
-    },
-    [authData]
-  );
 
   const handleSubmit = useCallback(() => {
     // вместо валидации при blur на пароле

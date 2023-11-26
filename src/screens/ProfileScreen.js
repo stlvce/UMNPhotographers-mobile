@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState, useEffect } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Platform } from "react-native";
 import { Button, Portal, useTheme } from "react-native-paper";
 import UploadAvatarInput from "../components/forms/UploadAvatarInput";
 import FullNameForm from "../components/forms/FullNameForm";
@@ -7,11 +7,13 @@ import ContactForm from "../components/forms/ContactForm";
 import PortfolioForm from "../components/forms/PortfolioForm";
 import ChangePasswordModal from "../modals/ChangePasswordModal";
 import ActionConfirmDialog from "../modals/ActionConfirmDialog";
-import { useUserInfoQuery, useUploadAvatarMutation } from "../api/userApi";
+import { useUserInfoQuery } from "../api/userApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUserInfo } from "../store/slices/userSlice";
 import validateAll from "../utils/validators/validateAll";
+import useFormUser from "../hooks/useFormUser";
+import * as FileSystem from "expo-file-system";
 
 const initialStateUserData = {
   firstname: "",
@@ -28,23 +30,18 @@ const ProfileScreen = ({ navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-  const [userData, setUserData] = useState(initialStateUserData);
-  const [image, setImage] = useState(null);
+  const [userData, handleChange, setUserData] =
+    useFormUser(initialStateUserData);
+  const [image, setImage] = useState({
+    uri: "https://photographersekb.ru:8080/api/photographer/download",
+  });
   const { data } = useUserInfoQuery();
-  const [handleUploadAvatar] = useUploadAvatarMutation();
   const [visibleChangePass, setVisibleChangePass] = useState(false);
   const [visibleSaveDialog, setVisibleSaveDialog] = useState(false);
   const [visibleExitDialog, setVisibleExitDialog] = useState(false);
   const isValidFullNameRef = useRef(null);
   const isValidContactsRef = useRef(null);
   const isValidPortfolioRef = useRef(null);
-
-  const handleChange = useCallback(
-    (name, value) => {
-      setUserData({ ...userData, [name]: value });
-    },
-    [userData],
-  );
 
   const handleChangeImage = useCallback(
     (newValue) => {
@@ -70,11 +67,24 @@ const ProfileScreen = ({ navigation }) => {
     isValidPortfolioRef.current,
   ]);
 
-  const handleSave = useCallback(() => {
-    dispatch(updateUserInfo(userData));
-    handleUploadAvatar(image);
-    changeVisibleSaveDialog();
-  }, [userData]);
+  const handleSave = useCallback(async () => {
+    try {
+      await FileSystem.uploadAsync(
+        process.env.EXPO_PUBLIC_API_URL + "/photographer/upload",
+        image.uri,
+        {
+          fieldName: "file",
+          httpMethod: "POST",
+          uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+        },
+      );
+      dispatch(updateUserInfo(userData));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      changeVisibleSaveDialog();
+    }
+  }, [userData, image]);
 
   const changeVisibleChangePassModal = useCallback(
     () => setVisibleChangePass((prev) => !prev),

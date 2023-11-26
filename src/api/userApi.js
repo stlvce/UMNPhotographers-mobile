@@ -42,17 +42,8 @@ export const userApi = api.injectEndpoints({
         };
       },
     }),
-    uploadAvatar: builder.mutation({
-      query: (image) => {
-        console.log(image, "image");
-      },
-    }),
   }),
   overrideExisting: true,
 });
 
-export const {
-  useUserInfoQuery,
-  useUpdateUserInfoMutation,
-  useUploadAvatarMutation,
-} = userApi;
+export const { useUserInfoQuery, useUpdateUserInfoMutation } = userApi;
