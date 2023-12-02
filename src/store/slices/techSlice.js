@@ -65,6 +65,7 @@ export const saveTech = createAsyncThunk(
       );
       return newTechList;
     } catch (error) {
+      console.log(error);
       return rejectedWithValue(error);
     }
   },
@@ -104,21 +105,35 @@ export const removeTech = createAsyncThunk(
 
 const initialState = {
   userTechInfo: {},
+  // TODO: возможно будет лишний запрос лететь на добавление так как использвается один массив для всех типов, который перезаписывается
   modelTechList: [],
   manufacturerTechList: [],
+  statusAddTech: {
+    isSuccess: false,
+    errorMessage: null,
+  },
 };
 
 const techSlice = createSlice({
   name: "tech",
   initialState,
-  reducers: {},
+  reducers: {
+    closeStatusAddTech: (state) => {
+      state.statusAddTech = { isVisible: false, errorMessage: null };
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(saveTech.fulfilled, (state, action) => {
         state.userTechInfo = action.payload;
+        state.statusAddTech.isVisible = true;
       })
       .addCase(saveTech.rejected, (state, action) => {
-        console.log(action.payload);
+        console.log(action);
+        state.statusAddTech = {
+          isVisible: true,
+          errorMessage: "Ошибка",
+        };
       });
     builder.addCase(removeTech.fulfilled, (state, action) => {
       state.userTechInfo = action.payload;
@@ -145,3 +160,4 @@ const techSlice = createSlice({
 });
 
 export default techSlice.reducer;
+export const { closeStatusAddTech } = techSlice.actions;

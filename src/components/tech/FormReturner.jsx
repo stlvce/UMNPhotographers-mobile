@@ -10,19 +10,19 @@ const FormReturner = ({ type, navigation }) => {
   }
 
   if (type === "Батарея") {
-    return <BatteryForm />;
+    return <BatteryForm navigation={navigation} />;
   }
 
   if (type === "Вспышка") {
-    return <FlashForm />;
+    return <FlashForm navigation={navigation} />;
   }
 
   if (type === "Линзы") {
-    return <LeensForm />;
+    return <LeensForm navigation={navigation} />;
   }
 
   if (type === "Память") {
-    return <MemoryForm />;
+    return <MemoryForm navigation={navigation} />;
   }
 };
 

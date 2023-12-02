@@ -1,11 +1,4 @@
-import { useState } from "react";
-import { View, StyleSheet } from "react-native";
-import { TextInput, Button } from "react-native-paper";
-import {
-  useReceiveTechModelsQuery,
-  useReceiveManufacturerQuery,
-  useReceiveTechModelByNameMutation,
-} from "../../../api/techApi";
+import AddedTechForm from "../../ui/AddedTechForm";
 
 const items = [
   {
@@ -13,56 +6,27 @@ const items = [
     varName: "rating",
   },
   {
-    label: "Модель",
-    varName: "model",
-  },
-  {
     label: "Количество",
     varName: "quantity",
   },
 ];
 
-const BatteryForm = () => {
-  const [formData, setFormData] = useState({
-    rating: "",
-    model: "",
-    quantity: "",
-  });
-  const { data: techModels } = useReceiveTechModelsQuery("battery");
-  const { data: techManufacturer } = useReceiveManufacturerQuery("battery");
-
-  const handleChange = (varName, newValue) => {
-    setFormData({ ...formData, [varName]: newValue });
-  };
-
-  const handleSubmit = () => {};
-
-  return (
-    <View style={styles.container}>
-      {items.map((item) => (
-        <TextInput
-          mode="outlined"
-          label={item.label}
-          value={formData[item.varName]}
-          onChangeText={(e) => handleChange(item.varName, e)}
-          key={item.varName}
-        />
-      ))}
-      <Button style={styles.button} mode="contained" onPress={handleSubmit}>
-        Добавить
-      </Button>
-    </View>
-  );
+const initialState = {
+  manufacturer: "",
+  model: "",
+  quantity: "",
+  rating: "",
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    gap: 10,
-  },
-  button: {
-    marginTop: 15,
-  },
-});
+const BatteryForm = ({ navigation }) => {
+  return (
+    <AddedTechForm
+      initialFormData={initialState}
+      additionalFormItems={items}
+      type="battery"
+      navigation={navigation}
+    />
+  );
+};
 
 export default BatteryForm;

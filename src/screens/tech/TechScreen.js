@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
 import { ScrollView, StyleSheet, RefreshControl } from "react-native";
-import { Card, List, Text, Button, useTheme } from "react-native-paper";
+import { Card, List, Text, Button, useTheme, Portal } from "react-native-paper";
 import { useReceiveUserTechListQuery } from "../../api/techApi";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../../components/ui/Loader";
 import { removeTech } from "../../store/slices/techSlice";
+import StatusSnackbar from "../../components/ui/StatusSnackbar";
+import { closeStatusAddTech } from "../../store/slices/techSlice";
 
 const TechScreen = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const userTechInfo = useSelector((state) => state.tech.userTechInfo);
+  const statusAddTech = useSelector((state) => state.tech.statusAddTech);
   const [tech, setTech] = useState([]);
   const { data, isLoading, error, refetch } = useReceiveUserTechListQuery();
 
@@ -18,6 +21,11 @@ const TechScreen = () => {
     dispatch(removeTech(item));
   };
 
+  const closeSnackbar = () => {
+    dispatch(closeStatusAddTech());
+  };
+
+  // TODO: убрать состояние из компонента
   useEffect(() => {
     if (data) {
       setTech(userTechInfo.technique);
@@ -70,6 +78,14 @@ const TechScreen = () => {
           </Card>
         ))
       )}
+      <Portal>
+        <StatusSnackbar
+          isVisible={statusAddTech.isVisible}
+          message={"Техника успешно добавлена"}
+          errorMessage={statusAddTech.errorMessage}
+          closeSnackbar={closeSnackbar}
+        />
+      </Portal>
     </ScrollView>
   );
 };
