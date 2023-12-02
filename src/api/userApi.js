@@ -42,8 +42,27 @@ export const userApi = api.injectEndpoints({
         };
       },
     }),
+    updateCredential: builder.mutation({
+      query: (newPassword, { getState }) => {
+        // TODO: прикрепить старую почту
+        console.log(getState);
+        const body = {
+          /*email: getState.user.user,*/
+          password: newPassword,
+        };
+
+        return {
+          url: "/photographer/credential",
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body,
+        };
+      },
+    }),
   }),
   overrideExisting: true,
 });
 
-export const { useUserInfoQuery, useUpdateUserInfoMutation } = userApi;
+export const { useUserInfoQuery } = userApi;

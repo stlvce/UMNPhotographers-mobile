@@ -3,7 +3,7 @@ import { StyleSheet, ScrollView } from "react-native";
 import TypesMenu from "../../components/tech/TypesMenu";
 import FormReturner from "../../components/tech/FormReturner";
 
-const AddTechScreen = () => {
+const AddTechScreen = ({ navigation }) => {
   const [visibleMenu, setVisibleMenu] = useState(false);
   const [selectedType, setSelectedType] = useState({
     title: "Выбрать тип техники",
@@ -37,7 +37,7 @@ const AddTechScreen = () => {
         chooseType={chooseType}
       />
       {selectedType.title !== "Выбрать тип техники" && (
-        <FormReturner type={selectedType.title} />
+        <FormReturner type={selectedType.title} navigation={navigation} />
       )}
     </ScrollView>
   );

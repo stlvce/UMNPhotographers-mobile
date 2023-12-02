@@ -5,11 +5,11 @@ import { StyleSheet } from "react-native";
 import PassForm from "../components/forms/PassForm";
 
 const ChangePasswordModal = ({ visible, closeModal }, ref) => {
-  const [data, setData] = useState({ password: "" });
+  const [formData, setFormData] = useState({ password: "", confPass: "" });
   const isValidPasswordRef = useRef(null);
 
   const handleChange = (name, value) => {
-    setData({ [name]: value });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = () => {};
@@ -24,7 +24,7 @@ const ChangePasswordModal = ({ visible, closeModal }, ref) => {
         Изменение пароля
       </Text>
       <PassForm
-        password={data.password}
+        value={[formData.password, formData.confPass]}
         handler={handleChange}
         label={false}
         ref={isValidPasswordRef}

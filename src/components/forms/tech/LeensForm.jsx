@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { TextInput, Button } from "react-native-paper";
+import {
+  useReceiveTechModelsQuery,
+  useReceiveManufacturerQuery,
+} from "../../../api/techApi";
 
 const items = [
   {
@@ -29,6 +33,8 @@ const LeensForm = () => {
     quantity: "",
     focus: "",
   });
+  const { data: techModels } = useReceiveTechModelsQuery("lens");
+  const { data: techManufacturer } = useReceiveManufacturerQuery("lens");
 
   const handleChange = (varName, newValue) => {
     setFormData({ ...formData, [varName]: newValue });

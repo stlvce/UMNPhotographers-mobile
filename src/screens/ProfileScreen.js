@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState, useEffect } from "react";
-import { View, StyleSheet, ScrollView, Platform } from "react-native";
-import { Button, Portal, useTheme } from "react-native-paper";
+import { View, StyleSheet, ScrollView } from "react-native";
+import { Button, Portal, useTheme, Snackbar } from "react-native-paper";
 import UploadAvatarInput from "../components/forms/UploadAvatarInput";
 import FullNameForm from "../components/forms/FullNameForm";
 import ContactForm from "../components/forms/ContactForm";
@@ -14,6 +14,7 @@ import { updateUserInfo } from "../store/slices/userSlice";
 import validateAll from "../utils/validators/validateAll";
 import useFormUser from "../hooks/useFormUser";
 import * as FileSystem from "expo-file-system";
+import StatusUpdateSnackbar from "../components/profile/StatusUpdateSnackbar";
 
 const initialStateUserData = {
   firstname: "",
@@ -33,7 +34,7 @@ const ProfileScreen = ({ navigation }) => {
   const [userData, handleChange, setUserData] =
     useFormUser(initialStateUserData);
   const [image, setImage] = useState({
-    uri: "https://photographersekb.ru:8080/api/photographer/download",
+    uri: "https://photographersekb.ru:8080/api/photographer/image",
   });
   const { data } = useUserInfoQuery();
   const [visibleChangePass, setVisibleChangePass] = useState(false);
@@ -69,15 +70,17 @@ const ProfileScreen = ({ navigation }) => {
 
   const handleSave = useCallback(async () => {
     try {
-      await FileSystem.uploadAsync(
-        process.env.EXPO_PUBLIC_API_URL + "/photographer/upload",
-        image.uri,
-        {
-          fieldName: "file",
-          httpMethod: "POST",
-          uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-        },
-      );
+      if (image.uri.includes("file")) {
+        await FileSystem.uploadAsync(
+          process.env.EXPO_PUBLIC_API_URL + "/photographer/image",
+          image.uri,
+          {
+            fieldName: "file",
+            httpMethod: "POST",
+            uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+          },
+        );
+      }
       dispatch(updateUserInfo(userData));
     } catch (error) {
       console.log(error);
@@ -160,6 +163,7 @@ const ProfileScreen = ({ navigation }) => {
           changeVisible={changeVisibleExitDialog}
           handleSubmit={handleLogout}
         />
+        <StatusUpdateSnackbar />
       </Portal>
     </ScrollView>
   );

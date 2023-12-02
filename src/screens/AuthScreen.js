@@ -6,15 +6,15 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
-  ActivityIndicator,
 } from "react-native";
 import { Button } from "react-native-paper";
 import EmailInput from "../components/inputs/EmailInput";
 import PassInput from "../components/inputs/PassInput";
-import StatusBanner from "../components/StatusBanner";
+import StatusBanner from "../components/auth/StatusBanner";
 import { useAuthLoginMutation } from "../api/authApi";
 import validatePassword from "../utils/validators/validatePassword";
 import useFormUser from "../hooks/useFormUser";
+import Loader from "../components/ui/Loader";
 
 const AuthScreen = ({ navigation }) => {
   const [authData, handleChange] = useFormUser({
@@ -67,7 +67,7 @@ const AuthScreen = ({ navigation }) => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           {isLoading ? (
-            <ActivityIndicator animating={true} size="large" />
+            <Loader />
           ) : (
             <>
               <View style={styles.containerForm}>

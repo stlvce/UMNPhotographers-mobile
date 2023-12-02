@@ -4,9 +4,9 @@ import FlashForm from "../forms/tech/FlashForm";
 import LeensForm from "../forms/tech/LeensForm";
 import MemoryForm from "../forms/tech/MemoryForm";
 
-const FormReturner = ({ type }) => {
+const FormReturner = ({ type, navigation }) => {
   if (type === "Камера") {
-    return <CameraForm />;
+    return <CameraForm navigation={navigation} />;
   }
 
   if (type === "Батарея") {

@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { TextInput, Button } from "react-native-paper";
+import {
+  useReceiveTechModelsQuery,
+  useReceiveManufacturerQuery,
+} from "../../../api/techApi";
 
 const items = [
   {
@@ -18,6 +22,8 @@ const FlashForm = () => {
     manufacturer: "",
     model: "",
   });
+  const { data: techModels } = useReceiveTechModelsQuery("flash");
+  const { data: techManufacturer } = useReceiveManufacturerQuery("flash");
 
   const handleChange = (varName, newValue) => {
     setFormData({ ...formData, [varName]: newValue });

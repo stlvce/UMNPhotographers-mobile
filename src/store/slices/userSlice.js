@@ -3,6 +3,10 @@ import { userApi } from "../../api/userApi";
 
 const initialState = {
   user: {},
+  statusUpdateUserInfo: {
+    isSuccess: false,
+    errorMessage: null,
+  },
 };
 
 export const updateUserInfo = createAsyncThunk(
@@ -20,11 +24,24 @@ export const updateUserInfo = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    closeStatusUpdate: (state) => {
+      state.statusUpdateUserInfo = { isVisible: false, errorMessage: null };
+    },
+  },
   extraReducers: (builder) => {
-    builder.addCase(updateUserInfo.fulfilled, (state, action) => {
-      state.user = action.payload.data;
-    });
+    builder
+      .addCase(updateUserInfo.fulfilled, (state, action) => {
+        state.user = action.payload.data;
+        state.statusUpdateUserInfo.isVisible = true;
+      })
+      .addCase(updateUserInfo.rejected, (state, action) => {
+        state.user = action.payload.data;
+        state.statusUpdateUserInfo = {
+          isVisible: true,
+          errorMessage: "Ошибка",
+        };
+      });
     builder.addMatcher(
       userApi.endpoints.userInfo.matchFulfilled,
       (state, action) => {
@@ -35,3 +52,4 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
+export const { closeStatusUpdate } = userSlice.actions;

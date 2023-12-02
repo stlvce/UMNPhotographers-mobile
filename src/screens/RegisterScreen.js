@@ -66,15 +66,17 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleSubmit = useCallback(async () => {
     try {
-      await FileSystem.uploadAsync(
-        process.env.EXPO_PUBLIC_API_URL + "/photographer/upload",
-        image.uri,
-        {
-          fieldName: "file",
-          httpMethod: "POST",
-          uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-        },
-      );
+      if (image.uri.includes("file")) {
+        await FileSystem.uploadAsync(
+          process.env.EXPO_PUBLIC_API_URL + "/photographer/image",
+          image.uri,
+          {
+            fieldName: "file",
+            httpMethod: "POST",
+            uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+          },
+        );
+      }
       handleAuthRegister(userData);
     } catch (error) {
       console.log(error);

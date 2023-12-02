@@ -1,31 +1,38 @@
 import { useState, useEffect } from "react";
-import { ScrollView, StyleSheet } from "react-native";
-import {
-  Card,
-  List,
-  Text,
-  Button,
-  useTheme,
-  ActivityIndicator,
-} from "react-native-paper";
-import { useTechniqueInfoQuery } from "../../api/techApi";
+import { ScrollView, StyleSheet, RefreshControl } from "react-native";
+import { Card, List, Text, Button, useTheme } from "react-native-paper";
+import { useReceiveUserTechListQuery } from "../../api/techApi";
+import { useSelector, useDispatch } from "react-redux";
+import Loader from "../../components/ui/Loader";
+import { removeTech } from "../../store/slices/techSlice";
 
 const TechScreen = () => {
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const userTechInfo = useSelector((state) => state.tech.userTechInfo);
   const [tech, setTech] = useState([]);
-  const { data, isLoading, error } = useTechniqueInfoQuery();
+  const { data, isLoading, error, refetch } = useReceiveUserTechListQuery();
+
+  const deleteTech = (item) => {
+    setTech([...tech.filter((el) => el.id !== item.id)]);
+    dispatch(removeTech(item));
+  };
 
   useEffect(() => {
     if (data) {
-      setTech(data.technique);
+      setTech(userTechInfo.technique);
     }
-  }, [data]);
+  }, [userTechInfo]);
 
   return (
-    <ScrollView style={styles.container}>
-      {isLoading ? (
-        <ActivityIndicator animating={true} size="large" />
-      ) : tech.length === 0 ? (
+    <ScrollView
+      style={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={isLoading} onRefresh={refetch} />
+      }
+    >
+      {/*isLoading ? (<Loader />) :*/}
+      {tech?.length === 0 ? (
         <Text
           variant="bodyMedium"
           style={{ textAlign: "center", marginTop: 20 }}
@@ -39,7 +46,13 @@ const TechScreen = () => {
             <Card.Content>
               {Object.entries(item).map(([key, value]) => (
                 <List.Item
-                  title={<Text variant="bodyLarge">{`${key}: ${value}`}</Text>}
+                  title={
+                    <Text variant="bodyLarge">{`${key}: ${
+                      key === "model" || key === "manufacturer"
+                        ? value?.name
+                        : value
+                    }`}</Text>
+                  }
                   key={key}
                 />
               ))}
@@ -49,9 +62,7 @@ const TechScreen = () => {
                 icon="delete"
                 mode="contained"
                 buttonColor={theme.colors.error}
-                onPress={() => {
-                  setTech([...tech.filter((el) => el.id !== item.id)]);
-                }}
+                onPress={() => deleteTech(item)}
               >
                 Удалить
               </Button>

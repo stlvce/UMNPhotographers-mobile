@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { TextInput, Button } from "react-native-paper";
+import {
+  useReceiveTechModelsQuery,
+  useReceiveManufacturerQuery,
+} from "../../../api/techApi";
 
 const items = [
   {
@@ -28,6 +32,8 @@ const MemoryForm = () => {
     manufacturer: "",
     size: "",
   });
+  const { data: techModels } = useReceiveTechModelsQuery("memory");
+  const { data: techManufacturer } = useReceiveManufacturerQuery("memory");
 
   const handleChange = (varName, newValue) => {
     setFormData({ ...formData, [varName]: newValue });
