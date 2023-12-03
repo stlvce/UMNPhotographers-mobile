@@ -1,13 +1,5 @@
-import { useState } from "react";
-import { View, StyleSheet } from "react-native";
-import { TextInput, Button } from "react-native-paper";
-import {
-  useReceiveTechModelsQuery,
-  useReceiveManufacturerQuery,
-} from "../../../api/techApi";
 import AddedTechForm from "../../ui/AddedTechForm";
 
-// TODO: не работает, нужно ещё связать с камерой
 const items = [
   {
     label: "Фокусное расстояние",
@@ -24,17 +16,18 @@ const initialState = {
   model: "",
   focus: "",
   rating: "",
+  cameraId: null,
 };
 
-const LeensForm = ({ navigation }) => {
+const LensForm = ({ navigation }) => {
   return (
     <AddedTechForm
       initialFormData={initialState}
       additionalFormItems={items}
-      type="leens"
+      type="lens"
       navigation={navigation}
     />
   );
 };
 
-export default LeensForm;
+export default LensForm;

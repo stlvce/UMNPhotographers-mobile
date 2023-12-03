@@ -8,6 +8,9 @@ import {
   useReceiveTechModelsQuery,
 } from "../../api/techApi";
 import LiveResultInput from "./LiveResultInput";
+import CameraRadioGroup from "../tech/CameraRadioGroup";
+
+//TODO: конвертировать тип некоторых данных при отправки формы (фокусное расстояние линз)
 
 const AddedTechForm = ({
   initialFormData,
@@ -17,6 +20,7 @@ const AddedTechForm = ({
 }) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(initialFormData);
+  // TODO: убрать кеширование или переписать на мутацию
   const { data: techModels } = useReceiveTechModelsQuery(type);
   const { data: techManufacturer } = useReceiveManufacturerQuery(type);
 
@@ -33,18 +37,18 @@ const AddedTechForm = ({
     <View style={styles.container}>
       <LiveResultInput
         style={{ zIndex: 20 }}
-        label="Производитель"
-        varName="manufacturer"
-        initialList={techManufacturer}
-        searchLetters={formData.manufacturer}
-        handler={handleChange}
-      />
-      <LiveResultInput
-        style={{ zIndex: 19 }}
         label="Модель"
         varName="model"
         initialList={techModels}
         searchLetters={formData.model}
+        handler={handleChange}
+      />
+      <LiveResultInput
+        style={{ zIndex: 19 }}
+        label="Производитель"
+        varName="manufacturer"
+        initialList={techManufacturer}
+        searchLetters={formData.manufacturer}
         handler={handleChange}
       />
       {additionalFormItems.map((item) => (
@@ -57,6 +61,9 @@ const AddedTechForm = ({
           key={item.varName}
         />
       ))}
+      {type === "lens" && (
+        <CameraRadioGroup cameraId={formData.cameraId} handler={handleChange} />
+      )}
       <Button
         style={styles.button}
         mode="contained"

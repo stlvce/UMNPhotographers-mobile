@@ -6,14 +6,18 @@ export const saveTech = createAsyncThunk(
   "tech/save",
   async (formData, { rejectedWithValue, getState, dispatch }) => {
     try {
+      // TODO: не сохраняется рейтинг
       const state = getState();
 
-      let modelFromDB = state.tech.modelTechList.find(
+      let modelFromDB = state.tech.modelTechList[formData.type].find(
         (item) => item.name === formData.model,
       ) ?? { name: formData.model, type: formData.type };
-      let manufacturerFromDB = state.tech.manufacturerTechList.find(
-        (item) => item.name === formData.manufacturer,
-      ) ?? { name: formData.manufacturer, type: formData.type };
+      let manufacturerFromDB = state.tech.manufacturerTechList[
+        formData.type
+      ].find((item) => item.name === formData.manufacturer) ?? {
+        name: formData.manufacturer,
+        type: formData.type,
+      };
 
       if (!modelFromDB.id) {
         await dispatch(techApi.endpoints.saveModel.initiate(modelFromDB));
@@ -105,9 +109,14 @@ export const removeTech = createAsyncThunk(
 
 const initialState = {
   userTechInfo: {},
-  // TODO: возможно будет лишний запрос лететь на добавление так как использвается один массив для всех типов, который перезаписывается
-  modelTechList: [],
-  manufacturerTechList: [],
+  modelTechList: { camera: [], battery: [], flash: [], lens: [], memory: [] },
+  manufacturerTechList: {
+    camera: [],
+    battery: [],
+    flash: [],
+    lens: [],
+    memory: [],
+  },
   statusAddTech: {
     isSuccess: false,
     errorMessage: null,
@@ -147,13 +156,13 @@ const techSlice = createSlice({
     builder.addMatcher(
       techApi.endpoints.receiveTechModels.matchFulfilled,
       (state, action) => {
-        state.modelTechList = action.payload;
+        state.modelTechList[action.payload[0]?.type] = action.payload;
       },
     );
     builder.addMatcher(
       techApi.endpoints.receiveManufacturer.matchFulfilled,
       (state, action) => {
-        state.manufacturerTechList = action.payload;
+        state.manufacturerTechList[action.payload[0]?.type] = action.payload;
       },
     );
   },

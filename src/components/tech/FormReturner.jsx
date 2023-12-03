@@ -1,7 +1,7 @@
 import CameraForm from "../forms/tech/CameraForm";
 import BatteryForm from "../forms/tech/BatteryForm";
 import FlashForm from "../forms/tech/FlashForm";
-import LeensForm from "../forms/tech/LeensForm";
+import LensForm from "../forms/tech/LensForm";
 import MemoryForm from "../forms/tech/MemoryForm";
 
 const FormReturner = ({ type, navigation }) => {
@@ -18,10 +18,10 @@ const FormReturner = ({ type, navigation }) => {
   }
 
   if (type === "Линзы") {
-    return <LeensForm navigation={navigation} />;
+    return <LensForm navigation={navigation} />;
   }
 
-  if (type === "Память") {
+  if (type === "Карта памяти") {
     return <MemoryForm navigation={navigation} />;
   }
 };

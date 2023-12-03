@@ -2,12 +2,12 @@ import AddedTechForm from "../../ui/AddedTechForm";
 
 const items = [
   {
-    label: "Рейтинг",
-    varName: "rating",
-  },
-  {
     label: "Количество",
     varName: "quantity",
+  },
+  {
+    label: "Рейтинг",
+    varName: "rating",
   },
 ];
 

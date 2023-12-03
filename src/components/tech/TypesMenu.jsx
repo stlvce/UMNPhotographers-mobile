@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { StyleSheet } from "react-native";
 import { Menu, Button, Divider } from "react-native-paper";
 
@@ -7,7 +6,7 @@ const typeVariants = [
   { title: "Батарея", icon: "battery-high" },
   { title: "Вспышка", icon: "flash-outline" },
   { title: "Линзы", icon: "circle-outline" },
-  { title: "Память", icon: "memory" },
+  { title: "Карта памяти", icon: "memory" },
 ];
 
 const TypesMenu = ({
