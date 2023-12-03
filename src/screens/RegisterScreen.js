@@ -17,6 +17,7 @@ import BirthdateInput from "../components/inputs/BirthdateInput";
 import { useAuthRegisterMutation } from "../api/authApi";
 import UploadAvatarInput from "../components/forms/UploadAvatarInput";
 import * as FileSystem from "expo-file-system";
+import StatusSignUpSnackbar from "../components/auth/StatusSignUpSnackbar";
 
 const initialStateUserData = {
   firstname: "",
@@ -147,6 +148,7 @@ const RegisterScreen = ({ navigation }) => {
               changeVisible={changeVisibleDialog}
               handleSubmit={handleSubmit}
             />
+            <StatusSignUpSnackbar />
           </Portal>
         </ScrollView>
       </TouchableWithoutFeedback>

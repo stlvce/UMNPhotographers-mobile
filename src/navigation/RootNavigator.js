@@ -20,6 +20,7 @@ const RootNavigator = () => {
     dispatch(checkSessionId(idSession));
   };
 
+  // TODO: сделать выход при истечении сессии
   useEffect(() => {
     getIdSession();
   }, []);

@@ -4,7 +4,7 @@ import { userApi } from "../../api/userApi";
 const initialState = {
   user: {},
   statusUpdateUserInfo: {
-    isSuccess: false,
+    isVisible: false,
     errorMessage: null,
   },
 };
