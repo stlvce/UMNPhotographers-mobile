@@ -17,7 +17,7 @@ const CameraRadioGroup = ({ cameraId, handler }) => {
   if (cameraList.length === 0) {
     return (
       <Text style={{ ...styles.message, color: theme.colors.error }}>
-        Добавьте камеру, чтобы добавить линзу
+        Добавьте камеру, чтобы добавить оптику
       </Text>
     );
   }

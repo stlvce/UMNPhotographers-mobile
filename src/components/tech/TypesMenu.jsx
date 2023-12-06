@@ -5,17 +5,11 @@ const typeVariants = [
   { title: "Камера", icon: "camera-outline" },
   { title: "Батарея", icon: "battery-high" },
   { title: "Вспышка", icon: "flash-outline" },
-  { title: "Линзы", icon: "circle-outline" },
+  { title: "Оптика", icon: "dots-circle" },
   { title: "Карта памяти", icon: "memory" },
 ];
 
-const TypesMenu = ({
-  visible,
-  changeVisible,
-  selectedType,
-  resetType,
-  chooseType,
-}) => {
+const TypesMenu = ({ visible, changeVisible, selectedType, chooseType }) => {
   return (
     <Menu
       visible={visible}
@@ -32,12 +26,6 @@ const TypesMenu = ({
         </Button>
       }
     >
-      <Menu.Item
-        onPress={resetType}
-        title="Сбросить тип"
-        disabled={!Boolean(selectedType)}
-      />
-      <Divider />
       {typeVariants.map((type) => (
         <Menu.Item
           onPress={() => chooseType(type)}

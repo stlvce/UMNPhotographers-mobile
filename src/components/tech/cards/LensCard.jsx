@@ -12,12 +12,18 @@ const LensCard = ({ item, deleteTech }) => {
         titleVariant="titleLarge"
       />
       <Card.Content>
-        <List.Item title={`Производитель: ${item.manufacturer.name}`} />
-        <List.Item title={`Фокусное расстояние: ${item.focus}`} />
+        <List.Item
+          title={`Производитель: ${item.manufacturer.name}`}
+          titleStyle={{ fontSize: 15 }}
+        />
+        <List.Item
+          title={`Фокусное расстояние: ${item.focus}`}
+          titleStyle={{ fontSize: 15 }}
+        />
         <List.Item
           title={`Камера: ${item.camera?.model.name} (Кроп-фактор: ${item.camera?.crop})`}
+          titleStyle={{ fontSize: 15 }}
         />
-        <List.Item title={`Рейтинг: ${item.rating}`} />
       </Card.Content>
       <Card.Actions>
         <Button
@@ -34,9 +40,7 @@ const LensCard = ({ item, deleteTech }) => {
 };
 
 const styles = StyleSheet.create({
-  card: {
-    marginBottom: 20,
-  },
+  card: {},
 });
 
 export default LensCard;

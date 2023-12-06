@@ -94,18 +94,13 @@ const RegisterScreen = ({ navigation }) => {
   }, [visibleDialog, isValid]);
 
   return (
-    // TODO: настроить высоту инпута при открыктии клавиатуры
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.containerKeyboard}
+      keyboardVerticalOffset={120}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView
-          style={{
-            ...styles.container,
-            marginBottom: Keyboard.isVisible() ? 100 : 20,
-          }}
-        >
+        <ScrollView style={styles.container}>
           <FullNameForm
             containerTitle="О себе"
             value={[userData.firstname, userData.surname, userData.middleName]}

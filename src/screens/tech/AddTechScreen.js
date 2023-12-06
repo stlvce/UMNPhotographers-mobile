@@ -14,14 +14,6 @@ const AddTechScreen = ({ navigation }) => {
     setVisibleMenu((prev) => !prev);
   };
 
-  const resetType = () => {
-    setSelectedType({
-      title: "Выбрать тип техники",
-      icon: "",
-    });
-    changeVisibleMenu();
-  };
-
   const chooseType = (type) => {
     setSelectedType(type);
     changeVisibleMenu();
@@ -33,7 +25,6 @@ const AddTechScreen = ({ navigation }) => {
         visible={visibleMenu}
         changeVisible={changeVisibleMenu}
         selectedType={selectedType}
-        resetType={resetType}
         chooseType={chooseType}
       />
       {selectedType.title !== "Выбрать тип техники" && (

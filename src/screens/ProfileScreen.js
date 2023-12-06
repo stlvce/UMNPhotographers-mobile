@@ -1,6 +1,14 @@
 import { useCallback, useRef, useState, useEffect } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
-import { Button, Portal, useTheme, Snackbar } from "react-native-paper";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Platform,
+  Keyboard,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+} from "react-native";
+import { Button, Portal, useTheme } from "react-native-paper";
 import UploadAvatarInput from "../components/forms/UploadAvatarInput";
 import FullNameForm from "../components/forms/FullNameForm";
 import ContactForm from "../components/forms/ContactForm";
@@ -110,66 +118,77 @@ const ProfileScreen = ({ navigation }) => {
   }, [data]);
 
   return (
-    // TODO: настроить высоту инпута при открыктии клавиатуры x2
-    <ScrollView style={styles.container}>
-      <UploadAvatarInput value={image} handleChange={handleChangeImage} />
-      <FullNameForm
-        containerTitle="ФИО"
-        value={[userData.firstname, userData.surname, userData.middleName]}
-        handler={handleChange}
-        ref={isValidFullNameRef}
-      />
-      <ContactForm
-        value={[userData.email, userData.phone, userData.tg, userData.vk]}
-        handler={handleChange}
-        ref={isValidContactsRef}
-      />
-      <PortfolioForm
-        value={userData.portfolio}
-        handler={handleChange}
-        ref={isValidPortfolioRef}
-      />
-      <View style={styles.buttonContainer}>
-        <Button onPress={changeVisibleChangePassModal} mode="outlined">
-          Сменить пароль
-        </Button>
-        <Button onPress={changeVisibleSaveDialog} mode="contained">
-          Сохранить
-        </Button>
-        <Button
-          style={styles.exit}
-          onPress={changeVisibleExitDialog}
-          mode="outlined"
-          textColor={theme.colors.error}
-          icon="logout"
-        >
-          Выйти
-        </Button>
-      </View>
-      <Portal>
-        <ChangePasswordModal
-          visible={visibleChangePass}
-          closeModal={changeVisibleChangePassModal}
-        />
-        <ActionConfirmDialog
-          question="Сохранить изменения?"
-          visible={visibleSaveDialog}
-          changeVisible={changeVisibleSaveDialog}
-          handleSubmit={handleSave}
-        />
-        <ActionConfirmDialog
-          question="Вы уверены, что хотите выйти?"
-          visible={visibleExitDialog}
-          changeVisible={changeVisibleExitDialog}
-          handleSubmit={handleLogout}
-        />
-        <StatusUpdateSnackbar />
-      </Portal>
-    </ScrollView>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.containerKeyboard}
+      keyboardVerticalOffset={120}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView style={styles.container}>
+          <UploadAvatarInput value={image} handleChange={handleChangeImage} />
+          <FullNameForm
+            containerTitle="ФИО"
+            value={[userData.firstname, userData.surname, userData.middleName]}
+            handler={handleChange}
+            ref={isValidFullNameRef}
+          />
+          <ContactForm
+            value={[userData.email, userData.phone, userData.tg, userData.vk]}
+            handler={handleChange}
+            ref={isValidContactsRef}
+          />
+          <PortfolioForm
+            value={userData.portfolio}
+            handler={handleChange}
+            ref={isValidPortfolioRef}
+          />
+          <View style={styles.buttonContainer}>
+            <Button onPress={changeVisibleChangePassModal} mode="outlined">
+              Сменить пароль
+            </Button>
+            <Button onPress={changeVisibleSaveDialog} mode="contained">
+              Сохранить
+            </Button>
+            <Button
+              style={styles.exit}
+              onPress={changeVisibleExitDialog}
+              mode="outlined"
+              textColor={theme.colors.error}
+              icon="logout"
+            >
+              Выйти
+            </Button>
+          </View>
+          <Portal>
+            <ChangePasswordModal
+              visible={visibleChangePass}
+              closeModal={changeVisibleChangePassModal}
+            />
+            <ActionConfirmDialog
+              question="Сохранить изменения?"
+              visible={visibleSaveDialog}
+              changeVisible={changeVisibleSaveDialog}
+              handleSubmit={handleSave}
+            />
+            <ActionConfirmDialog
+              question="Вы уверены, что хотите выйти?"
+              visible={visibleExitDialog}
+              changeVisible={changeVisibleExitDialog}
+              handleSubmit={handleLogout}
+            />
+            <StatusUpdateSnackbar />
+          </Portal>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
+  containerKeyboard: {
+    flex: 1,
+    backgroundColor: "#FFF",
+  },
   container: {
     flex: 1,
     padding: 20,

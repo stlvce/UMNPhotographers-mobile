@@ -5,18 +5,13 @@ const items = [
     label: "Фокусное расстояние",
     varName: "focus",
   },
-  {
-    label: "Рейтинг",
-    varName: "rating",
-  },
 ];
 
 const initialState = {
   manufacturer: "",
   model: "",
   focus: "",
-  rating: "",
-  cameraId: null,
+  cameraId: "",
 };
 
 const LensForm = ({ navigation }) => {

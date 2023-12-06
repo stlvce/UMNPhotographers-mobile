@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ScrollView, StyleSheet, RefreshControl } from "react-native";
+import { ScrollView, StyleSheet, RefreshControl, View } from "react-native";
 import { Text, Portal } from "react-native-paper";
 import { useReceiveUserTechListQuery } from "../../api/techApi";
 import { useSelector, useDispatch } from "react-redux";
@@ -29,7 +29,7 @@ const TechScreen = () => {
       setTechnique(userTechInfo.technique);
     }
   }, [userTechInfo]);
-
+  // TODO: chip'ы техники для фильтрации
   return (
     <ScrollView
       style={styles.container}
@@ -38,14 +38,14 @@ const TechScreen = () => {
       }
     >
       {technique?.length === 0 ? (
-        <Text
-          variant="bodyMedium"
-          style={{ textAlign: "center", marginTop: 20 }}
-        >
+        <Text variant="bodyMedium" style={styles.textState}>
           {error ? "Ошибка" : "Нет техники"}
         </Text>
       ) : (
-        <>
+        <View style={styles.techList}>
+          <Text variant="bodyMedium" style={styles.textState}>
+            Количество техники: {technique.length}
+          </Text>
           {technique.map((item) => (
             <TechCardReturner
               item={item}
@@ -53,7 +53,7 @@ const TechScreen = () => {
               key={item.id}
             />
           ))}
-        </>
+        </View>
       )}
       <Portal>
         <StatusSnackbar
@@ -72,8 +72,13 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: "#FFF",
   },
-  card: {
-    marginBottom: 20,
+  techList: {
+    gap: 20,
+    marginBottom: 30,
+  },
+  textState: {
+    textAlign: "center",
+    opacity: 0.7,
   },
 });
 

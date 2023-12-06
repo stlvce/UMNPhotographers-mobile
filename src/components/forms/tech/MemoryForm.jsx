@@ -5,17 +5,12 @@ const items = [
     label: "Объем",
     varName: "size",
   },
-  {
-    label: "Рейтинг",
-    varName: "rating",
-  },
 ];
 
 const initialState = {
   manufacturer: "",
   model: "",
   size: "",
-  rating: "",
 };
 
 const MemoryForm = ({ navigation }) => {

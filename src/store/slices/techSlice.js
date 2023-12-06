@@ -6,7 +6,6 @@ export const saveTech = createAsyncThunk(
   "tech/save",
   async (formData, { rejectedWithValue, getState, dispatch }) => {
     try {
-      // TODO: не сохраняется рейтинг
       const state = getState();
 
       let modelFromDB = state.tech.modelTechList[formData.type].find(
@@ -39,13 +38,25 @@ export const saveTech = createAsyncThunk(
         manufacturerFromDB = data;
       }
 
-      const oldTechList = state.tech.userTechInfo.technique.map((item) => ({
-        ...item,
-        modelId: item?.model.id,
-        manufacturerId: item?.manufacturer.id,
-        manufacturer: undefined,
-        model: undefined,
-      }));
+      const oldTechList = state.tech.userTechInfo.technique.map((item) => {
+        if (item.type === "lens") {
+          return {
+            ...item,
+            cameraId: item.camera.id,
+            modelId: item?.model.id,
+            manufacturerId: item?.manufacturer.id,
+            manufacturer: undefined,
+            model: undefined,
+          };
+        }
+        return {
+          ...item,
+          modelId: item?.model.id,
+          manufacturerId: item?.manufacturer.id,
+          manufacturer: undefined,
+          model: undefined,
+        };
+      });
 
       await dispatch(
         techApi.endpoints.updateTechniqueList.initiate({
@@ -58,7 +69,6 @@ export const saveTech = createAsyncThunk(
               model: undefined,
               modelId: modelFromDB.id,
               manufacturerId: manufacturerFromDB.id,
-              rating: Number(formData.rating),
             },
           ],
         }),
@@ -82,13 +92,25 @@ export const removeTech = createAsyncThunk(
       const state = getState();
       const oldTechList = state.tech.userTechInfo.technique
         .filter((item) => item.id !== tech.id)
-        .map((item) => ({
-          ...item,
-          modelId: item?.model.id,
-          manufacturerId: item?.manufacturer.id,
-          manufacturer: undefined,
-          model: undefined,
-        }));
+        .map((item) => {
+          if (item.type === "lens") {
+            return {
+              ...item,
+              cameraId: item.camera.id,
+              modelId: item?.model.id,
+              manufacturerId: item?.manufacturer.id,
+              manufacturer: undefined,
+              model: undefined,
+            };
+          }
+          return {
+            ...item,
+            modelId: item?.model.id,
+            manufacturerId: item?.manufacturer.id,
+            manufacturer: undefined,
+            model: undefined,
+          };
+        });
 
       await dispatch(
         techApi.endpoints.updateTechniqueList.initiate({

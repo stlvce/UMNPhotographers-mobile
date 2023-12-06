@@ -17,7 +17,7 @@ const FormReturner = ({ type, navigation }) => {
     return <FlashForm navigation={navigation} />;
   }
 
-  if (type === "Линзы") {
+  if (type === "Оптика") {
     return <LensForm navigation={navigation} />;
   }
 

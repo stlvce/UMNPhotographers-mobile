@@ -1,16 +1,10 @@
 import AddedTechForm from "../../ui/AddedTechForm";
 
-const items = [
-  {
-    label: "Рейтинг",
-    varName: "rating",
-  },
-];
+const items = [];
 
 const initialState = {
   manufacturer: "",
   model: "",
-  rating: "",
 };
 
 const FlashForm = ({ navigation }) => {

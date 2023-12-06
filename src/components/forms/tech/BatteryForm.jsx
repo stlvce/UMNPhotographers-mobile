@@ -5,17 +5,12 @@ const items = [
     label: "Количество",
     varName: "quantity",
   },
-  {
-    label: "Рейтинг",
-    varName: "rating",
-  },
 ];
 
 const initialState = {
   manufacturer: "",
   model: "",
   quantity: "",
-  rating: "",
 };
 
 const BatteryForm = ({ navigation }) => {

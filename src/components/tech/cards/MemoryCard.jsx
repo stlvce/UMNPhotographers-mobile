@@ -12,9 +12,14 @@ const MemoryCard = ({ item, deleteTech }) => {
         titleVariant="titleLarge"
       />
       <Card.Content>
-        <List.Item title={`Производитель: ${item.manufacturer.name}`} />
-        <List.Item title={`Объем: ${item.size}`} />
-        <List.Item title={`Рейтинг: ${item.rating}`} />
+        <List.Item
+          title={`Производитель: ${item.manufacturer.name}`}
+          titleStyle={{ fontSize: 15 }}
+        />
+        <List.Item
+          title={`Объем: ${item.size}`}
+          titleStyle={{ fontSize: 15 }}
+        />
       </Card.Content>
       <Card.Actions>
         <Button
@@ -31,9 +36,7 @@ const MemoryCard = ({ item, deleteTech }) => {
 };
 
 const styles = StyleSheet.create({
-  card: {
-    marginBottom: 20,
-  },
+  card: {},
 });
 
 export default MemoryCard;

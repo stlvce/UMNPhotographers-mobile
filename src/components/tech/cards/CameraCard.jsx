@@ -12,9 +12,14 @@ const CameraCard = ({ item, deleteTech }) => {
         titleVariant="titleLarge"
       />
       <Card.Content>
-        <List.Item title={`Производитель: ${item.manufacturer.name}`} />
-        <List.Item title={`Кроп-фактор: ${item.crop}`} />
-        <List.Item title={`Рейтинг: ${item.rating}`} />
+        <List.Item
+          title={`Производитель: ${item.manufacturer.name}`}
+          titleStyle={{ fontSize: 15 }}
+        />
+        <List.Item
+          title={`Кроп-фактор: ${item.crop}`}
+          titleStyle={{ fontSize: 15 }}
+        />
       </Card.Content>
       <Card.Actions>
         <Button
@@ -31,9 +36,7 @@ const CameraCard = ({ item, deleteTech }) => {
 };
 
 const styles = StyleSheet.create({
-  card: {
-    marginBottom: 20,
-  },
+  card: {},
 });
 
 export default CameraCard;

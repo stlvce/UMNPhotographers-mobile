@@ -5,18 +5,12 @@ const items = [
     label: "Кроп-фактор",
     varName: "crop",
   },
-  {
-    label: "Рейтинг",
-    varName: "rating",
-  },
 ];
 
 const initialState = {
-  rating: "",
   manufacturer: "",
   model: "",
   crop: "",
-  type: "camera",
 };
 
 const CameraForm = ({ navigation }) => {
