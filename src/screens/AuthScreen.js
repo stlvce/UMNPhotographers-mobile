@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, useTheme } from "react-native-paper";
 import EmailInput from "../components/inputs/EmailInput";
 import PassInput from "../components/inputs/PassInput";
 import StatusBanner from "../components/auth/StatusBanner";
@@ -17,6 +17,7 @@ import useFormUser from "../hooks/useFormUser";
 import Loader from "../components/ui/Loader";
 
 const AuthScreen = ({ navigation }) => {
+  const theme = useTheme();
   const [authData, handleChange] = useFormUser({
     email: "",
     password: "",
@@ -65,7 +66,12 @@ const AuthScreen = ({ navigation }) => {
       style={styles.containerKeyboard}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
+        <View
+          style={{
+            ...styles.container,
+            backgroundColor: theme.colors.background,
+          }}
+        >
           {isLoading ? (
             <Loader />
           ) : (
@@ -118,7 +124,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 100,
     paddingTop: 20,
-    backgroundColor: "#FFF",
   },
   containerForm: {
     gap: 10,

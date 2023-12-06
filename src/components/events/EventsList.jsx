@@ -14,6 +14,30 @@ const events = [
     title: "EVENT 3",
     description: "qwerwrqewqer",
   },
+  {
+    title: "EVENT 4",
+    description: "qwerwrqewqer",
+  },
+  {
+    title: "EVENT 5",
+    description: "qwerwrqewqer",
+  },
+  {
+    title: "EVENT 6",
+    description: "qwerwrqewqer",
+  },
+  {
+    title: "EVENT 7",
+    description: "qwerwrqewqer",
+  },
+  {
+    title: "EVENT 8",
+    description: "qwerwrqewqer",
+  },
+  {
+    title: "EVENT 9",
+    description: "qwerwrqewqer",
+  },
 ];
 
 const EventsList = ({ navigation }) => {

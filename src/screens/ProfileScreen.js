@@ -124,7 +124,12 @@ const ProfileScreen = ({ navigation }) => {
       keyboardVerticalOffset={120}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView style={styles.container}>
+        <ScrollView
+          style={{
+            ...styles.container,
+            backgroundColor: theme.colors.background,
+          }}
+        >
           <UploadAvatarInput value={image} handleChange={handleChangeImage} />
           <FullNameForm
             containerTitle="ФИО"
@@ -187,12 +192,10 @@ const ProfileScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   containerKeyboard: {
     flex: 1,
-    backgroundColor: "#FFF",
   },
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#FFF",
   },
   buttonContainer: {
     gap: 10,

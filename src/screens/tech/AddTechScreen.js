@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { useTheme } from "react-native-paper";
 import TypesMenu from "../../components/tech/TypesMenu";
 import FormReturner from "../../components/tech/FormReturner";
 
 const AddTechScreen = ({ navigation }) => {
+  const theme = useTheme();
   const [visibleMenu, setVisibleMenu] = useState(false);
   const [selectedType, setSelectedType] = useState({
     title: "Выбрать тип техники",
@@ -20,7 +22,9 @@ const AddTechScreen = ({ navigation }) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View
+      style={{ ...styles.container, backgroundColor: theme.colors.background }}
+    >
       <TypesMenu
         visible={visibleMenu}
         changeVisible={changeVisibleMenu}
@@ -30,17 +34,16 @@ const AddTechScreen = ({ navigation }) => {
       {selectedType.title !== "Выбрать тип техники" && (
         <FormReturner type={selectedType.title} navigation={navigation} />
       )}
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
     padding: 20,
-    marginHorizontal: 10,
     borderRadius: 5,
     gap: 20,
+    flex: 1,
   },
 });
 

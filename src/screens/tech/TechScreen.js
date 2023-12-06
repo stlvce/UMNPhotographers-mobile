@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ScrollView, StyleSheet, RefreshControl, View } from "react-native";
-import { Text, Portal } from "react-native-paper";
+import { Text, Portal, useTheme } from "react-native-paper";
 import { useReceiveUserTechListQuery } from "../../api/techApi";
 import { useSelector, useDispatch } from "react-redux";
 import { removeTech } from "../../store/slices/techSlice";
@@ -9,6 +9,7 @@ import { closeStatusAddTech } from "../../store/slices/techSlice";
 import TechCardReturner from "../../components/tech/TechCardReturner";
 
 const TechScreen = () => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const userTechInfo = useSelector((state) => state.tech.userTechInfo);
   const statusAddTech = useSelector((state) => state.tech.statusAddTech);
@@ -32,7 +33,7 @@ const TechScreen = () => {
   // TODO: chip'ы техники для фильтрации
   return (
     <ScrollView
-      style={styles.container}
+      style={{ ...styles.container, backgroundColor: theme.colors.background }}
       refreshControl={
         <RefreshControl refreshing={isLoading} onRefresh={refetch} />
       }
@@ -70,7 +71,6 @@ const TechScreen = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 15,
-    backgroundColor: "#FFF",
   },
   techList: {
     gap: 20,

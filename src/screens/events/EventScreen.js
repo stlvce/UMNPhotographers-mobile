@@ -1,10 +1,16 @@
 import { View, Image, StyleSheet, ScrollView } from "react-native";
-import { Text, Button } from "react-native-paper";
+import { Text, Button, useTheme } from "react-native-paper";
 
 const EventScreen = ({ route, navigation }) => {
+  const theme = useTheme();
   const event = route.params;
   return (
-    <ScrollView style={styles.containerScroll}>
+    <ScrollView
+      style={{
+        ...styles.containerScroll,
+        backgroundColor: theme.colors.background,
+      }}
+    >
       <View style={styles.container}>
         <Text variant="bodyLarge">{event.description}</Text>
         <View style={styles.containerButtons}>
@@ -33,7 +39,6 @@ const EventScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   containerScroll: {
     flex: 1,
-    backgroundColor: "#FFF",
   },
   container: {
     flex: 1,

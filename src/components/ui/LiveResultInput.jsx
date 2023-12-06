@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { Text, TextInput } from "react-native-paper";
+import { StyleSheet, View, FlatList } from "react-native";
+import { Text, TextInput, TouchableRipple, useTheme } from "react-native-paper";
 
 const LiveResultInput = ({
   label,
@@ -10,6 +10,7 @@ const LiveResultInput = ({
   handler,
   ...props
 }) => {
+  const theme = useTheme();
   const [isVisibleResultList, setIsVisibleResultList] = useState(false);
 
   const filteredList = initialList?.filter((item) =>
@@ -17,7 +18,10 @@ const LiveResultInput = ({
   );
 
   return (
-    <View style={styles.container} {...props}>
+    <View
+      style={{ ...styles.container, backgroundColor: theme.colors.background }}
+      {...props}
+    >
       <TextInput
         mode="outlined"
         label={label}
@@ -29,23 +33,28 @@ const LiveResultInput = ({
           setIsVisibleResultList(false);
         }}*/
       />
-      {isVisibleResultList && Boolean(filteredList?.length) && (
-        <View style={styles.searchList}>
-          {filteredList?.map((item) => (
-            <TouchableOpacity
-              style={styles.listItem}
-              onPress={() => {
-                handler(varName, item.name);
-                setIsVisibleResultList(false);
-              }}
-              activeOpacity={0.9}
-              key={item.id}
-            >
-              <Text variant="bodyLarge">{item.name}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      )}
+      {isVisibleResultList &&
+        Boolean(filteredList?.length) &&
+        !(filteredList[0].name === searchLetters) && (
+          <FlatList
+            style={styles.searchList}
+            data={filteredList}
+            renderItem={(item) => {
+              return (
+                <TouchableRipple
+                  style={styles.listItem}
+                  onPress={() => {
+                    handler(varName, item.item.name);
+                    setIsVisibleResultList(false);
+                  }}
+                >
+                  <Text>{item.item.name}</Text>
+                </TouchableRipple>
+              );
+            }}
+            keyExtractor={(item) => item.id}
+          />
+        )}
     </View>
   );
 };
@@ -55,15 +64,18 @@ const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: "white",
     borderWidth: 1,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
     left: 0,
     right: 0,
     top: 50,
     paddingTop: 10,
     zIndex: -1,
     gap: 10,
+    maxHeight: 200,
   },
   listItem: {
-    padding: 10,
+    padding: 12,
   },
 });
 

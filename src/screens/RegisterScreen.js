@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import { Button, Portal } from "react-native-paper";
+import { Button, Portal, useTheme } from "react-native-paper";
 import FullNameForm from "../components/forms/FullNameForm";
 import ContactForm from "../components/forms/ContactForm";
 import PortfolioForm from "../components/forms/PortfolioForm";
@@ -34,6 +34,7 @@ const initialStateUserData = {
 };
 
 const RegisterScreen = ({ navigation }) => {
+  const theme = useTheme();
   const [userData, setUserData] = useState(initialStateUserData);
   const [image, setImage] = useState(null);
   const [visibleDialog, setVisibleDialog] = useState(false);
@@ -100,7 +101,12 @@ const RegisterScreen = ({ navigation }) => {
       keyboardVerticalOffset={120}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView style={styles.container}>
+        <ScrollView
+          style={{
+            ...styles.container,
+            backgroundColor: theme.colors.background,
+          }}
+        >
           <FullNameForm
             containerTitle="О себе"
             value={[userData.firstname, userData.surname, userData.middleName]}
@@ -154,11 +160,9 @@ const RegisterScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   containerKeyboard: {
     flex: 1,
-    backgroundColor: "#FFF",
   },
   container: {
     flex: 1,
-    backgroundColor: "#FFF",
     padding: 20,
   },
   button: {
