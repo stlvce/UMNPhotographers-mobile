@@ -8,6 +8,9 @@ jobs:
   build:
     name: Install and build
     runs-on: ubuntu-latest
+    environment: var
+    env: 
+      EXPO_PUBLIC_API_URL: ${{ vars.EXPO_PUBLIC_API_URL }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
