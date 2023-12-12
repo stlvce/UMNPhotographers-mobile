@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ScrollView, StyleSheet, RefreshControl, View } from "react-native";
-import { Text, Portal, useTheme } from "react-native-paper";
+import { Text, Portal, useTheme, Chip } from "react-native-paper";
 import { useReceiveUserTechListQuery } from "../../api/techApi";
 import { useSelector, useDispatch } from "react-redux";
 import { removeTech } from "../../store/slices/techSlice";
@@ -44,6 +44,33 @@ const TechScreen = () => {
         </Text>
       ) : (
         <View style={styles.techList}>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}>
+            {Array.from(
+              new Set(userTechInfo.technique.map((item) => item.type)),
+            ).map((type) => (
+              <Chip
+                selected={
+                  new Set(technique.map((el) => el.type)).size === 1 &&
+                  new Set(technique.map((el) => el.type)).has(type)
+                }
+                onPress={() => {
+                  if (
+                    new Set(technique.map((el) => el.type)).size === 1 &&
+                    new Set(technique.map((el) => el.type)).has(type)
+                  ) {
+                    setTechnique(userTechInfo.technique);
+                  } else {
+                    setTechnique(
+                      userTechInfo.technique.filter((el) => el.type === type),
+                    );
+                  }
+                }}
+                key={type}
+              >
+                {type}
+              </Chip>
+            ))}
+          </View>
           <Text variant="bodyMedium" style={styles.textState}>
             Количество техники: {technique.length}
           </Text>

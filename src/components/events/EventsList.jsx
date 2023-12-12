@@ -2,9 +2,25 @@ import { StyleSheet } from "react-native";
 import { Card, Text } from "react-native-paper";
 import { useReceiveEventListQuery } from "../../api/eventApi";
 import Loader from "../ui/Loader";
+import { useEffect } from "react";
+import { useAuthLogoutMutation } from "../../api/authApi";
+import { AsyncStorage } from "@react-native-async-storage/async-storage";
 
 const EventsList = ({ navigation }) => {
-  const { data, isLoading } = useReceiveEventListQuery();
+  const { data, isLoading, isError } = useReceiveEventListQuery();
+  const [handleLogout] = useAuthLogoutMutation();
+
+  const removeSessionID = async () => {
+    await AsyncStorage.removeItem("SESSION");
+  };
+
+  // TODO: убрать это
+  useEffect(() => {
+    if (isError) {
+      removeSessionID();
+      handleLogout();
+    }
+  }, [data]);
 
   return (
     <>

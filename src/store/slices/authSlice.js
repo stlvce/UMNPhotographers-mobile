@@ -36,6 +36,9 @@ const authSlice = createSlice({
         };
       },
     );
+    builder.addMatcher(authApi.endpoints.authLogout.matchRejected, (state) => {
+      state.sessionId = "";
+    });
   },
 });
 
