@@ -11,8 +11,16 @@ const initialState = {
 
 export const updateUserInfo = createAsyncThunk(
   "user/updateUser",
-  async (formData, { rejectWithValue, dispatch }) => {
+  async (formData, { rejectWithValue, dispatch, getState }) => {
     try {
+      const state = getState();
+      if (formData.email !== state.user.email) {
+        await dispatch(
+          userApi.endpoints.updateCredential.initiate({
+            email: formData.email,
+          }),
+        );
+      }
       await dispatch(userApi.endpoints.updateUserInfo.initiate(formData));
       return await dispatch(userApi.endpoints.userInfo.initiate());
     } catch (error) {

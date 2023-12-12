@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { Text, Button, useTheme } from "react-native-paper";
 
 const EventScreen = ({ route, navigation }) => {

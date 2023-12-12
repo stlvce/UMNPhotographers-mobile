@@ -1,60 +1,30 @@
 import { StyleSheet } from "react-native";
 import { Card, Text } from "react-native-paper";
-
-const events = [
-  {
-    title: "EVENT 1",
-    description: "adsasd",
-  },
-  {
-    title: "EVENT 2",
-    description: "cvbnvcncnv",
-  },
-  {
-    title: "EVENT 3",
-    description: "qwerwrqewqer",
-  },
-  {
-    title: "EVENT 4",
-    description: "qwerwrqewqer",
-  },
-  {
-    title: "EVENT 5",
-    description: "qwerwrqewqer",
-  },
-  {
-    title: "EVENT 6",
-    description: "qwerwrqewqer",
-  },
-  {
-    title: "EVENT 7",
-    description: "qwerwrqewqer",
-  },
-  {
-    title: "EVENT 8",
-    description: "qwerwrqewqer",
-  },
-  {
-    title: "EVENT 9",
-    description: "qwerwrqewqer",
-  },
-];
+import { useReceiveEventListQuery } from "../../api/eventApi";
+import Loader from "../ui/Loader";
 
 const EventsList = ({ navigation }) => {
+  const { data, isLoading } = useReceiveEventListQuery();
+
   return (
     <>
-      {events.map((event) => (
-        <Card
-          style={styles.card}
-          key={event.title}
-          onPress={() => navigation.navigate("Мероприятие", event)}
-        >
-          <Card.Title title={event.title} />
-          <Card.Content>
-            <Text variant="bodyMedium">{event.description}</Text>
-          </Card.Content>
-        </Card>
-      ))}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        data?.list?.map((event) => (
+          <Card
+            style={styles.card}
+            key={event.name}
+            onPress={() => navigation.navigate("Мероприятие", event)}
+          >
+            <Card.Title title={event.name} subtitle={event.address} />
+            <Card.Content>
+              <Text variant="bodyMedium">Начало: {event.startTime}</Text>
+              <Text variant="bodyMedium">Конец: {event.endTime}</Text>
+            </Card.Content>
+          </Card>
+        ))
+      )}
     </>
   );
 };

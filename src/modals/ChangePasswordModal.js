@@ -1,18 +1,29 @@
 import { forwardRef, useState, useRef } from "react";
-import { View } from "react-native";
 import { Modal, Text, Button } from "react-native-paper";
 import { StyleSheet } from "react-native";
 import PassForm from "../components/forms/PassForm";
+import { useUpdateCredentialMutation } from "../api/userApi";
+import { useSelector } from "react-redux";
 
 const ChangePasswordModal = ({ visible, closeModal }, ref) => {
+  const user = useSelector((state) => state.user.user);
   const [formData, setFormData] = useState({ password: "", confPass: "" });
   const isValidPasswordRef = useRef(null);
+  const [handleUpdatePassword] = useUpdateCredentialMutation();
 
   const handleChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    if (isValidPasswordRef.current) {
+      handleUpdatePassword({
+        email: user.email,
+        password: formData.password,
+      });
+      closeModal();
+    }
+  };
 
   return (
     <Modal

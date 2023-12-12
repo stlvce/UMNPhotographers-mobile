@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import EventsScreen from "../screens/events/EventsScreen";
 import EventScreen from "../screens/events/EventScreen";
-import ReqeustScreen from "../screens/events/RequestScreen";
+import RequestScreen from "../screens/events/RequestScreen";
 import YourCalendarScreen from "../screens/events/YourCalendarScreen";
 import TimetableScreen from "../screens/events/TimetableScreen";
 import RootAppBar from "../components/RootAppBar";
@@ -20,10 +20,10 @@ const EventsNavigator = () => {
       <Stack.Screen
         name="Мероприятие"
         component={EventScreen}
-        options={({ route }) => ({ title: route.params.title })}
+        options={({ route }) => ({ title: route.params.name })}
       />
       <Stack.Screen name="Ваш календарь" component={YourCalendarScreen} />
-      <Stack.Screen name="Заявка на участие" component={ReqeustScreen} />
+      <Stack.Screen name="Заявка на участие" component={RequestScreen} />
       <Stack.Screen name="Расписание мероприятия" component={TimetableScreen} />
     </Stack.Navigator>
   );
