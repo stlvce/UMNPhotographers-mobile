@@ -10,8 +10,6 @@ import {
 import LiveResultInput from "./LiveResultInput";
 import CameraRadioGroup from "../tech/CameraRadioGroup";
 
-//TODO: конвертировать тип некоторых данных при отправки формы (фокусное расстояние линз)
-
 const AddedTechForm = ({
   initialFormData,
   additionalFormItems,
@@ -20,17 +18,31 @@ const AddedTechForm = ({
 }) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(initialFormData);
-  // TODO: убрать кеширование или переписать на мутацию
-  const { data: techModels } = useReceiveTechModelsQuery(type);
-  const { data: techManufacturer } = useReceiveManufacturerQuery(type);
+  const { data: techModels, refetch: refetchModels } =
+    useReceiveTechModelsQuery(type);
+  const { data: techManufacturer, refetch: refetchManufac } =
+    useReceiveManufacturerQuery(type);
 
   const handleChange = (varName, newValue) => {
     setFormData({ ...formData, [varName]: newValue });
   };
 
   const handleSubmit = () => {
-    dispatch(saveTech({ ...formData, type: type }));
-    navigation.goBack();
+    dispatch(saveTech({ ...formData, type: type })).then((_) => {
+      // Получение нового спика моделей техники, если была добавлена новая модель
+      if (!techModels.find((item) => item.name === formData.model)) {
+        refetchModels();
+      }
+
+      // Получение нового спика производителей техники, если был добавлен новый произовдитель
+      if (
+        !techManufacturer.find((item) => item.name === formData.manufacturer)
+      ) {
+        refetchManufac();
+      }
+
+      navigation.goBack();
+    });
   };
 
   return (

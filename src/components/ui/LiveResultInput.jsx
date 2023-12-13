@@ -28,10 +28,6 @@ const LiveResultInput = ({
         value={searchLetters}
         onChangeText={(e) => handler(varName, e)}
         onFocus={() => setIsVisibleResultList(true)}
-        // TODO: скрывать при блюре
-        /*onBlur={() => {
-          setIsVisibleResultList(false);
-        }}*/
       />
       {isVisibleResultList &&
         Boolean(filteredList?.length) &&

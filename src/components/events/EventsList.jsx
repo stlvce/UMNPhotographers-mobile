@@ -14,7 +14,7 @@ const EventsList = ({ navigation }) => {
     await AsyncStorage.removeItem("SESSION");
   };
 
-  // TODO: убрать это
+  // TODO: убрать это и переделать выход при истечении сессии
   useEffect(() => {
     if (isError) {
       removeSessionID();

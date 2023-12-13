@@ -30,7 +30,7 @@ const TechScreen = () => {
       setTechnique(userTechInfo.technique);
     }
   }, [userTechInfo]);
-  // TODO: chip'ы техники для фильтрации
+
   return (
     <ScrollView
       style={{ ...styles.container, backgroundColor: theme.colors.background }}
@@ -50,14 +50,22 @@ const TechScreen = () => {
             ).map((type) => (
               <Chip
                 selected={
+                  new Set(userTechInfo.technique.map((el) => el.type)).size >
+                    1 &&
                   new Set(technique.map((el) => el.type)).size === 1 &&
                   new Set(technique.map((el) => el.type)).has(type)
                 }
                 onPress={() => {
                   if (
-                    new Set(technique.map((el) => el.type)).size === 1 &&
-                    new Set(technique.map((el) => el.type)).has(type)
+                    new Set(userTechInfo.technique.map((el) => el.type)).size <=
+                    1
                   ) {
+                    return;
+                  }
+
+                  const techTypesSet = new Set(technique.map((el) => el.type));
+
+                  if (techTypesSet.size === 1 && techTypesSet.has(type)) {
                     setTechnique(userTechInfo.technique);
                   } else {
                     setTechnique(

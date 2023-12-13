@@ -15,11 +15,11 @@ export default function App() {
     <Provider store={store}>
       <PaperProvider>
         <NavigationContainer>
-          <View>
+          {/*<View>
             <Text style={{ textAlign: "center", marginTop: 50 }} selectable>
               {expoPushToken}
             </Text>
-          </View>
+          </View>*/}
 
           <RootNavigator />
           <StatusBar style="auto" />
