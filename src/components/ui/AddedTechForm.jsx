@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Button, TextInput } from "react-native-paper";
+import { Button, TextInput, useTheme } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import { saveTech } from "../../store/slices/techSlice";
 import {
   useReceiveManufacturerQuery,
   useReceiveTechModelsQuery,
 } from "../../api/techApi";
-import LiveResultInput from "./LiveResultInput";
 import CameraRadioGroup from "../tech/CameraRadioGroup";
+import LiveResultModal from "../../modals/LiveResultModal";
 
 const AddedTechForm = ({
   initialFormData,
@@ -16,6 +16,7 @@ const AddedTechForm = ({
   type,
   navigation,
 }) => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(initialFormData);
   const { data: techModels, refetch: refetchModels } =
@@ -23,46 +24,52 @@ const AddedTechForm = ({
   const { data: techManufacturer, refetch: refetchManufac } =
     useReceiveManufacturerQuery(type);
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [isVisibleModelModal, setIsVisibleModelModal] = useState(false);
+  const [isVisibleManufacModal, setIsVisibleManufacModal] = useState(false);
+
   const handleChange = (varName, newValue) => {
     setFormData({ ...formData, [varName]: newValue });
   };
 
+  // TODO: получение новой моделей и производителей
   const handleSubmit = () => {
-    dispatch(saveTech({ ...formData, type: type })).then((_) => {
-      // Получение нового спика моделей техники, если была добавлена новая модель
-      if (!techModels.find((item) => item.name === formData.model)) {
-        refetchModels();
-      }
+    dispatch(saveTech({ ...formData, type: type }));
+    navigation.goBack();
+  };
 
-      // Получение нового спика производителей техники, если был добавлен новый произовдитель
-      if (
-        !techManufacturer.find((item) => item.name === formData.manufacturer)
-      ) {
-        refetchManufac();
-      }
+  const changeVisibleModelModal = () => {
+    setIsVisibleModelModal(!isVisibleModelModal);
+  };
 
-      navigation.goBack();
-    });
+  const changeVisibleManufacModal = () => {
+    setIsVisibleManufacModal(!isVisibleManufacModal);
   };
 
   return (
     <View style={styles.container}>
-      <LiveResultInput
-        style={{ zIndex: 20 }}
-        label="Модель"
-        varName="model"
-        initialList={techModels}
-        searchLetters={formData.model}
-        handler={handleChange}
-      />
-      <LiveResultInput
-        style={{ zIndex: 19 }}
-        label="Производитель"
-        varName="manufacturer"
-        initialList={techManufacturer}
-        searchLetters={formData.manufacturer}
-        handler={handleChange}
-      />
+      <Button
+        mode="outlined"
+        labelStyle={
+          Boolean(formData.model) && { color: theme.colors.secondary }
+        }
+        onPress={changeVisibleModelModal}
+      >
+        {Boolean(formData.model)
+          ? `Модель: ${formData.model}`
+          : "Выбрать модель"}
+      </Button>
+      <Button
+        mode="outlined"
+        labelStyle={
+          Boolean(formData.manufacturer) && { color: theme.colors.secondary }
+        }
+        onPress={changeVisibleManufacModal}
+      >
+        {Boolean(formData.manufacturer)
+          ? `Производитель: ${formData.manufacturer}`
+          : "Выбрать производителя"}
+      </Button>
       {additionalFormItems.map((item) => (
         <TextInput
           style={styles.otherInput}
@@ -84,6 +91,26 @@ const AddedTechForm = ({
       >
         Добавить
       </Button>
+      <LiveResultModal
+        modalTitle="Модель техники"
+        isVisible={isVisibleModelModal}
+        closeModal={changeVisibleModelModal}
+        placeholder="Название модели"
+        varName="model"
+        initialList={techModels}
+        searchLetters={formData.model}
+        handler={handleChange}
+      />
+      <LiveResultModal
+        modalTitle="Производитель техники"
+        isVisible={isVisibleManufacModal}
+        closeModal={changeVisibleManufacModal}
+        placeholder="Название производителя"
+        varName="manufacturer"
+        initialList={techManufacturer}
+        searchLetters={formData.manufacturer}
+        handler={handleChange}
+      />
     </View>
   );
 };
@@ -98,6 +125,40 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 15,
+  },
+  centeredView: {
+    flex: 1,
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
   },
 });
 

@@ -4,10 +4,10 @@ import { useReceiveEventListQuery } from "../../api/eventApi";
 import Loader from "../ui/Loader";
 import { useEffect } from "react";
 import { useAuthLogoutMutation } from "../../api/authApi";
-import { AsyncStorage } from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EventsList = ({ navigation }) => {
-  const { data, isLoading, isError } = useReceiveEventListQuery();
+  const { data, isLoading, isError, error } = useReceiveEventListQuery();
   const [handleLogout] = useAuthLogoutMutation();
 
   const removeSessionID = async () => {
@@ -17,6 +17,7 @@ const EventsList = ({ navigation }) => {
   // TODO: убрать это и переделать выход при истечении сессии
   useEffect(() => {
     if (isError) {
+      console.log(error);
       removeSessionID();
       handleLogout();
     }

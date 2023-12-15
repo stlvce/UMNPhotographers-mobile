@@ -26,7 +26,9 @@ const BirthdateInput = ({ value, handler }) => {
       <Text variant="titleLarge">Дата рождения</Text>
       <SafeAreaProvider>
         <Button onPress={() => setOpen(true)} uppercase={false} mode="outlined">
-          {Boolean(value) ? value.toLocaleDateString() : "Выбрать дату"}
+          {Boolean(value)
+            ? `Дата рождения: ${value.toLocaleDateString()}`
+            : "Выбрать дату"}
         </Button>
         <DatePickerModal
           locale="ru"
