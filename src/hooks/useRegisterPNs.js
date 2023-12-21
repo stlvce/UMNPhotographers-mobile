@@ -3,6 +3,8 @@ import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
 import * as Device from "expo-device";
 import Constants from "expo-constants";
+import { useDispatch } from "react-redux";
+import { saveStatePNToken } from "../store/slices/authSlice";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -47,15 +49,17 @@ async function registerForPushNotificationsAsync() {
 }
 
 const useRegisterPNs = () => {
+  const dispatch = useDispatch();
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) =>
-      setExpoPushToken(token),
-    );
+    registerForPushNotificationsAsync().then((token) => {
+      setExpoPushToken(token);
+      dispatch(saveStatePNToken(token));
+    });
 
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {

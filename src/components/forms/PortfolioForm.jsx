@@ -10,6 +10,7 @@ const PortfolioForm = ({ value, handler }, ref) => {
       <Text variant="titleLarge">Портфолио</Text>
       <MainInput
         label="Ссылка на портфолио"
+        multiline
         autoCapitalize="none"
         varName="portfolio"
         value={value}

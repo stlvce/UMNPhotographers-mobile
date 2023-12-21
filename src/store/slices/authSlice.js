@@ -1,5 +1,30 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { authApi } from "../../api/authApi";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+export const login = createAsyncThunk(
+  "auth/login",
+  async (formData, { rejectWithValue, dispatch }) => {
+    try {
+      await dispatch(authApi.endpoints.authLogin.initiate(formData));
+      await dispatch(authApi.endpoints.pnTokenUpdate.initiate());
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const logout = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue, dispatch }) => {
+    try {
+      await AsyncStorage.removeItem("SESSION");
+      await dispatch(authApi.endpoints.authLogout.initiate());
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
 
 const initialState = {
   sessionId: "",
@@ -8,6 +33,7 @@ const initialState = {
     isError: false,
     errorMessage: null,
   },
+  pnToken: "",
 };
 
 const authSlice = createSlice({
@@ -25,8 +51,14 @@ const authSlice = createSlice({
     closeStatusSU: (state) => {
       state.statusSignUp = { isError: false, errorMessage: null };
     },
+    saveStatePNToken: (state, action) => {
+      state.pnToken = action.payload;
+    },
   },
   extraReducers: (builder) => {
+    builder.addCase(logout.fulfilled, (state) => {
+      state.sessionId = "";
+    });
     builder.addMatcher(
       authApi.endpoints.authRegister.matchRejected,
       (state) => {
@@ -43,4 +75,5 @@ const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
-export const { checkSessionId, closeStatusSU } = authSlice.actions;
+export const { checkSessionId, closeStatusSU, saveStatePNToken } =
+  authSlice.actions;

@@ -11,13 +11,15 @@ import { Button, useTheme } from "react-native-paper";
 import EmailInput from "../components/inputs/EmailInput";
 import PassInput from "../components/inputs/PassInput";
 import StatusBanner from "../components/auth/StatusBanner";
-import { useAuthLoginMutation } from "../api/authApi";
+import { useAuthLoginMutation, usePnTokenUpdateMutation } from "../api/authApi";
+import { useSelector } from "react-redux";
 import validatePassword from "../utils/validators/validatePassword";
 import useFormUser from "../hooks/useFormUser";
 import Loader from "../components/ui/Loader";
 
 const AuthScreen = ({ navigation }) => {
   const theme = useTheme();
+  const pnToken = useSelector((state) => state.auth.pnToken);
   const [authData, handleChange] = useFormUser({
     email: "",
     password: "",
@@ -27,6 +29,7 @@ const AuthScreen = ({ navigation }) => {
   const isValidPasswordRef = useRef(null);
   const [handleAuthLogin, { data, isError, error, isLoading, status }] =
     useAuthLoginMutation();
+  const [handlePnTokenUpdate] = usePnTokenUpdateMutation();
 
   const handleSubmit = useCallback(() => {
     // вместо валидации при blur на пароле
@@ -53,6 +56,7 @@ const AuthScreen = ({ navigation }) => {
       data.status === "approved"
     ) {
       navigation.replace("Main");
+      handlePnTokenUpdate(pnToken);
     } else {
       if (isError || data?.status === "blocked" || data?.status === "created") {
         setIsVisibleBanner(true);

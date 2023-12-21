@@ -10,6 +10,8 @@ export const authApi = api.injectEndpoints({
         body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json",
+          Connection: "keep-alive",
+          "Keep-Alive": "timeout=60",
           Cookie: "",
         },
       }),
@@ -24,6 +26,20 @@ export const authApi = api.injectEndpoints({
         }
 
         return response;
+      },
+    }),
+    pnTokenUpdate: builder.mutation({
+      query: (token) => {
+        return {
+          url: "/auth/token/update",
+          method: "POST",
+          body: { token: token },
+          headers: {
+            "Content-Type": "application/json",
+            Connection: "keep-alive",
+            "Keep-Alive": "timeout=60",
+          },
+        };
       },
     }),
     authRegister: builder.mutation({
@@ -66,4 +82,5 @@ export const {
   useAuthLoginMutation,
   useAuthRegisterMutation,
   useAuthLogoutMutation,
+  usePnTokenUpdateMutation,
 } = authApi;

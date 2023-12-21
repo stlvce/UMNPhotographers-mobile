@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Button, TextInput, useTheme } from "react-native-paper";
+import { Button, HelperText, TextInput, useTheme } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import { saveTech } from "../../store/slices/techSlice";
 import {
@@ -32,7 +32,6 @@ const AddedTechForm = ({
     setFormData({ ...formData, [varName]: newValue });
   };
 
-  // TODO: получение новой моделей и производителей
   const handleSubmit = () => {
     dispatch(saveTech({ ...formData, type: type }));
     navigation.goBack();
@@ -46,19 +45,12 @@ const AddedTechForm = ({
     setIsVisibleManufacModal(!isVisibleManufacModal);
   };
 
+  const regExpOnlyNumber = /^[0-9]+$/;
+  const regExpNumberWithDot = /^[0-9]+,[0-9]+$/;
+  let isNotValid;
+
   return (
     <View style={styles.container}>
-      <Button
-        mode="outlined"
-        labelStyle={
-          Boolean(formData.model) && { color: theme.colors.secondary }
-        }
-        onPress={changeVisibleModelModal}
-      >
-        {Boolean(formData.model)
-          ? `Модель: ${formData.model}`
-          : "Выбрать модель"}
-      </Button>
       <Button
         mode="outlined"
         labelStyle={
@@ -70,16 +62,44 @@ const AddedTechForm = ({
           ? `Производитель: ${formData.manufacturer}`
           : "Выбрать производителя"}
       </Button>
-      {additionalFormItems.map((item) => (
-        <TextInput
-          style={styles.otherInput}
-          mode="outlined"
-          label={item.label}
-          value={formData[item.varName]}
-          onChangeText={(e) => handleChange(item.varName, e)}
-          key={item.varName}
-        />
-      ))}
+      <Button
+        mode="outlined"
+        labelStyle={
+          Boolean(formData.model) && { color: theme.colors.secondary }
+        }
+        onPress={changeVisibleModelModal}
+      >
+        {Boolean(formData.model)
+          ? `Модель: ${formData.model}`
+          : "Выбрать модель"}
+      </Button>
+      {additionalFormItems.map((item) => {
+        isNotValid =
+          Boolean(formData[item.varName]) &&
+          (item.varName === "crop"
+            ? !regExpNumberWithDot.test(formData[item.varName])
+            : !regExpOnlyNumber.test(formData[item.varName]));
+        return (
+          <View key={item.varName}>
+            <TextInput
+              style={styles.otherInput}
+              mode="outlined"
+              autoComplete="off"
+              contextMenuHidden
+              keyboardType={item.varName === "crop" ? "numeric" : "number-pad"}
+              label={item.label}
+              value={formData[item.varName]}
+              onChangeText={(e) => handleChange(item.varName, e)}
+              error={isNotValid}
+            />
+            <HelperText type="error" visible={isNotValid}>
+              {item.varName === "crop"
+                ? "Число с плавающей точкой"
+                : "Только цифры"}
+            </HelperText>
+          </View>
+        );
+      })}
       {type === "lens" && (
         <CameraRadioGroup cameraId={formData.cameraId} handler={handleChange} />
       )}
@@ -87,7 +107,7 @@ const AddedTechForm = ({
         style={styles.button}
         mode="contained"
         onPress={handleSubmit}
-        disabled={Object.values(formData).includes("")}
+        disabled={Object.values(formData).includes("") || isNotValid}
       >
         Добавить
       </Button>

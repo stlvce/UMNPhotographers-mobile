@@ -1,33 +1,18 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-paper";
 import { useReceiveEventListQuery } from "../../api/eventApi";
 import Loader from "../ui/Loader";
-import { useEffect } from "react";
-import { useAuthLogoutMutation } from "../../api/authApi";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EventsList = ({ navigation }) => {
-  const { data, isLoading, isError, error } = useReceiveEventListQuery();
-  const [handleLogout] = useAuthLogoutMutation();
+  const { data, isLoading, isError } = useReceiveEventListQuery();
 
-  const removeSessionID = async () => {
-    await AsyncStorage.removeItem("SESSION");
-  };
-
-  // TODO: убрать это и переделать выход при истечении сессии
-  useEffect(() => {
-    if (isError) {
-      console.log(error);
-      removeSessionID();
-      handleLogout();
-    }
-  }, [data]);
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
-    <>
-      {isLoading ? (
-        <Loader />
-      ) : (
+    <View>
+      {Boolean(data?.list) ? (
         data?.list?.map((event) => (
           <Card
             style={styles.card}
@@ -41,14 +26,22 @@ const EventsList = ({ navigation }) => {
             </Card.Content>
           </Card>
         ))
+      ) : (
+        <Text style={styles.textState}>
+          {isError ? "Ошибка" : "Нет активных мероприятий"}
+        </Text>
       )}
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
     marginBottom: 20,
+  },
+  textState: {
+    textAlign: "center",
+    marginTop: 20,
   },
 });
 

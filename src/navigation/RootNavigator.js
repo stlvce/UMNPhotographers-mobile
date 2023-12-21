@@ -9,6 +9,7 @@ import { View } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { checkSessionId } from "../store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import useRegisterPNs from "../hooks/useRegisterPNs";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,7 @@ const RootNavigator = () => {
     let idSession = await AsyncStorage.getItem("SESSION");
     dispatch(checkSessionId(idSession));
   };
+  const expoPushToken = useRegisterPNs();
 
   useEffect(() => {
     getIdSession();

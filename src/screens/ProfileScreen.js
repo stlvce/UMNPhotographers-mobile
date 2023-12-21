@@ -23,6 +23,7 @@ import validateAll from "../utils/validators/validateAll";
 import useFormUser from "../hooks/useFormUser";
 import * as FileSystem from "expo-file-system";
 import StatusUpdateSnackbar from "../components/profile/StatusUpdateSnackbar";
+import { logout } from "../store/slices/authSlice";
 
 const initialStateUserData = {
   firstname: "",
@@ -107,8 +108,8 @@ const ProfileScreen = ({ navigation }) => {
   }, [setVisibleExitDialog]);
 
   const handleLogout = useCallback(async () => {
-    await AsyncStorage.removeItem("SESSION");
     navigation.replace("Вход");
+    dispatch(logout());
   }, []);
 
   useEffect(() => {

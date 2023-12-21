@@ -4,7 +4,7 @@ import { act } from "@testing-library/react-native";
 
 export const saveTech = createAsyncThunk(
   "tech/save",
-  async (formData, { rejectedWithValue, getState, dispatch }) => {
+  async (formData, { rejectWithValue, getState, dispatch }) => {
     try {
       const state = getState();
 
@@ -80,14 +80,14 @@ export const saveTech = createAsyncThunk(
       return newTechList;
     } catch (error) {
       console.log(error);
-      return rejectedWithValue(error);
+      return rejectWithValue(error);
     }
   },
 );
 
 export const removeTech = createAsyncThunk(
   "tech/remove",
-  async (tech, { rejectedWithValue, dispatch, getState }) => {
+  async (tech, { rejectWithValue, dispatch, getState }) => {
     try {
       const state = getState();
       const oldTechList = state.tech.userTechInfo.technique
@@ -124,7 +124,7 @@ export const removeTech = createAsyncThunk(
       );
       return newTechList;
     } catch (error) {
-      return rejectedWithValue(error);
+      return rejectWithValue(error);
     }
   },
 );

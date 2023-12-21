@@ -9,7 +9,6 @@ import {
   Divider,
 } from "react-native-paper";
 
-// TODO: свайп для этого хуесоса
 const LiveResultModal = ({
   modalTitle,
   isVisible,
@@ -31,6 +30,7 @@ const LiveResultModal = ({
       animationType="slide"
       presentationStyle="pageSheet"
       visible={isVisible}
+      onRequestClose={closeModal}
     >
       <View
         style={{
