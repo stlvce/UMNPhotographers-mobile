@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ScrollView, StyleSheet, RefreshControl, View } from "react-native";
-import { Text, Portal, useTheme, Chip } from "react-native-paper";
+import { Text, Portal, useTheme } from "react-native-paper";
 import { useReceiveUserTechListQuery } from "../../api/techApi";
 import { useSelector, useDispatch } from "react-redux";
 import { removeTech } from "../../store/slices/techSlice";

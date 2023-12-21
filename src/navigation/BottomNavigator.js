@@ -4,6 +4,7 @@ import TechNavigator from "./TechNavigator";
 import ProfileScreen from "../screens/ProfileScreen";
 import { Icon, useTheme } from "react-native-paper";
 import RootAppBar from "../components/RootAppBar";
+import { Platform } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -16,6 +17,7 @@ const BottomNavigator = () => {
       screenOptions={{
         header: (props) => <RootAppBar {...props} />,
         tabBarActiveTintColor: theme.colors.primary,
+        tabBarHideOnKeyboard: Platform.OS === "android",
       }}
     >
       <Tab.Screen

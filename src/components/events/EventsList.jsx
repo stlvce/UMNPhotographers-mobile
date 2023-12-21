@@ -3,13 +3,7 @@ import { Card, Text } from "react-native-paper";
 import { useReceiveEventListQuery } from "../../api/eventApi";
 import Loader from "../ui/Loader";
 
-const EventsList = ({ navigation }) => {
-  const { data, isLoading, isError } = useReceiveEventListQuery();
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
+const EventsList = ({ navigation, data, isError }) => {
   return (
     <View>
       {Boolean(data?.list) ? (
