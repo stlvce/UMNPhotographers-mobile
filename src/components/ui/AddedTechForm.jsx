@@ -9,6 +9,7 @@ import {
 } from "../../api/techApi";
 import CameraRadioGroup from "../tech/CameraRadioGroup";
 import LiveResultModal from "../../modals/LiveResultModal";
+import Loader from "./Loader";
 
 const AddedTechForm = ({
   initialFormData,
@@ -19,12 +20,12 @@ const AddedTechForm = ({
   const theme = useTheme();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(initialFormData);
+  const [isLoadingData, setIsLoadingData] = useState(false);
   const { data: techModels, refetch: refetchModels } =
     useReceiveTechModelsQuery(type);
   const { data: techManufacturer, refetch: refetchManufac } =
     useReceiveManufacturerQuery(type);
 
-  const [modalVisible, setModalVisible] = useState(false);
   const [isVisibleModelModal, setIsVisibleModelModal] = useState(false);
   const [isVisibleManufacModal, setIsVisibleManufacModal] = useState(false);
 
@@ -33,8 +34,23 @@ const AddedTechForm = ({
   };
 
   const handleSubmit = () => {
-    dispatch(saveTech({ ...formData, type: type }));
-    navigation.goBack();
+    setIsLoadingData(true);
+    dispatch(saveTech({ ...formData, type: type }))
+      .then(() => {
+        // Получения нового списка моделей, если пользователь добавил новую
+        if (!techModels.find((item) => item.name === formData.model)) {
+          refetchModels();
+        }
+        // Получение нового списка производителей, если пользователь добавил нового
+        if (
+          !techManufacturer.find((item) => item.name === formData.manufacturer)
+        ) {
+          refetchManufac();
+        }
+      })
+      .then(() => {
+        navigation.goBack();
+      });
   };
 
   const changeVisibleModelModal = () => {
@@ -48,6 +64,10 @@ const AddedTechForm = ({
   const regExpOnlyNumber = /^[0-9]+$/;
   const regExpNumberWithDot = /^[0-9]+,[0-9]+$/;
   let isNotValid;
+
+  if (isLoadingData) {
+    return <Loader style={{ marginTop: "50%" }} />;
+  }
 
   return (
     <View style={styles.container}>

@@ -7,6 +7,7 @@ import { removeTech } from "../../store/slices/techSlice";
 import StatusSnackbar from "../../components/ui/StatusSnackbar";
 import { closeStatusAddTech } from "../../store/slices/techSlice";
 import TechCardReturner from "../../components/tech/TechCardReturner";
+import TechChips from "../../components/tech/TechChips";
 
 const TechScreen = () => {
   const theme = useTheme();
@@ -23,6 +24,10 @@ const TechScreen = () => {
 
   const closeSnackbar = () => {
     dispatch(closeStatusAddTech());
+  };
+
+  const handleUpdateTechList = (newList) => {
+    setTechnique(newList);
   };
 
   useEffect(() => {
@@ -44,41 +49,11 @@ const TechScreen = () => {
         </Text>
       ) : (
         <View style={styles.techList}>
-          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}>
-            {Array.from(
-              new Set(userTechInfo.technique.map((item) => item.type)),
-            ).map((type) => (
-              <Chip
-                selected={
-                  new Set(userTechInfo.technique.map((el) => el.type)).size >
-                    1 &&
-                  new Set(technique.map((el) => el.type)).size === 1 &&
-                  new Set(technique.map((el) => el.type)).has(type)
-                }
-                onPress={() => {
-                  if (
-                    new Set(userTechInfo.technique.map((el) => el.type)).size <=
-                    1
-                  ) {
-                    return;
-                  }
-
-                  const techTypesSet = new Set(technique.map((el) => el.type));
-
-                  if (techTypesSet.size === 1 && techTypesSet.has(type)) {
-                    setTechnique(userTechInfo.technique);
-                  } else {
-                    setTechnique(
-                      userTechInfo.technique.filter((el) => el.type === type),
-                    );
-                  }
-                }}
-                key={type}
-              >
-                {type}
-              </Chip>
-            ))}
-          </View>
+          <TechChips
+            userTechInfo={userTechInfo}
+            technique={technique}
+            handleUpdateTechList={handleUpdateTechList}
+          />
           <Text variant="bodyMedium" style={styles.textState}>
             Количество техники: {technique.length}
           </Text>

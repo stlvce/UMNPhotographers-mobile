@@ -2,18 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { authApi } from "../../api/authApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const login = createAsyncThunk(
-  "auth/login",
-  async (formData, { rejectWithValue, dispatch }) => {
-    try {
-      await dispatch(authApi.endpoints.authLogin.initiate(formData));
-      await dispatch(authApi.endpoints.pnTokenUpdate.initiate());
-    } catch (error) {
-      return rejectWithValue(error);
-    }
-  },
-);
-
 export const logout = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue, dispatch }) => {

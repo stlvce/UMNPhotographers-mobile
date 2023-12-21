@@ -1,7 +1,7 @@
 import { ActivityIndicator } from "react-native";
 
-const Loader = () => {
-  return <ActivityIndicator animating={true} size="large" />;
+const Loader = ({ ...props }) => {
+  return <ActivityIndicator animating={true} size="large" {...props} />;
 };
 
 export default Loader;
