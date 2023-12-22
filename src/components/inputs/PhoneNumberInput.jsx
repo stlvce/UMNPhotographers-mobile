@@ -1,15 +1,31 @@
+import { useEffect, useState } from "react";
 import { forwardRef } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import MainInput from "./MainInput";
 import validatePhone from "../../utils/validators/validatePhone";
 
-const PhoneNumberInput = ({ value, handler }, ref) => {
+const PhoneNumberInput = ({ value, handler, isLoading = false }, ref) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const handleChangeVisible = () => {
+    if (!Boolean(value)) {
+      setIsVisible(!isVisible);
+    } else {
+      setIsVisible(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!isLoading && !(value === "")) {
+      setIsVisible(true);
+    }
+  }, [isLoading]);
+
   return (
-    <View style={styles.numberPhone}>
-      <Text style={styles.numberPhoneStart} variant="titleLarge">
-        +7
-      </Text>
+    <View>
+      {isVisible && <Text style={styles.numberPhoneStart}>+7</Text>}
       <MainInput
+        contentStyle={styles.contentInput}
         label="Номер телефона"
         textContentType="telephoneNumber"
         keyboardType="number-pad"
@@ -19,6 +35,8 @@ const PhoneNumberInput = ({ value, handler }, ref) => {
         value={value}
         handler={handler}
         validator={validatePhone}
+        onFocus={handleChangeVisible}
+        handleVisibleText={handleChangeVisible}
         ref={ref}
       />
     </View>
@@ -26,13 +44,15 @@ const PhoneNumberInput = ({ value, handler }, ref) => {
 };
 
 const styles = StyleSheet.create({
-  numberPhone: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
+  contentInput: {
+    marginLeft: 12,
   },
   numberPhoneStart: {
-    marginTop: 10,
+    position: "absolute",
+    zIndex: 1,
+    top: 23,
+    left: 10,
+    fontSize: 15,
   },
 });
 

@@ -12,8 +12,6 @@ const useFormUser = ({ initialState }) => {
     [formData],
   );
 
-  const handleSubmit = () => {};
-
   return [formData, handleChange, setFormData];
 };
 

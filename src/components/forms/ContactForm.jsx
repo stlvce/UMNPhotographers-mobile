@@ -6,7 +6,7 @@ import PhoneNumberInput from "../inputs/PhoneNumberInput";
 import TgInput from "../inputs/TgInput";
 import VkInput from "../inputs/VkInput";
 
-const ContactForm = ({ value, handler }, ref) => {
+const ContactForm = ({ value, handler, isLoading = false }, ref) => {
   const [email, phone, tg, vk] = value;
   const isValidEmailRef = useRef(null);
   const isValidNumberRef = useRef(null);
@@ -26,6 +26,7 @@ const ContactForm = ({ value, handler }, ref) => {
       <PhoneNumberInput
         value={phone}
         handler={handler}
+        isLoading={isLoading}
         ref={isValidNumberRef}
       />
       <TgInput value={tg} handler={handler} ref={isValidTgRef} />

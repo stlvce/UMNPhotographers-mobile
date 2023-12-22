@@ -16,7 +16,6 @@ import PortfolioForm from "../components/forms/PortfolioForm";
 import ChangePasswordModal from "../modals/ChangePasswordModal";
 import ActionConfirmDialog from "../modals/ActionConfirmDialog";
 import { useUserInfoQuery } from "../api/userApi";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUserInfo } from "../store/slices/userSlice";
 import validateAll from "../utils/validators/validateAll";
@@ -45,7 +44,7 @@ const ProfileScreen = ({ navigation }) => {
   const [image, setImage] = useState({
     uri: "https://photographersekb.ru:8080/api/photographer/image",
   });
-  const { data } = useUserInfoQuery();
+  const { data, isLoading } = useUserInfoQuery();
   const [visibleChangePass, setVisibleChangePass] = useState(false);
   const [visibleSaveDialog, setVisibleSaveDialog] = useState(false);
   const [visibleExitDialog, setVisibleExitDialog] = useState(false);
@@ -141,6 +140,7 @@ const ProfileScreen = ({ navigation }) => {
           <ContactForm
             value={[userData.email, userData.phone, userData.tg, userData.vk]}
             handler={handleChange}
+            isLoading={isLoading}
             ref={isValidContactsRef}
           />
           <PortfolioForm
