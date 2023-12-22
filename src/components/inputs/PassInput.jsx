@@ -1,7 +1,7 @@
 import { forwardRef, useState } from "react";
 import { TextInput } from "react-native-paper";
 import validatePassword from "../../utils/validators/validatePassword";
-import MainInput from "./MainInput";
+import UserDataInput from "../ui/UserDataInput";
 
 const PassInput = ({ value, handler }, ref) => {
   const [isVisiblePassword, setIsVisiblePassword] = useState(false);
@@ -11,12 +11,12 @@ const PassInput = ({ value, handler }, ref) => {
   };
 
   return (
-    <MainInput
+    <UserDataInput
       label="Пароль"
       textContentType="password"
       maxLength={25}
       autoCapitalize="none"
-      // при скрытии и вводе стирается предыдущий текст (Возможно такое только на IOS)
+      // при скрытии и вводе стирается предыдущий текст (только на IOS)
       secureTextEntry={!isVisiblePassword}
       right={
         <TextInput.Icon

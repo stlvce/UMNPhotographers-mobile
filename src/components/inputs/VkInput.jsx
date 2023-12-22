@@ -1,10 +1,10 @@
 import { forwardRef } from "react";
-import MainInput from "./MainInput";
+import UserDataInput from "../ui/UserDataInput";
 import validateVk from "../../utils/validators/validateVk";
 
 const VkInput = ({ value, handler }, ref) => {
   return (
-    <MainInput
+    <UserDataInput
       label="Ссылка на вк"
       maxLength={32}
       varName="vk"

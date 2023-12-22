@@ -1,4 +1,4 @@
-import AddedTechForm from "../../ui/AddedTechForm";
+import AddedTechForm from "../../tech/AddedTechForm";
 
 const items = [
   {

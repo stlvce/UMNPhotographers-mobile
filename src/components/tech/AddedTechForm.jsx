@@ -7,9 +7,9 @@ import {
   useReceiveManufacturerQuery,
   useReceiveTechModelsQuery,
 } from "../../api/techApi";
-import CameraRadioGroup from "../tech/CameraRadioGroup";
+import CameraRadioGroup from "./CameraRadioGroup";
 import LiveResultModal from "../../modals/LiveResultModal";
-import Loader from "./Loader";
+import Loader from "../ui/Loader";
 
 const AddedTechForm = ({
   initialFormData,
@@ -62,7 +62,7 @@ const AddedTechForm = ({
   };
 
   const regExpOnlyNumber = /^[0-9]+$/;
-  const regExpNumberWithDot = /^[0-9]+,[0-9]+$/;
+  const regExpNumberWithDot = /^[0-9]+(,|\.)[0-9]+$/;
   let isNotValid;
 
   if (isLoadingData) {
@@ -107,6 +107,7 @@ const AddedTechForm = ({
               autoComplete="off"
               contextMenuHidden
               keyboardType={item.varName === "crop" ? "numeric" : "number-pad"}
+              maxLength={20}
               label={item.label}
               value={formData[item.varName]}
               onChangeText={(e) => handleChange(item.varName, e)}

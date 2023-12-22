@@ -1,10 +1,10 @@
 import { forwardRef } from "react";
-import MainInput from "./MainInput";
+import UserDataInput from "../ui/UserDataInput";
 import validateEmail from "../../utils/validators/validateEmail";
 
 const EmailInput = ({ value, handler }, ref) => {
   return (
-    <MainInput
+    <UserDataInput
       label="Яндекс почта"
       textContentType="emailAddress"
       inputMode="email"

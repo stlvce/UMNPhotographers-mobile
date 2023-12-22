@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   list: { marginTop: 20 },
-  textState: { textAlign: "center", marginTop: 200, opacity: 0.7 },
+  textState: { textAlign: "center", marginTop: "45%", opacity: 0.7 },
 });
 
 export default LiveResultModal;

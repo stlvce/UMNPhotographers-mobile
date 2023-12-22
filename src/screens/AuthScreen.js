@@ -2,8 +2,6 @@ import { useCallback, useRef, useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
@@ -32,7 +30,7 @@ const AuthScreen = ({ navigation }) => {
   const [handlePnTokenUpdate] = usePnTokenUpdateMutation();
 
   const handleSubmit = useCallback(() => {
-    // вместо валидации при blur на пароле
+    // Вместо валидации при blur на пароле
     isValidPasswordRef.current = validatePassword(authData.password);
     const isValid = isValidEmailRef.current && isValidPasswordRef.current;
     if (isValid) {
@@ -50,6 +48,11 @@ const AuthScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
+    if (isError || data?.status === "blocked" || data?.status === "created") {
+      setIsVisibleBanner(true);
+      return;
+    }
+
     if (
       status === "fulfilled" &&
       data.authenticate &&
@@ -57,63 +60,61 @@ const AuthScreen = ({ navigation }) => {
     ) {
       navigation.replace("Main");
       handlePnTokenUpdate(pnToken);
-    } else {
-      if (isError || data?.status === "blocked" || data?.status === "created") {
-        setIsVisibleBanner(true);
-      }
     }
   }, [status]);
 
+  if (isLoading) {
+    return (
+      <View
+        style={{
+          ...styles.container,
+          backgroundColor: theme.colors.background,
+        }}
+      >
+        <Loader />
+      </View>
+    );
+  }
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.containerKeyboard}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View
-          style={{
-            ...styles.container,
-            backgroundColor: theme.colors.background,
-          }}
-        >
-          {isLoading ? (
-            <Loader />
-          ) : (
-            <>
-              <View style={styles.containerForm}>
-                <EmailInput
-                  value={authData.email}
-                  handler={handleChange}
-                  ref={isValidEmailRef}
-                />
-                <PassInput
-                  label="Пароль"
-                  value={authData.password}
-                  handler={handleChange}
-                  ref={isValidPasswordRef}
-                />
-              </View>
-              <Button mode="contained" onPress={handleSubmit}>
-                Войти
-              </Button>
-              <StatusBanner
-                data={data}
-                error={error}
-                visible={isVisibleBanner}
-                changeVisible={changeVisibleBanner}
-              />
-              <Button
-                style={styles.buttonRegister}
-                mode="outlined"
-                onPress={startRegister}
-              >
-                Регистрация
-              </Button>
-            </>
-          )}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View
+        style={{
+          ...styles.container,
+          backgroundColor: theme.colors.background,
+        }}
+      >
+        <View style={styles.containerForm}>
+          <EmailInput
+            value={authData.email}
+            handler={handleChange}
+            ref={isValidEmailRef}
+          />
+          <PassInput
+            label="Пароль"
+            value={authData.password}
+            handler={handleChange}
+            ref={isValidPasswordRef}
+          />
         </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+        <Button mode="contained" onPress={handleSubmit}>
+          Войти
+        </Button>
+        <StatusBanner
+          data={data}
+          error={error}
+          visible={isVisibleBanner}
+          changeVisible={changeVisibleBanner}
+        />
+        <Button
+          style={styles.buttonRegister}
+          mode="outlined"
+          onPress={startRegister}
+        >
+          Регистрация
+        </Button>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

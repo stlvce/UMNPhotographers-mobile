@@ -1,10 +1,10 @@
 import { forwardRef } from "react";
-import MainInput from "./MainInput";
+import UserDataInput from "../ui/UserDataInput";
 import validateTg from "../../utils/validators/validateTg";
 
 const TgInput = ({ value, handler }, ref) => {
   return (
-    <MainInput
+    <UserDataInput
       label="Telegram"
       maxLength={32}
       varName="tg"

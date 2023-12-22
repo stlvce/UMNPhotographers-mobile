@@ -1,10 +1,10 @@
 import { forwardRef, useState } from "react";
 import validateName from "../../utils/validators/validateName";
-import MainInput from "./MainInput";
+import UserDataInput from "../ui/UserDataInput";
 
 const NameInput = ({ label, varName, value, handler }, ref) => {
   return (
-    <MainInput
+    <UserDataInput
       label={label}
       maxLength={30}
       varName={varName}

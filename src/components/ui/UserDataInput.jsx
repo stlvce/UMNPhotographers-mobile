@@ -2,7 +2,7 @@ import { useState, forwardRef } from "react";
 import { TextInput, HelperText, useTheme } from "react-native-paper";
 import { View } from "react-native";
 
-const MainInput = (
+const UserDataInput = (
   { varName, value, handler, validator, handleVisibleText = null, ...props },
   ref,
 ) => {
@@ -44,4 +44,4 @@ const MainInput = (
   );
 };
 
-export default forwardRef(MainInput);
+export default forwardRef(UserDataInput);

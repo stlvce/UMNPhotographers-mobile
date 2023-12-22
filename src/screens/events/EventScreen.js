@@ -4,6 +4,9 @@ import { Text, Button, useTheme } from "react-native-paper";
 const EventScreen = ({ route, navigation }) => {
   const theme = useTheme();
   const event = route.params;
+  const dateStart = event.startTime.split("T");
+  const dateEnd = event.endTime.split("T");
+
   return (
     <ScrollView
       style={{
@@ -12,7 +15,30 @@ const EventScreen = ({ route, navigation }) => {
       }}
     >
       <View style={styles.container}>
-        <Text variant="bodyLarge">{event.description}</Text>
+        <Text style={styles.address} variant="bodyLarge">
+          {event.address}
+        </Text>
+        <View style={styles.dataContainer}>
+          <View>
+            <Text variant="bodyMedium" style={{ opacity: 0.7 }}>
+              Начало
+            </Text>
+            <Text variant="bodyMedium">{`${dateStart[0]
+              .split("-")
+              .reverse()
+              .join(".")} ${dateStart[1]}`}</Text>
+          </View>
+          <View>
+            <Text variant="bodyMedium" style={{ opacity: 0.7 }}>
+              Конец
+            </Text>
+            <Text variant="bodyMedium">{`${dateEnd[0]
+              .split("-")
+              .reverse()
+              .join(".")} ${dateEnd[1]}`}</Text>
+          </View>
+        </View>
+
         <View style={styles.containerButtons}>
           <Button
             mode="contained-tonal"
@@ -45,14 +71,15 @@ const styles = StyleSheet.create({
     gap: 20,
     padding: 20,
   },
-  img: { height: 300, width: 300 },
-  description: {
-    width: 300,
+  address: {
+    textAlign: "center",
   },
-  containerImage: {
-    alignItems: "center",
+  dataContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   containerButtons: {
+    marginTop: 30,
     gap: 30,
   },
 });

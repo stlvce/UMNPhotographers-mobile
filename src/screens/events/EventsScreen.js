@@ -32,7 +32,9 @@ const EventsScreen = ({ navigation }) => {
       }
     >
       <SortingMenu visible={visibleMenu} changeVisible={changeVisibleMenu} />
-      <EventsList navigation={navigation} data={data} isError={isError} />
+      {!isLoading && (
+        <EventsList navigation={navigation} data={data} isError={isError} />
+      )}
     </ScrollView>
   );
 };

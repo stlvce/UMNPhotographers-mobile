@@ -57,6 +57,7 @@ const TechScreen = () => {
           <Text variant="bodyMedium" style={styles.textState}>
             Количество техники: {technique.length}
           </Text>
+
           {technique.map((item) => (
             <TechCardReturner
               item={item}

@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
-import MainInput from "../inputs/MainInput";
+import MainInput from "../ui/UserDataInput";
 import validateLink from "../../utils/validators/validateLink";
 
 const PortfolioForm = ({ value, handler }, ref) => {

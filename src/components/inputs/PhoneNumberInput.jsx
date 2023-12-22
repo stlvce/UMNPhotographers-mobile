@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { forwardRef } from "react";
 import { View, StyleSheet, Text } from "react-native";
-import MainInput from "./MainInput";
+import UserDataInput from "../ui/UserDataInput";
 import validatePhone from "../../utils/validators/validatePhone";
 
 const PhoneNumberInput = ({ value, handler, isLoading = false }, ref) => {
@@ -24,7 +24,7 @@ const PhoneNumberInput = ({ value, handler, isLoading = false }, ref) => {
   return (
     <View>
       {isVisible && <Text style={styles.numberPhoneStart}>+7</Text>}
-      <MainInput
+      <UserDataInput
         contentStyle={styles.contentInput}
         label="Номер телефона"
         textContentType="telephoneNumber"

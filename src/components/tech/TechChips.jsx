@@ -1,5 +1,6 @@
 import { Chip } from "react-native-paper";
 import { View, StyleSheet } from "react-native";
+import techTypeReturner from "../../utils/techTypeReturner";
 
 const TechChips = ({ userTechInfo, technique, handleUpdateTechList }) => {
   return (
@@ -7,34 +8,37 @@ const TechChips = ({ userTechInfo, technique, handleUpdateTechList }) => {
       {new Set(userTechInfo.technique.map((el) => el.type)).size > 1 &&
         Array.from(
           new Set(userTechInfo.technique.map((item) => item.type)),
-        ).map((type) => (
-          <Chip
-            selected={
-              new Set(technique.map((el) => el.type)).size === 1 &&
-              new Set(technique.map((el) => el.type)).has(type)
-            }
-            onPress={() => {
-              if (
-                new Set(userTechInfo.technique.map((el) => el.type)).size <= 1
-              ) {
-                return;
+        ).map((type) => {
+          const itemType = techTypeReturner(type);
+          return (
+            <Chip
+              selected={
+                new Set(technique.map((el) => el.type)).size === 1 &&
+                new Set(technique.map((el) => el.type)).has(type)
               }
+              onPress={() => {
+                if (
+                  new Set(userTechInfo.technique.map((el) => el.type)).size <= 1
+                ) {
+                  return;
+                }
 
-              const techTypesSet = new Set(technique.map((el) => el.type));
+                const techTypesSet = new Set(technique.map((el) => el.type));
 
-              if (techTypesSet.size === 1 && techTypesSet.has(type)) {
-                handleUpdateTechList(userTechInfo.technique);
-              } else {
-                handleUpdateTechList(
-                  userTechInfo.technique.filter((el) => el.type === type),
-                );
-              }
-            }}
-            key={type}
-          >
-            {type}
-          </Chip>
-        ))}
+                if (techTypesSet.size === 1 && techTypesSet.has(type)) {
+                  handleUpdateTechList(userTechInfo.technique);
+                } else {
+                  handleUpdateTechList(
+                    userTechInfo.technique.filter((el) => el.type === type),
+                  );
+                }
+              }}
+              key={type}
+            >
+              {itemType}
+            </Chip>
+          );
+        })}
     </View>
   );
 };
