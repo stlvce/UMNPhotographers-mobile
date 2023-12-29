@@ -61,6 +61,10 @@ export const saveTech = createAsyncThunk(
       await dispatch(
         techApi.endpoints.updateTechniqueList.initiate({
           ...state.tech.userTechInfo,
+          batteryCount:
+            formData.type === "battery"
+              ? formData.quantity
+              : state.tech.userTechInfo.batteryCount,
           technique: [
             ...oldTechList,
             {

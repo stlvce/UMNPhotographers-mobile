@@ -3,7 +3,7 @@ import { Menu, Button, Divider } from "react-native-paper";
 
 const typeVariants = [
   { title: "Камера", icon: "camera-outline" },
-  { title: "Батарея", icon: "battery-high" },
+  { title: "Аккумулятор", icon: "battery-high" },
   { title: "Вспышка", icon: "flash-outline" },
   { title: "Оптика", icon: "dots-circle" },
   { title: "Карта памяти", icon: "memory" },

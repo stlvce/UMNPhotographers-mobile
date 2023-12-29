@@ -74,6 +74,11 @@ export const authApi = api.injectEndpoints({
         url: "/auth/logout",
       }),
     }),
+    authPing: builder.query({
+      query: () => ({
+        url: "/ping",
+      }),
+    }),
   }),
   overrideExisting: true,
 });
@@ -83,4 +88,5 @@ export const {
   useAuthRegisterMutation,
   useAuthLogoutMutation,
   usePnTokenUpdateMutation,
+  useAuthPingQuery,
 } = authApi;

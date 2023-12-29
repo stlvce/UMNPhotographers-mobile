@@ -9,7 +9,7 @@ const FormReturner = ({ type, navigation }) => {
     return <CameraForm navigation={navigation} />;
   }
 
-  if (type === "Батарея") {
+  if (type === "Аккумулятор") {
     return <BatteryForm navigation={navigation} />;
   }
 

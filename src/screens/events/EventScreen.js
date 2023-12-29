@@ -1,11 +1,23 @@
 import { View, StyleSheet, ScrollView } from "react-native";
 import { Text, Button, useTheme } from "react-native-paper";
+import { useEventRegisterMutation } from "../../api/eventApi";
 
 const EventScreen = ({ route, navigation }) => {
   const theme = useTheme();
   const event = route.params;
   const dateStart = event.startTime.split("T");
   const dateEnd = event.endTime.split("T");
+  const [handleEventRegister] = useEventRegisterMutation();
+
+  const handleRegister = () => {
+    handleEventRegister(event.id)
+      .unwrap()
+      .then((res) => {
+        console.log(res, "DATA");
+        navigation.push("Заявка на участие");
+      })
+      .catch((err) => console.log(err, "ERROR"));
+  };
 
   return (
     <ScrollView
@@ -38,25 +50,48 @@ const EventScreen = ({ route, navigation }) => {
               .join(".")} ${dateEnd[1]}`}</Text>
           </View>
         </View>
-
-        <View style={styles.containerButtons}>
-          <Button
-            mode="contained-tonal"
-            onPress={() => {
-              navigation.push("Расписание мероприятия");
-            }}
-          >
-            Расписание
-          </Button>
-          <Button
-            mode="contained"
-            onPress={() => {
-              navigation.push("Заявка на участие");
-            }}
-          >
-            Участвовать
-          </Button>
-        </View>
+        {Boolean("") ? (
+          <View style={styles.containerButtons}>
+            <Button
+              mode="contained-tonal"
+              onPress={() => {
+                navigation.push("Расписание мероприятия");
+              }}
+            >
+              Расписание мероприятия
+            </Button>
+            <Button mode="contained" onPress={handleRegister}>
+              Отправить заявку
+            </Button>
+          </View>
+        ) : (
+          <View style={styles.containerButtons}>
+            <Button
+              mode="contained"
+              onPress={() => {
+                navigation.push("Ваш календарь");
+              }}
+            >
+              Мое расписание
+            </Button>
+            <Button
+              mode="contained-tonal"
+              onPress={() => {
+                navigation.navigate("Приоритеты", event.id);
+              }}
+            >
+              Приоритете зон
+            </Button>
+            <Button
+              mode="contained-tonal"
+              onPress={() => {
+                navigation.navigate("Удобное время", event.id);
+              }}
+            >
+              Время
+            </Button>
+          </View>
+        )}
       </View>
     </ScrollView>
   );

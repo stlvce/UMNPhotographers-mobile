@@ -1,8 +1,19 @@
-import { Button, Card, List, useTheme } from "react-native-paper";
+import { Button, Card, List, Portal, useTheme } from "react-native-paper";
 import { StyleSheet } from "react-native";
+import { useState } from "react";
+import ActionConfirmDialog from "../../../modals/ActionConfirmDialog";
 
 const FlashCard = ({ item, deleteTech }) => {
   const theme = useTheme();
+  const [isVisibleDialog, setIsVisibleDialog] = useState(false);
+
+  const changeVisibleDialog = () => {
+    setIsVisibleDialog(!isVisibleDialog);
+  };
+
+  const handleDelete = () => {
+    deleteTech(item);
+  };
 
   return (
     <Card style={styles.card}>
@@ -22,10 +33,18 @@ const FlashCard = ({ item, deleteTech }) => {
           icon="delete"
           mode="contained"
           buttonColor={theme.colors.error}
-          onPress={() => deleteTech(item)}
+          onPress={changeVisibleDialog}
         >
           Удалить
         </Button>
+        <Portal>
+          <ActionConfirmDialog
+            question={`Вы действительно хотите удалить вспышку ${item.model.name} производителя ${item.manufacturer.name}?`}
+            visible={isVisibleDialog}
+            changeVisible={changeVisibleDialog}
+            handleSubmit={handleDelete}
+          />
+        </Portal>
       </Card.Actions>
     </Card>
   );

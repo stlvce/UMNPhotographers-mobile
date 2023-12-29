@@ -1,8 +1,19 @@
-import { Button, Card, List, useTheme } from "react-native-paper";
+import { useState } from "react";
+import { Button, Card, List, Portal, useTheme } from "react-native-paper";
 import { StyleSheet } from "react-native";
+import ActionConfirmDialog from "../../../modals/ActionConfirmDialog";
 
 const CameraCard = ({ item, deleteTech }) => {
   const theme = useTheme();
+  const [isVisibleDialog, setIsVisibleDialog] = useState(false);
+
+  const changeVisibleDialog = () => {
+    setIsVisibleDialog(!isVisibleDialog);
+  };
+
+  const handleDelete = () => {
+    deleteTech(item);
+  };
 
   return (
     <Card style={styles.card}>
@@ -26,10 +37,18 @@ const CameraCard = ({ item, deleteTech }) => {
           icon="delete"
           mode="contained"
           buttonColor={theme.colors.error}
-          onPress={() => deleteTech(item)}
+          onPress={changeVisibleDialog}
         >
           Удалить
         </Button>
+        <Portal>
+          <ActionConfirmDialog
+            question={`Вы действительно хотите удалить камеру ${item.model.name} производителя ${item.manufacturer.name}?`}
+            visible={isVisibleDialog}
+            changeVisible={changeVisibleDialog}
+            handleSubmit={handleDelete}
+          />
+        </Portal>
       </Card.Actions>
     </Card>
   );

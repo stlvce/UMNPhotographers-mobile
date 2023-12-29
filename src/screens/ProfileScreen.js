@@ -107,8 +107,8 @@ const ProfileScreen = ({ navigation }) => {
   }, [setVisibleExitDialog]);
 
   const handleLogout = useCallback(async () => {
-    navigation.replace("Вход");
     dispatch(logout());
+    navigation.replace("Вход");
   }, []);
 
   useEffect(() => {
