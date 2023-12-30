@@ -7,6 +7,7 @@ import TimetableScreen from "../screens/events/TimetableScreen";
 import RootAppBar from "../components/RootAppBar";
 import PrioritiesScreen from "../screens/events/PrioritiesScreen";
 import FreeTimeScreen from "../screens/events/FreeTimeScreen";
+import AddTimeScreen from "../screens/events/AddTimeScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,7 @@ const EventsNavigator = () => {
       <Stack.Screen name="Расписание мероприятия" component={TimetableScreen} />
       <Stack.Screen name="Приоритеты" component={PrioritiesScreen} />
       <Stack.Screen name="Удобное время" component={FreeTimeScreen} />
+      <Stack.Screen name="Добавление промежутка" component={AddTimeScreen} />
     </Stack.Navigator>
   );
 };

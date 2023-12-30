@@ -11,29 +11,53 @@ export const eventApi = api.injectEndpoints({
     }),
     eventRegister: builder.mutation({
       query: (eventId) => ({
-        url: `event/${eventId}/register`,
+        url: `/event/${eventId}/register`,
         method: "POST",
       }),
     }),
     receiveZonesEvent: builder.query({
       query: (eventId) => ({
-        url: `event/${eventId}/zone`,
+        url: `/event/${eventId}/zone`,
       }),
     }),
     receiveZonePriorityUser: builder.query({
       query: (eventId) => ({
-        url: `event/${eventId}/zone_priority`,
+        url: `/event/${eventId}/zone_priority`,
       }),
     }),
     savePriority: builder.mutation({
       query: ([eventId, zonePriority]) => ({
-        url: `event/${eventId}/zone_priority/upsert`,
+        url: `/event/${eventId}/zone_priority/upsert`,
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: zonePriority,
       }),
+    }),
+    receiveFreeTime: builder.query({
+      query: (eventId) => ({
+        url: `/event/${eventId}/freetime`,
+      }),
+      providesTags: ["FreeTime"],
+    }),
+    upsertFreeTime: builder.mutation({
+      query: ([eventId, formData]) => ({
+        url: `/event/${eventId}/freetime/upsert`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: formData,
+      }),
+      invalidatesTags: ["FreeTime"],
+    }),
+    deleteFreeTime: builder.mutation({
+      query: ([eventId, freetimeId]) => ({
+        url: `/event/${eventId}/freetime/delete/${freetimeId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["FreeTime"],
     }),
   }),
   overrideExisting: true,
@@ -45,4 +69,7 @@ export const {
   useReceiveZonesEventQuery,
   useReceiveZonePriorityUserQuery,
   useSavePriorityMutation,
+  useReceiveFreeTimeQuery,
+  useUpsertFreeTimeMutation,
+  useDeleteFreeTimeMutation,
 } = eventApi;

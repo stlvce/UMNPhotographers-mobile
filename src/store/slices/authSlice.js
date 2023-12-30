@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { authApi } from "../../api/authApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { act } from "@testing-library/react-native";
 
 export const logout = createAsyncThunk(
   "auth/logout",
@@ -14,6 +15,20 @@ export const logout = createAsyncThunk(
   },
 );
 
+export const checkSession = createAsyncThunk(
+  "auth/ping",
+  async (_, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await dispatch(authApi.endpoints.authPing.initiate());
+      if (data) {
+        return data;
+      }
+      return Promise.reject("Сессия истекла");
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
 const initialState = {
   sessionId: "",
   activeRootScreen: "",
@@ -28,14 +43,6 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    checkSessionId: (state, action) => {
-      if (action.payload) {
-        state.sessionId = action.payload;
-        state.activeRootScreen = "Main";
-      } else {
-        state.activeRootScreen = "Вход";
-      }
-    },
     closeStatusSU: (state) => {
       state.statusSignUp = { isError: false, errorMessage: null };
     },
@@ -47,6 +54,13 @@ const authSlice = createSlice({
     builder.addCase(logout.fulfilled, (state) => {
       state.sessionId = "";
     });
+    builder
+      .addCase(checkSession.fulfilled, (state) => {
+        state.activeRootScreen = "Main";
+      })
+      .addCase(checkSession.rejected, (state) => {
+        state.activeRootScreen = "Вход";
+      });
     builder.addMatcher(
       authApi.endpoints.authRegister.matchRejected,
       (state) => {
@@ -64,5 +78,4 @@ const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
-export const { checkSessionId, closeStatusSU, saveStatePNToken } =
-  authSlice.actions;
+export const { closeStatusSU, saveStatePNToken } = authSlice.actions;

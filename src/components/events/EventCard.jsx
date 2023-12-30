@@ -1,26 +1,10 @@
 import { StyleSheet, View } from "react-native";
 import { Card, Text, ProgressBar, MD3Colors } from "react-native-paper";
+import LevelBar from "./LevelBar";
 
 const EventCard = ({ navigation, event }) => {
   const dateStart = event.startTime.split("T");
   const dateEnd = event.endTime.split("T");
-  const level = event.level / 10;
-
-  const levelColor = (value) => {
-    if (value < 0.4) {
-      return "#39d039";
-    }
-
-    if (value >= 0.4 && value <= 0.7) {
-      return "rgba(238,238,47,0.98)";
-    }
-
-    if (value > 0.7) {
-      return MD3Colors.error60;
-    }
-
-    return MD3Colors.primary70;
-  };
 
   return (
     <Card
@@ -33,18 +17,7 @@ const EventCard = ({ navigation, event }) => {
         subtitle={event.address}
       />
       <Card.Content style={styles.contentContainer}>
-        <View style={styles.progressBarContainer}>
-          <View style={styles.flexRow}>
-            <Text style={styles.propertyTitle} variant="bodyMedium">
-              Сложность
-            </Text>
-            <Text style={styles.levelCount} variant="bodyMedium">
-              {event.level}
-            </Text>
-          </View>
-
-          <ProgressBar progress={level} color={levelColor(level)} />
-        </View>
+        <LevelBar level={event.level} />
         <View style={styles.flexRow}>
           <View>
             <Text style={styles.propertyTitle} variant="bodyMedium">

@@ -1,47 +1,40 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AuthScreen from "../screens/AuthScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import BottomNavigator from "./BottomNavigator";
 import RootAppBar from "../components/RootAppBar";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { View } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
-import { checkSessionId, logout } from "../store/slices/authSlice";
+import { useTheme } from "react-native-paper";
+import { checkSession } from "../store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import useRegisterPNs from "../hooks/useRegisterPNs";
-import { useAuthPingQuery } from "../api/authApi";
+import Loader from "../components/ui/Loader";
 
 const Stack = createNativeStackNavigator();
 
 const RootNavigator = () => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const activeRootScreen = useSelector((state) => state.auth.activeRootScreen);
-  const getIdSession = async () => {
-    let idSession = await AsyncStorage.getItem("SESSION");
-    if (isError) {
-      await dispatch(logout());
-      dispatch(checkSessionId(""));
-      return;
-    }
-    dispatch(checkSessionId(idSession));
-  };
   const expoPushToken = useRegisterPNs();
-  const { isError, data } = useAuthPingQuery();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    getIdSession();
-  }, [isError]);
+    setIsLoading(true);
+    dispatch(checkSession()).finally(() => setIsLoading(false));
+  }, []);
 
-  if (!Boolean(activeRootScreen)) {
+  if (isLoading) {
     return (
       <View
         style={{
           flex: 1,
-          backgroundColor: "#FFF",
+          justifyContent: "center",
+          backgroundColor: theme.colors.background,
         }}
       >
-        <ActivityIndicator />
+        <Loader />
       </View>
     );
   }

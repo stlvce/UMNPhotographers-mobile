@@ -1,6 +1,7 @@
 import { View, StyleSheet, ScrollView } from "react-native";
 import { Text, Button, useTheme } from "react-native-paper";
 import { useEventRegisterMutation } from "../../api/eventApi";
+import LevelBar from "../../components/events/LevelBar";
 
 const EventScreen = ({ route, navigation }) => {
   const theme = useTheme();
@@ -30,6 +31,8 @@ const EventScreen = ({ route, navigation }) => {
         <Text style={styles.address} variant="bodyLarge">
           {event.address}
         </Text>
+        {event?.description && <Text>{event.description}</Text>}
+        <LevelBar level={event.level} />
         <View style={styles.dataContainer}>
           <View>
             <Text variant="bodyMedium" style={{ opacity: 0.7 }}>
@@ -74,22 +77,24 @@ const EventScreen = ({ route, navigation }) => {
             >
               Мое расписание
             </Button>
-            <Button
-              mode="contained-tonal"
-              onPress={() => {
-                navigation.navigate("Приоритеты", event.id);
-              }}
-            >
-              Приоритете зон
-            </Button>
-            <Button
-              mode="contained-tonal"
-              onPress={() => {
-                navigation.navigate("Удобное время", event.id);
-              }}
-            >
-              Время
-            </Button>
+            <View style={styles.containerDataButtons}>
+              <Button
+                mode="contained-tonal"
+                onPress={() => {
+                  navigation.navigate("Приоритеты", event.id);
+                }}
+              >
+                Приоритете зон
+              </Button>
+              <Button
+                mode="contained-tonal"
+                onPress={() => {
+                  navigation.navigate("Удобное время", event.id);
+                }}
+              >
+                Время
+              </Button>
+            </View>
           </View>
         )}
       </View>
@@ -116,6 +121,9 @@ const styles = StyleSheet.create({
   containerButtons: {
     marginTop: 30,
     gap: 30,
+  },
+  containerDataButtons: {
+    gap: 15,
   },
 });
 

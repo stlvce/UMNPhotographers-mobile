@@ -2,6 +2,7 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import techSlice from "./slices/techSlice";
 import authSlice from "./slices/authSlice";
 import userSlice from "./slices/userSlice";
+import eventSlice from "./slices/eventSlice";
 import api from "../api";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
@@ -9,6 +10,7 @@ const rootReducers = combineReducers({
   tech: techSlice,
   auth: authSlice,
   user: userSlice,
+  event: eventSlice,
   [api.reducerPath]: api.reducer,
 });
 

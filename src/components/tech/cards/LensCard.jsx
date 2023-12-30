@@ -1,65 +1,20 @@
-import { Button, Card, List, Portal, useTheme } from "react-native-paper";
-import { StyleSheet } from "react-native";
-import { useState } from "react";
-import ActionConfirmDialog from "../../../modals/ActionConfirmDialog";
+import TechCard from "../TechCard";
 
 const LensCard = ({ item, deleteTech }) => {
-  const theme = useTheme();
-  const [isVisibleDialog, setIsVisibleDialog] = useState(false);
-
-  const changeVisibleDialog = () => {
-    setIsVisibleDialog(!isVisibleDialog);
-  };
-
-  const handleDelete = () => {
-    deleteTech(item);
-  };
-
   return (
-    <Card style={styles.card}>
-      <Card.Title
-        title={item.model.name}
-        subtitle="Оптика"
-        titleVariant="titleLarge"
-      />
-      <Card.Content>
-        <List.Item
-          title={`Производитель: ${item.manufacturer.name}`}
-          titleStyle={{ fontSize: 15 }}
-        />
-        <List.Item
-          title={`Фокусное расстояние: ${item.focus}`}
-          titleStyle={{ fontSize: 15 }}
-        />
-        <List.Item
-          title={`Камера: ${item.camera?.model.name} (Кроп-фактор: ${item.camera?.crop})`}
-          titleStyle={{ fontSize: 15 }}
-        />
-      </Card.Content>
-      <Card.Actions>
-        <Button
-          icon="delete"
-          mode="contained"
-          buttonColor={theme.colors.error}
-          onPress={changeVisibleDialog}
-        >
-          Удалить
-        </Button>
-        <Portal>
-          <ActionConfirmDialog
-            question={`Вы действительно хотите удалить линзы ${item.model.name} производителя ${item.manufacturer.name}?`}
-            visible={isVisibleDialog}
-            changeVisible={changeVisibleDialog}
-            handleSubmit={handleDelete}
-          />
-        </Portal>
-      </Card.Actions>
-    </Card>
+    <TechCard
+      tech={item}
+      nameType="Оптика"
+      additionalInfo={[
+        { title: "Фокусное расстояние", value: item.focus },
+        {
+          title: "Камера",
+          value: `${item.camera?.model.name} (Кроп-фактор: ${item.camera?.crop})`,
+        },
+      ]}
+      deleteTech={deleteTech}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  card: {},
-});
 
 export default LensCard;
