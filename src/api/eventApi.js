@@ -17,7 +17,7 @@ export const eventApi = api.injectEndpoints({
     }),
     receiveZonesEvent: builder.query({
       query: (eventId) => ({
-        url: `/event/${eventId}/zone`,
+        url: `/event/${eventId}/zone?page=0&size=20`,
       }),
     }),
     receiveZonePriorityUser: builder.query({

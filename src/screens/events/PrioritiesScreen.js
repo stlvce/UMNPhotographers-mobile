@@ -39,7 +39,7 @@ const PrioritiesScreen = ({ route, navigation }) => {
 
     if (zonesEvent) {
       setValue([
-        ...zonesEvent.map((item) => ({ zoneId: item.id, priority: null })),
+        ...zonesEvent.list.map((item) => ({ zoneId: item.id, priority: null })),
       ]);
     }
   }, [zonesEvent, priorityUser]);
@@ -58,7 +58,7 @@ const PrioritiesScreen = ({ route, navigation }) => {
     );
   }
 
-  if (zonesEvent?.length === 0) {
+  if (zonesEvent?.list.length === 0) {
     return (
       <View
         style={{
