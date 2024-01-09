@@ -13,7 +13,6 @@ const initialState = {
   size: "",
 };
 
-// TODO: size не сохраняется
 const MemoryForm = ({ navigation }) => {
   return (
     <AddedTechForm

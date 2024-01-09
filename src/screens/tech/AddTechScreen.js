@@ -8,7 +8,7 @@ const AddTechScreen = ({ navigation }) => {
   const theme = useTheme();
   const [visibleMenu, setVisibleMenu] = useState(false);
   const [selectedType, setSelectedType] = useState({
-    title: "Выбрать тип техники",
+    title: "Тип техники",
     icon: "",
   });
 

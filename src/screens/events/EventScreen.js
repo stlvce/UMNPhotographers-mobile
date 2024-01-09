@@ -1,23 +1,19 @@
 import { View, StyleSheet, ScrollView } from "react-native";
 import { Text, Button, useTheme } from "react-native-paper";
 import { useEventRegisterMutation } from "../../api/eventApi";
+import { useSelector } from "react-redux";
 import LevelBar from "../../components/events/LevelBar";
 
 const EventScreen = ({ route, navigation }) => {
   const theme = useTheme();
+  const userEventListID = useSelector((state) => state.event.userEventListID);
   const event = route.params;
   const dateStart = event.startTime.split("T");
   const dateEnd = event.endTime.split("T");
   const [handleEventRegister] = useEventRegisterMutation();
 
   const handleRegister = () => {
-    handleEventRegister(event.id)
-      .unwrap()
-      .then((res) => {
-        console.log(res, "DATA");
-        navigation.push("Заявка на участие");
-      })
-      .catch((err) => console.log(err, "ERROR"));
+    handleEventRegister(event.id);
   };
 
   return (
@@ -53,26 +49,12 @@ const EventScreen = ({ route, navigation }) => {
               .join(".")} ${dateEnd[1]}`}</Text>
           </View>
         </View>
-        {Boolean("") ? (
-          <View style={styles.containerButtons}>
-            <Button
-              mode="contained-tonal"
-              onPress={() => {
-                navigation.push("Расписание мероприятия");
-              }}
-            >
-              Расписание мероприятия
-            </Button>
-            <Button mode="contained" onPress={handleRegister}>
-              Отправить заявку
-            </Button>
-          </View>
-        ) : (
+        {userEventListID.find((eventId) => eventId === event.id) ? (
           <View style={styles.containerButtons}>
             <Button
               mode="contained"
               onPress={() => {
-                navigation.push("Ваш календарь");
+                navigation.push("Ваш календарь", event.id);
               }}
             >
               Мое расписание
@@ -95,6 +77,20 @@ const EventScreen = ({ route, navigation }) => {
                 Время
               </Button>
             </View>
+          </View>
+        ) : (
+          <View style={styles.containerButtons}>
+            <Button
+              mode="contained-tonal"
+              onPress={() => {
+                navigation.push("Расписание мероприятия");
+              }}
+            >
+              Расписание мероприятия
+            </Button>
+            <Button mode="contained" onPress={handleRegister}>
+              Отправить заявку
+            </Button>
           </View>
         )}
       </View>

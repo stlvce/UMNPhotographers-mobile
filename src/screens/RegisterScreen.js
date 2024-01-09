@@ -6,6 +6,7 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
+  View,
 } from "react-native";
 import { Button, Portal, useTheme } from "react-native-paper";
 import FullNameForm from "../components/forms/FullNameForm";
@@ -103,45 +104,50 @@ const RegisterScreen = ({ navigation }) => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView
           style={{
-            ...styles.container,
             backgroundColor: theme.colors.background,
           }}
         >
-          <FullNameForm
-            containerTitle="О себе"
-            value={[userData.firstname, userData.surname, userData.middleName]}
-            handler={handleChange}
-            ref={isValidFullNameRef}
-          />
-          <BirthdateInput value={userData.birthdate} handler={handleChange} />
-          <UploadAvatarInput
-            hasTitle
-            value={image}
-            handleChange={handleChangeImage}
-          />
-          <ContactForm
-            value={[userData.email, userData.phone, userData.tg, userData.vk]}
-            handler={handleChange}
-            ref={isValidContactsRef}
-          />
-          <PortfolioForm
-            value={userData.portfolio}
-            handler={handleChange}
-            ref={isValidPortfolioRef}
-          />
-          <PassForm
-            value={[userData.password, userData.confPass]}
-            handler={handleChange}
-            ref={isValidPasswordRef}
-          />
-          <Button
-            mode="contained"
-            style={styles.button}
-            onPress={changeVisibleDialog}
-            disabled={!isValid}
-          >
-            Отправить
-          </Button>
+          <View style={styles.container}>
+            <FullNameForm
+              containerTitle="О себе"
+              value={[
+                userData.firstname,
+                userData.surname,
+                userData.middleName,
+              ]}
+              handler={handleChange}
+              ref={isValidFullNameRef}
+            />
+            <BirthdateInput value={userData.birthdate} handler={handleChange} />
+            <UploadAvatarInput
+              hasTitle
+              value={image}
+              handleChange={handleChangeImage}
+            />
+            <ContactForm
+              value={[userData.email, userData.phone, userData.tg, userData.vk]}
+              handler={handleChange}
+              ref={isValidContactsRef}
+            />
+            <PortfolioForm
+              value={userData.portfolio}
+              handler={handleChange}
+              ref={isValidPortfolioRef}
+            />
+            <PassForm
+              value={[userData.password, userData.confPass]}
+              handler={handleChange}
+              ref={isValidPasswordRef}
+            />
+            <Button
+              mode="contained"
+              style={styles.button}
+              onPress={changeVisibleDialog}
+              disabled={!isValid}
+            >
+              Отправить
+            </Button>
+          </View>
           <Portal>
             <ActionConfirmDialog
               question="Завершить регистрацию?"
@@ -162,11 +168,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    flex: 1,
+    gap: 30,
     padding: 20,
   },
   button: {
-    marginTop: 20,
+    marginTop: 10,
     marginBottom: 40,
   },
 });

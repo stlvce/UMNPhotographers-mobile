@@ -130,40 +130,47 @@ const ProfileScreen = ({ navigation }) => {
             backgroundColor: theme.colors.background,
           }}
         >
-          <UploadAvatarInput value={image} handleChange={handleChangeImage} />
-          <FullNameForm
-            containerTitle="ФИО"
-            value={[userData.firstname, userData.surname, userData.middleName]}
-            handler={handleChange}
-            ref={isValidFullNameRef}
-          />
-          <ContactForm
-            value={[userData.email, userData.phone, userData.tg, userData.vk]}
-            handler={handleChange}
-            isLoading={isLoading}
-            ref={isValidContactsRef}
-          />
-          <PortfolioForm
-            value={userData.portfolio}
-            handler={handleChange}
-            ref={isValidPortfolioRef}
-          />
-          <View style={styles.buttonContainer}>
-            <Button onPress={changeVisibleChangePassModal} mode="outlined">
-              Сменить пароль
-            </Button>
-            <Button onPress={changeVisibleSaveDialog} mode="contained">
-              Сохранить
-            </Button>
-            <Button
-              style={styles.exit}
-              onPress={changeVisibleExitDialog}
-              mode="outlined"
-              textColor={theme.colors.error}
-              icon="logout"
-            >
-              Выйти
-            </Button>
+          <View style={{ gap: 30, padding: 20 }}>
+            <UploadAvatarInput value={image} handleChange={handleChangeImage} />
+            <FullNameForm
+              containerTitle="ФИО"
+              value={[
+                userData.firstname,
+                userData.surname,
+                userData.middleName,
+              ]}
+              handler={handleChange}
+              ref={isValidFullNameRef}
+            />
+            <ContactForm
+              value={[userData.email, userData.phone, userData.tg, userData.vk]}
+              handler={handleChange}
+              isLoading={isLoading}
+              ref={isValidContactsRef}
+            />
+            <PortfolioForm
+              value={userData.portfolio}
+              handler={handleChange}
+              ref={isValidPortfolioRef}
+            />
+            <View style={styles.buttonContainer}>
+              <Button onPress={changeVisibleSaveDialog} mode="contained">
+                Сохранить
+              </Button>
+              <Button onPress={changeVisibleChangePassModal} mode="outlined">
+                Сменить пароль
+              </Button>
+
+              <Button
+                style={styles.exit}
+                onPress={changeVisibleExitDialog}
+                mode="outlined"
+                textColor={theme.colors.error}
+                icon="logout"
+              >
+                Выйти
+              </Button>
+            </View>
           </View>
           <Portal>
             <ChangePasswordModal
@@ -196,14 +203,14 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 20,
   },
   buttonContainer: {
+    marginTop: 10,
     gap: 10,
-    marginBottom: 20,
   },
   exit: {
-    marginVertical: 20,
+    marginTop: 20,
+    marginBottom: 40,
     borderColor: "#B3261E",
   },
 });

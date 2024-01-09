@@ -34,8 +34,8 @@ const AddTimeScreen = ({ navigation, route }) => {
     handleUpsert([
       eventId,
       {
-        startTime,
-        endTime,
+        startTime: startTime.toISOString(),
+        endTime: endTime.toISOString(),
       },
     ]);
     navigation.goBack();

@@ -3,7 +3,10 @@ import { ScrollView, StyleSheet, RefreshControl } from "react-native";
 import { useTheme } from "react-native-paper";
 import SortingMenu from "../../components/events/SortingMenu";
 import EventsList from "../../components/events/EventsList";
-import { useReceiveEventListQuery } from "../../api/eventApi";
+import {
+  useReceiveEventListQuery,
+  useReceiveUserEventListQuery,
+} from "../../api/eventApi";
 
 const EventsScreen = ({ navigation }) => {
   const theme = useTheme();
@@ -11,6 +14,7 @@ const EventsScreen = ({ navigation }) => {
   const [sortVariant, setSortVariant] = useState(null);
   const { data, isLoading, isError, refetch } =
     useReceiveEventListQuery(sortVariant);
+  const { isLoading: isUserEventLoading } = useReceiveUserEventListQuery();
 
   const changeVisibleMenu = () => {
     setVisibleMenu((prev) => !prev);
@@ -24,7 +28,10 @@ const EventsScreen = ({ navigation }) => {
     <ScrollView
       style={{ ...styles.container, backgroundColor: theme.colors.background }}
       refreshControl={
-        <RefreshControl refreshing={isLoading} onRefresh={refetch} />
+        <RefreshControl
+          refreshing={isLoading || isUserEventLoading}
+          onRefresh={refetch}
+        />
       }
     >
       <SortingMenu
@@ -32,7 +39,7 @@ const EventsScreen = ({ navigation }) => {
         changeVisible={changeVisibleMenu}
         initiateSort={initiateSort}
       />
-      {!isLoading && (
+      {!isLoading && !isUserEventLoading && (
         <EventsList navigation={navigation} data={data} isError={isError} />
       )}
     </ScrollView>

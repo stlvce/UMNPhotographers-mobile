@@ -25,7 +25,6 @@ const PortfolioForm = ({ value, handler }, ref) => {
 const styles = StyleSheet.create({
   containerForm: {
     gap: 10,
-    marginBottom: 20,
   },
 });
 

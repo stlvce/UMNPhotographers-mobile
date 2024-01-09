@@ -38,7 +38,6 @@ const ContactForm = ({ value, handler, isLoading = false }, ref) => {
 const styles = StyleSheet.create({
   container: {
     gap: 10,
-    marginBottom: 20,
   },
 });
 

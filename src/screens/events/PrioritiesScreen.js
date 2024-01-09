@@ -100,13 +100,13 @@ const PrioritiesScreen = ({ route, navigation }) => {
               buttons={[
                 {
                   value: 1,
-                  label: "Хочу",
+                  label: "Не хочу",
                 },
                 {
                   value: 2,
                   label: "Могу",
                 },
-                { value: 3, label: "Не хочу" },
+                { value: 3, label: "Хочу" },
               ]}
             />
           </View>
@@ -117,9 +117,6 @@ const PrioritiesScreen = ({ route, navigation }) => {
           disabled={value.map((item) => item.priority).includes(null)}
           onPress={() => {
             setIsLoadingSave(true);
-            value.forEach((item) => {
-              handleSave([eventId, item]);
-            });
             Promise.all(
               value.map((item) => handleSave([eventId, item]).unwrap()),
             )

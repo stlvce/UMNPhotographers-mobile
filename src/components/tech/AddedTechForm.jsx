@@ -86,7 +86,7 @@ const AddedTechForm = ({
         >
           {Boolean(formData.manufacturer)
             ? `Производитель: ${formData.manufacturer}`
-            : "Выбрать производителя"}
+            : "Производителя"}
         </Button>
         <Button
           mode="outlined"
@@ -95,9 +95,7 @@ const AddedTechForm = ({
           }
           onPress={changeVisibleModelModal}
         >
-          {Boolean(formData.model)
-            ? `Модель: ${formData.model}`
-            : "Выбрать модель"}
+          {Boolean(formData.model) ? `Модель: ${formData.model}` : "Модель"}
         </Button>
         {additionalFormItems.map((item) => {
           isNotValid =

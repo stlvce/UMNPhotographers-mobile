@@ -28,7 +28,6 @@ const UploadAvatarInput = ({ hasTitle = false, value, handleChange }) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    marginBottom: 20,
     gap: 10,
   },
 });

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { authApi } from "../../api/authApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { act } from "@testing-library/react-native";
+import api from "../../api";
 
 export const logout = createAsyncThunk(
   "auth/logout",
@@ -9,6 +9,8 @@ export const logout = createAsyncThunk(
     try {
       await AsyncStorage.removeItem("SESSION");
       await dispatch(authApi.endpoints.authLogout.initiate());
+      // Сброс сохраненных запросов
+      dispatch(api.util.resetApiState());
     } catch (error) {
       return rejectWithValue(error);
     }

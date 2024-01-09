@@ -5,7 +5,7 @@ const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.EXPO_PUBLIC_API_URL,
   }),
-  tagTypes: ["FreeTime"],
+  tagTypes: ["FreeTime", "UserEventList"],
   endpoints: (builder) => ({}),
 });
 

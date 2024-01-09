@@ -4,7 +4,6 @@ import { getHeaderTitle } from "@react-navigation/elements";
 
 const RootAppBar = ({ navigation, route, options, back }) => {
   const title = getHeaderTitle(options, route.name);
-
   return (
     <Appbar.Header>
       {back ? <Appbar.BackAction onPress={navigation.goBack} /> : null}
@@ -20,7 +19,9 @@ const RootAppBar = ({ navigation, route, options, back }) => {
       {route.name === "Мероприятие" && (
         <Appbar.Action
           icon="calendar"
-          onPress={() => navigation.push("Ваш календарь")}
+          onPress={() =>
+            navigation.push("Расписание мероприятия", route.params.id)
+          }
         />
       )}
       {route.name === "Tech" && (

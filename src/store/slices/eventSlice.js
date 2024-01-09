@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { eventApi } from "../../api/eventApi";
 
 const initialState = {
+  userEventListID: [],
   statusUpsertFreeTime: {
     isVisible: false,
     errorMessage: null,
@@ -17,6 +18,12 @@ const eventSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addMatcher(
+      eventApi.endpoints.receiveUserEventList.matchFulfilled,
+      (state, action) => {
+        state.userEventListID = action.payload.list.map((item) => item.eventId);
+      },
+    );
     builder
       .addMatcher(
         eventApi.endpoints.upsertFreeTime.matchFulfilled,

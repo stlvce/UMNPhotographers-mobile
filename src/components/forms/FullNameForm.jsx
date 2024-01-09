@@ -46,7 +46,6 @@ const FullNameForm = ({ containerTitle, value, handler }, ref) => {
 const styles = StyleSheet.create({
   container: {
     gap: 10,
-    marginBottom: 20,
   },
 });
 

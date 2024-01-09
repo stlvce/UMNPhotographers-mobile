@@ -9,11 +9,18 @@ export const eventApi = api.injectEndpoints({
           : `/event/list?page=${page}&size=${size}`,
       }),
     }),
+    receiveUserEventList: builder.query({
+      query: () => ({
+        url: "/event/list/photographer?page=0&size=50",
+      }),
+      providesTags: ["UserEventList"],
+    }),
     eventRegister: builder.mutation({
       query: (eventId) => ({
         url: `/event/${eventId}/register`,
         method: "POST",
       }),
+      invalidatesTags: ["UserEventList"],
     }),
     receiveZonesEvent: builder.query({
       query: (eventId) => ({
@@ -65,6 +72,7 @@ export const eventApi = api.injectEndpoints({
 
 export const {
   useReceiveEventListQuery,
+  useReceiveUserEventListQuery,
   useEventRegisterMutation,
   useReceiveZonesEventQuery,
   useReceiveZonePriorityUserQuery,

@@ -5,8 +5,11 @@ import ActionConfirmDialog from "../../../modals/ActionConfirmDialog";
 
 const ExistingTimeCard = ({ item, handleDelete }) => {
   const theme = useTheme();
+  const gmtPlus = new Date().toString().slice(-3, -2);
   const dateStart = new Date(item.startTime);
+  dateStart.setHours(Number(dateStart.getHours()) + Number(gmtPlus));
   const dateEnd = new Date(item.endTime);
+  dateEnd.setHours(Number(dateEnd.getHours()) + Number(gmtPlus));
   const [isVisibleDialog, setIsVisibleDialog] = useState(false);
 
   const changeVisibleDialog = () => {
