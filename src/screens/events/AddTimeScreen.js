@@ -81,6 +81,7 @@ const AddTimeScreen = ({ navigation, route }) => {
         disabled={
           !formData.date || !formData.startTime.hours || !formData.endTime.hours
         }
+        contentStyle={{ height: 45 }}
       >
         Сохранить
       </Button>

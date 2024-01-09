@@ -1,11 +1,15 @@
 import React from "react";
-import { Appbar } from "react-native-paper";
+import { Appbar, useTheme } from "react-native-paper";
 import { getHeaderTitle } from "@react-navigation/elements";
+import { useSelector } from "react-redux";
 
 const RootAppBar = ({ navigation, route, options, back }) => {
+  const theme = useTheme();
   const title = getHeaderTitle(options, route.name);
+  const userEventListID = useSelector((state) => state.event.userEventListID);
+
   return (
-    <Appbar.Header>
+    <Appbar.Header style={{ backgroundColor: theme.colors.navigatorContainer }}>
       {back ? <Appbar.BackAction onPress={navigation.goBack} /> : null}
       <Appbar.Content
         title={
@@ -16,14 +20,15 @@ const RootAppBar = ({ navigation, route, options, back }) => {
               : title
         }
       />
-      {route.name === "Мероприятие" && (
-        <Appbar.Action
-          icon="calendar"
-          onPress={() =>
-            navigation.push("Расписание мероприятия", route.params.id)
-          }
-        />
-      )}
+      {route.name === "Мероприятие" &&
+        userEventListID.find((eventId) => eventId === route.params.id) && (
+          <Appbar.Action
+            icon="calendar"
+            onPress={() =>
+              navigation.push("Расписание мероприятия", route.params.id)
+            }
+          />
+        )}
       {route.name === "Tech" && (
         <Appbar.Action
           onPress={() => navigation.push("Добавление техники")}

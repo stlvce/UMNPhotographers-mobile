@@ -25,7 +25,12 @@ const BirthdateInput = ({ value, handler }) => {
     <View style={styles.container}>
       <Text variant="titleLarge">Дата рождения</Text>
       <SafeAreaProvider>
-        <Button onPress={() => setOpen(true)} uppercase={false} mode="outlined">
+        <Button
+          onPress={() => setOpen(true)}
+          uppercase={false}
+          mode="outlined"
+          contentStyle={{ height: 45 }}
+        >
           {Boolean(value)
             ? `Дата рождения: ${value.toLocaleDateString()}`
             : "Выбрать дату"}

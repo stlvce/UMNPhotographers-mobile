@@ -8,6 +8,7 @@ import StatusSnackbar from "../../components/ui/StatusSnackbar";
 import { closeStatusAddTech } from "../../store/slices/techSlice";
 import TechCardReturner from "../../components/tech/TechCardReturner";
 import TechChips from "../../components/tech/TechChips";
+import StateScreen from "../../components/ui/StateScreen";
 
 const TechScreen = () => {
   const theme = useTheme();
@@ -15,7 +16,7 @@ const TechScreen = () => {
   const userTechInfo = useSelector((state) => state.tech.userTechInfo);
   const statusAddTech = useSelector((state) => state.tech.statusAddTech);
   const [technique, setTechnique] = useState([]);
-  const { data, isLoading, error, refetch } = useReceiveUserTechListQuery();
+  const { data, isLoading, isError, refetch } = useReceiveUserTechListQuery();
 
   const deleteTech = (item) => {
     setTechnique([...technique.filter((el) => el.id !== item.id)]);
@@ -36,6 +37,10 @@ const TechScreen = () => {
     }
   }, [userTechInfo]);
 
+  if (technique?.length === 0) {
+    return <StateScreen message="Техника не добавлена" isError={isError} />;
+  }
+
   return (
     <ScrollView
       style={{ ...styles.container, backgroundColor: theme.colors.background }}
@@ -43,30 +48,19 @@ const TechScreen = () => {
         <RefreshControl refreshing={isLoading} onRefresh={refetch} />
       }
     >
-      {technique?.length === 0 ? (
+      <View style={styles.techList}>
+        <TechChips
+          userTechInfo={userTechInfo}
+          technique={technique}
+          handleUpdateTechList={handleUpdateTechList}
+        />
         <Text variant="bodyMedium" style={styles.textState}>
-          {error ? "Ошибка" : "Нет техники"}
+          Количество техники: {technique.length}
         </Text>
-      ) : (
-        <View style={styles.techList}>
-          <TechChips
-            userTechInfo={userTechInfo}
-            technique={technique}
-            handleUpdateTechList={handleUpdateTechList}
-          />
-          <Text variant="bodyMedium" style={styles.textState}>
-            Количество техники: {technique.length}
-          </Text>
-
-          {technique.map((item) => (
-            <TechCardReturner
-              item={item}
-              deleteTech={deleteTech}
-              key={item.id}
-            />
-          ))}
-        </View>
-      )}
+        {technique.map((item) => (
+          <TechCardReturner item={item} deleteTech={deleteTech} key={item.id} />
+        ))}
+      </View>
       <Portal>
         <StatusSnackbar
           isVisible={statusAddTech.isVisible}

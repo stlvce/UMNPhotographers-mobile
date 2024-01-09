@@ -56,6 +56,7 @@ const EventScreen = ({ route, navigation }) => {
               onPress={() => {
                 navigation.push("Ваш календарь", event.id);
               }}
+              contentStyle={{ height: 45 }}
             >
               Мое расписание
             </Button>
@@ -65,6 +66,7 @@ const EventScreen = ({ route, navigation }) => {
                 onPress={() => {
                   navigation.navigate("Приоритеты", event.id);
                 }}
+                contentStyle={{ height: 45 }}
               >
                 Приоритете зон
               </Button>
@@ -73,6 +75,7 @@ const EventScreen = ({ route, navigation }) => {
                 onPress={() => {
                   navigation.navigate("Удобное время", event.id);
                 }}
+                contentStyle={{ height: 45 }}
               >
                 Время
               </Button>
@@ -85,10 +88,15 @@ const EventScreen = ({ route, navigation }) => {
               onPress={() => {
                 navigation.push("Расписание мероприятия");
               }}
+              contentStyle={{ height: 45 }}
             >
               Расписание мероприятия
             </Button>
-            <Button mode="contained" onPress={handleRegister}>
+            <Button
+              mode="contained"
+              onPress={handleRegister}
+              contentStyle={{ height: 45 }}
+            >
               Отправить заявку
             </Button>
           </View>

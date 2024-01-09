@@ -52,6 +52,7 @@ const FreeTimeScreen = ({ route, navigation }) => {
           onPress={() => {
             navigation.push("Добавление промежутка", eventId);
           }}
+          contentStyle={{ height: 45 }}
         >
           Добавить промежуток
         </Button>

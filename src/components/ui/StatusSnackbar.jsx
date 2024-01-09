@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { View } from "react-native";
-import { Icon, Snackbar, Text } from "react-native-paper";
+import { Icon, Snackbar, Text, useTheme } from "react-native-paper";
 
 const StatusSnackbar = ({
   isVisible,
@@ -8,6 +8,8 @@ const StatusSnackbar = ({
   errorMessage,
   closeSnackbar,
 }) => {
+  const theme = useTheme();
+
   useEffect(() => {
     if (isVisible) {
       setTimeout(closeSnackbar, 3000);
@@ -23,9 +25,9 @@ const StatusSnackbar = ({
     >
       <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
         {errorMessage ? (
-          <Icon size={22} source="close" color="red" />
+          <Icon size={22} source="close" color={theme.colors.error} />
         ) : (
-          <Icon size={22} source="check" color="green" />
+          <Icon size={22} source="check" color={theme.colors.success} />
         )}
         <Text style={{ color: "white" }}>{errorMessage || message}</Text>
       </View>

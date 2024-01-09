@@ -1,8 +1,11 @@
 import { StyleSheet, View } from "react-native";
-import { Card, Text, ProgressBar, MD3Colors } from "react-native-paper";
+import { Card, Text, useTheme, Icon } from "react-native-paper";
 import LevelBar from "./LevelBar";
+import { useSelector } from "react-redux";
 
 const EventCard = ({ navigation, event }) => {
+  const theme = useTheme();
+  const userEventListID = useSelector((state) => state.event.userEventListID);
   const dateStart = event.startTime.split("T");
   const dateEnd = event.endTime.split("T");
 
@@ -11,6 +14,19 @@ const EventCard = ({ navigation, event }) => {
       style={styles.card}
       onPress={() => navigation.navigate("Мероприятие", event)}
     >
+      {userEventListID.find((eventId) => eventId === event.id) && (
+        <Card.Content
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            gap: 5,
+          }}
+        >
+          <Icon size={15} source="check" color={theme.colors.success} />
+          <Text style={{ color: theme.colors.success }}>Вы участвуете</Text>
+        </Card.Content>
+      )}
       <Card.Title
         title={event.name}
         titleVariant="titleMedium"
@@ -46,6 +62,7 @@ const EventCard = ({ navigation, event }) => {
 const styles = StyleSheet.create({
   card: {
     marginBottom: 20,
+    shadowOpacity: 0.1,
   },
   contentContainer: { marginTop: 20, gap: 15 },
   progressBarContainer: {

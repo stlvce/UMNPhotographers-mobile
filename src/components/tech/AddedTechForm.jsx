@@ -83,6 +83,7 @@ const AddedTechForm = ({
             Boolean(formData.manufacturer) && { color: theme.colors.secondary }
           }
           onPress={changeVisibleManufacModal}
+          contentStyle={{ height: 45 }}
         >
           {Boolean(formData.manufacturer)
             ? `Производитель: ${formData.manufacturer}`
@@ -94,6 +95,7 @@ const AddedTechForm = ({
             Boolean(formData.model) && { color: theme.colors.secondary }
           }
           onPress={changeVisibleModelModal}
+          contentStyle={{ height: 45 }}
         >
           {Boolean(formData.model) ? `Модель: ${formData.model}` : "Модель"}
         </Button>
@@ -138,6 +140,7 @@ const AddedTechForm = ({
           mode="contained"
           onPress={handleSubmit}
           disabled={Object.values(formData).includes("") || isNotValid}
+          contentStyle={{ height: 45 }}
         >
           Добавить
         </Button>
@@ -169,7 +172,7 @@ const AddedTechForm = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    gap: 10,
+    gap: 15,
   },
   otherInput: {
     zIndex: -2,

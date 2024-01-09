@@ -7,6 +7,7 @@ import {
   useSavePriorityMutation,
 } from "../../api/eventApi";
 import Loader from "../../components/ui/Loader";
+import StateScreen from "../../components/ui/StateScreen";
 
 const PrioritiesScreen = ({ route, navigation }) => {
   const [value, setValue] = useState([]);
@@ -59,19 +60,7 @@ const PrioritiesScreen = ({ route, navigation }) => {
   }
 
   if (zonesEvent?.list.length === 0) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          backgroundColor: theme.colors.background,
-        }}
-      >
-        <Text style={{ textAlign: "center", opacity: 0.7, paddingBottom: 30 }}>
-          Зоны ещё не добавлены
-        </Text>
-      </View>
-    );
+    return <StateScreen message="Зоны ещё не добавлены" />;
   }
 
   return (
@@ -131,6 +120,7 @@ const PrioritiesScreen = ({ route, navigation }) => {
                 console.log(err);
               });
           }}
+          contentStyle={{ height: 45 }}
         >
           Сохранить
         </Button>

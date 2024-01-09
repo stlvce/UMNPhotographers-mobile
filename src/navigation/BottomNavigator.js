@@ -17,6 +17,7 @@ const BottomNavigator = () => {
       screenOptions={{
         header: (props) => <RootAppBar {...props} />,
         tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.secondary,
         tabBarHideOnKeyboard: Platform.OS === "android",
       }}
     >
@@ -29,7 +30,9 @@ const BottomNavigator = () => {
             <Icon
               source="calendar-search"
               size={25}
-              color={focused ? theme.colors.primary : "#000"}
+              color={
+                focused ? theme.colors.primary : theme.colors.bottomNavIcon
+              }
             />
           ),
         }}
@@ -43,7 +46,9 @@ const BottomNavigator = () => {
             <Icon
               source="camera-iris"
               size={25}
-              color={focused ? theme.colors.primary : "#000"}
+              color={
+                focused ? theme.colors.primary : theme.colors.bottomNavIcon
+              }
             />
           ),
         }}
@@ -56,7 +61,9 @@ const BottomNavigator = () => {
             <Icon
               source="account"
               size={25}
-              color={focused ? theme.colors.primary : "#000"}
+              color={
+                focused ? theme.colors.primary : theme.colors.bottomNavIcon
+              }
             />
           ),
         }}

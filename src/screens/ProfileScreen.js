@@ -154,10 +154,18 @@ const ProfileScreen = ({ navigation }) => {
               ref={isValidPortfolioRef}
             />
             <View style={styles.buttonContainer}>
-              <Button onPress={changeVisibleSaveDialog} mode="contained">
+              <Button
+                onPress={changeVisibleSaveDialog}
+                mode="contained"
+                contentStyle={{ height: 45 }}
+              >
                 Сохранить
               </Button>
-              <Button onPress={changeVisibleChangePassModal} mode="outlined">
+              <Button
+                onPress={changeVisibleChangePassModal}
+                mode="outlined"
+                contentStyle={{ height: 45 }}
+              >
                 Сменить пароль
               </Button>
 
@@ -167,6 +175,7 @@ const ProfileScreen = ({ navigation }) => {
                 mode="outlined"
                 textColor={theme.colors.error}
                 icon="logout"
+                contentStyle={{ height: 45 }}
               >
                 Выйти
               </Button>

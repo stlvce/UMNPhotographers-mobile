@@ -21,6 +21,7 @@ const TypesMenu = ({ visible, changeVisible, selectedType, chooseType }) => {
           onPress={changeVisible}
           mode="contained-tonal"
           icon={selectedType.icon}
+          contentStyle={{ height: 45 }}
         >
           {selectedType.title}
         </Button>

@@ -144,6 +144,7 @@ const RegisterScreen = ({ navigation }) => {
               style={styles.button}
               onPress={changeVisibleDialog}
               disabled={!isValid}
+              contentStyle={{ height: 45 }}
             >
               Отправить
             </Button>

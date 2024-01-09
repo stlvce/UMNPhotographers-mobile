@@ -26,7 +26,12 @@ const DateEventPicker = ({ varName, value, handler }) => {
 
   return (
     <SafeAreaProvider>
-      <Button onPress={() => setOpen(true)} uppercase={false} mode="outlined">
+      <Button
+        onPress={() => setOpen(true)}
+        uppercase={false}
+        mode="outlined"
+        contentStyle={{ height: 45 }}
+      >
         {Boolean(value) ? value.toLocaleDateString() : "Выбрать дату"}
       </Button>
       <DatePickerModal

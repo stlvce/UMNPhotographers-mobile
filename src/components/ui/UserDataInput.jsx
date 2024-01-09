@@ -32,9 +32,12 @@ const UserDataInput = (
         onBlur={handleBlur}
         error={isError}
         right={
-          ref.current && isBlur && <TextInput.Icon icon="check" color="green" />
+          ref.current &&
+          isBlur && <TextInput.Icon icon="check" color={theme.colors.success} />
         }
-        outlineColor={ref.current && isBlur ? "green" : theme.colors.secondary}
+        outlineColor={
+          ref.current && isBlur ? theme.colors.success : theme.colors.secondary
+        }
         {...props}
       />
       {/*      <HelperText type="error" visible={isError} padding="none">

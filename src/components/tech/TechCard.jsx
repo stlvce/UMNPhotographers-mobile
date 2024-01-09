@@ -16,7 +16,7 @@ const TechCard = ({ tech, nameType, additionalInfo, deleteTech }) => {
   };
 
   return (
-    <Card>
+    <Card style={styles.card}>
       <Card.Title
         title={tech.model.name}
         titleVariant="titleMedium"
@@ -61,6 +61,9 @@ const TechCard = ({ tech, nameType, additionalInfo, deleteTech }) => {
 };
 
 const styles = StyleSheet.create({
+  card: {
+    shadowOpacity: 0.1,
+  },
   contentContainer: { marginTop: 10, gap: 15 },
   progressBarContainer: {
     gap: 7,

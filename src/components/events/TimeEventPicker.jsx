@@ -29,6 +29,7 @@ const TimeEventPicker = ({ label, varName, value, handler }) => {
         onPress={() => setVisible(true)}
         uppercase={false}
         mode="outlined"
+        contentStyle={{ height: 45 }}
       >
         {value.hours !== null
           ? `${label}: ${value.hours < 10 ? "0" + value.hours : value.hours}:${

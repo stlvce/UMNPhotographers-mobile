@@ -1,23 +1,8 @@
-import { View, StyleSheet } from "react-native";
-import { useTheme, Text } from "react-native-paper";
+import { StyleSheet } from "react-native";
+import StateScreen from "../../components/ui/StateScreen";
 
 const YourCalendarScreen = () => {
-  const theme = useTheme();
-  return (
-    <View
-      style={{ ...styles.container, backgroundColor: theme.colors.background }}
-    >
-      <Text style={{ opacity: 0.7 }}>Ваше расписание пока ещё не готово</Text>
-    </View>
-  );
+  return <StateScreen message="Ваше расписание пока ещё не готово" />;
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 export default YourCalendarScreen;

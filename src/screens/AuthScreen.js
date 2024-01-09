@@ -97,7 +97,11 @@ const AuthScreen = ({ navigation }) => {
             ref={isValidPasswordRef}
           />
         </View>
-        <Button mode="contained" onPress={handleSubmit}>
+        <Button
+          mode="contained"
+          onPress={handleSubmit}
+          contentStyle={{ height: 45 }}
+        >
           Войти
         </Button>
         <StatusBanner
@@ -110,6 +114,7 @@ const AuthScreen = ({ navigation }) => {
           style={styles.buttonRegister}
           mode="outlined"
           onPress={startRegister}
+          contentStyle={{ height: 45 }}
         >
           Регистрация
         </Button>

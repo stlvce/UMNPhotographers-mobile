@@ -1,14 +1,10 @@
-import { StyleSheet, View } from "react-native";
-import { Text } from "react-native-paper";
+import { View } from "react-native";
 import EventCard from "./EventCard";
+import StateScreen from "../ui/StateScreen";
 
 const EventsList = ({ navigation, data, isError }) => {
   if (!Boolean(data?.list)) {
-    return (
-      <Text style={styles.textState}>
-        {isError ? "Ошибка" : "Нет активных мероприятий"}
-      </Text>
-    );
+    return <StateScreen message="Нет активных мероприятий" isError={isError} />;
   }
   return (
     <View>
@@ -18,12 +14,5 @@ const EventsList = ({ navigation, data, isError }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  textState: {
-    textAlign: "center",
-    marginTop: 20,
-  },
-});
 
 export default EventsList;
