@@ -1,12 +1,16 @@
 import { View, StyleSheet } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 
-const StateScreen = ({ message, isError = false }) => {
+const StateScreen = ({ message, isError = false, marginTop = 0 }) => {
   const theme = useTheme();
 
   return (
     <View
-      style={{ ...styles.container, backgroundColor: theme.colors.background }}
+      style={{
+        ...styles.container,
+        backgroundColor: theme.colors.background,
+        marginTop: marginTop,
+      }}
     >
       <Text style={styles.text}>{isError ? "Ошибка" : message}</Text>
     </View>

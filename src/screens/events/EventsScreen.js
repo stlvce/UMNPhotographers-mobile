@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ScrollView, StyleSheet, RefreshControl } from "react-native";
-import { useTheme } from "react-native-paper";
+import { useTheme, Searchbar, Icon } from "react-native-paper";
 import SortingMenu from "../../components/events/SortingMenu";
 import EventsList from "../../components/events/EventsList";
 import {
@@ -10,6 +10,7 @@ import {
 
 const EventsScreen = ({ navigation }) => {
   const theme = useTheme();
+  const [searchQuery, setSearchQuery] = useState("");
   const [visibleMenu, setVisibleMenu] = useState(false);
   const [sortVariant, setSortVariant] = useState(null);
   const { data, isLoading, isError, refetch } =
@@ -34,19 +35,35 @@ const EventsScreen = ({ navigation }) => {
         />
       }
     >
+      <Searchbar
+        style={styles.searchBar}
+        placeholder="Поиск"
+        onChangeText={setSearchQuery}
+        value={searchQuery}
+        clearIcon={() =>
+          Boolean(searchQuery) && <Icon size={20} source="close" />
+        }
+        onClearIconPress={() => setSearchQuery("")}
+      />
       <SortingMenu
         visible={visibleMenu}
         changeVisible={changeVisibleMenu}
         initiateSort={initiateSort}
       />
       {!isLoading && !isUserEventLoading && (
-        <EventsList navigation={navigation} data={data} isError={isError} />
+        <EventsList
+          navigation={navigation}
+          data={data}
+          isError={isError}
+          searchQuery={searchQuery}
+        />
       )}
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  searchBar: { marginBottom: 40 },
   container: {
     padding: 15,
   },
