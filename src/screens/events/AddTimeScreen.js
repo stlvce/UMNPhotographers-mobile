@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { ScrollView, View } from "react-native";
 import { useTheme, Button, Text, IconButton } from "react-native-paper";
-import DateEventPicker from "../../components/events/DateEventPicker";
 import TimeEventPicker from "../../components/events/TimeEventPicker";
 import {
   useUpsertFreeTimeMutation,

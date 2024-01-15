@@ -1,5 +1,5 @@
 import React from "react";
-import { Appbar, useTheme } from "react-native-paper";
+import { Appbar, useTheme, Tooltip } from "react-native-paper";
 import { getHeaderTitle } from "@react-navigation/elements";
 import { useSelector } from "react-redux";
 
@@ -35,6 +35,18 @@ const RootAppBar = ({ navigation, route, options, back }) => {
           icon="plus"
           mode="contained"
         />
+      )}
+
+      {route.name === "Ваш календарь" && (
+        <Tooltip title="">
+          <Appbar.Action onPress={() => {}} icon="comment-question-outline" />
+        </Tooltip>
+      )}
+
+      {route.name === "Удобное время" && (
+        <Tooltip title="">
+          <Appbar.Action onPress={() => {}} icon="comment-question-outline" />
+        </Tooltip>
       )}
     </Appbar.Header>
   );

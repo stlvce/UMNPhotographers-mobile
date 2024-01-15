@@ -28,6 +28,18 @@ export const eventApi = api.injectEndpoints({
         url: `/event/${eventId}/zone?page=0&size=20`,
       }),
     }),
+    receiveZoneById: builder.query({
+      query: (zoneId) => ({
+        url: `/event/zone?zoneId=${zoneId}`,
+      }),
+    }),
+    // Локация
+    receiveLocationById: builder.query({
+      query: (locationId) => ({
+        url: `/event/location?locationId=${locationId}`,
+      }),
+    }),
+    // Активности мероприятия
     receiveActivitiesDatesEvent: builder.query({
       query: (eventId) => ({
         url: `/event/${eventId}/activities?page=0&size=100&sort=startTime%2Casc`,
@@ -38,6 +50,11 @@ export const eventApi = api.injectEndpoints({
         );
         return Array.from(new Set(datesList));
       },
+    }),
+    receiveActivityById: builder.query({
+      query: (activityId) => ({
+        url: `/event/activity?activityId=${activityId}`,
+      }),
     }),
     // Приоритеты фотографа на зону
     receiveZonePriorityUser: builder.query({
@@ -80,6 +97,12 @@ export const eventApi = api.injectEndpoints({
       }),
       invalidatesTags: ["FreeTime"],
     }),
+    // Календарю фотографа
+    receiveSchedule: builder.query({
+      query: (eventId) => ({
+        url: `/event/${eventId}/schedule`,
+      }),
+    }),
   }),
   overrideExisting: true,
 });
@@ -95,4 +118,8 @@ export const {
   useUpsertFreeTimeMutation,
   useDeleteFreeTimeMutation,
   useReceiveActivitiesDatesEventQuery,
+  useReceiveActivityByIdQuery,
+  useReceiveLocationByIdQuery,
+  useReceiveZoneByIdQuery,
+  useReceiveScheduleQuery,
 } = eventApi;
