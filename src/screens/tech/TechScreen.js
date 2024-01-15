@@ -37,7 +37,7 @@ const TechScreen = () => {
     }
   }, [userTechInfo]);
 
-  if (technique?.length === 0) {
+  if (technique?.length === 0 && !isLoading) {
     return <StateScreen message="Техника не добавлена" isError={isError} />;
   }
 
@@ -57,7 +57,7 @@ const TechScreen = () => {
         <Text variant="bodyMedium" style={styles.textState}>
           Количество техники: {technique.length}
         </Text>
-        {technique.map((item) => (
+        {technique?.map((item) => (
           <TechCardReturner item={item} deleteTech={deleteTech} key={item.id} />
         ))}
       </View>

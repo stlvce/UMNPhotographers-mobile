@@ -1,12 +1,18 @@
 import { View, StyleSheet, ScrollView } from "react-native";
-import { Text, Button, useTheme } from "react-native-paper";
+import { Text, Button, useTheme, Portal } from "react-native-paper";
 import { useEventRegisterMutation } from "../../api/eventApi";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import LevelBar from "../../components/events/LevelBar";
+import StatusSnackbar from "../../components/ui/StatusSnackbar";
+import { closeStatusUpsertPriority } from "../../store/slices/eventSlice";
 
 const EventScreen = ({ route, navigation }) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const userEventListID = useSelector((state) => state.event.userEventListID);
+  const statusUpsertPriority = useSelector(
+    (state) => state.event.statusUpsertPriority,
+  );
   const event = route.params;
   const dateStart = event.startTime.split("T");
   const dateEnd = event.endTime.split("T");
@@ -14,6 +20,10 @@ const EventScreen = ({ route, navigation }) => {
 
   const handleRegister = () => {
     handleEventRegister(event.id);
+  };
+
+  const closeSnackbar = () => {
+    dispatch(closeStatusUpsertPriority());
   };
 
   return (
@@ -102,6 +112,14 @@ const EventScreen = ({ route, navigation }) => {
           </View>
         )}
       </View>
+      <Portal>
+        <StatusSnackbar
+          isVisible={statusUpsertPriority.isVisible}
+          message="Приоритеты сохранены"
+          errorMessage={statusUpsertPriority.errorMessage}
+          closeSnackbar={closeSnackbar}
+        />
+      </Portal>
     </ScrollView>
   );
 };

@@ -28,20 +28,6 @@ const FreeTimeScreen = ({ route, navigation }) => {
     dispatch(closeStatusUpsertFreeTime());
   };
 
-  if (isLoading) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: theme.colors.background,
-          justifyContent: "center",
-        }}
-      >
-        <Loader />
-      </View>
-    );
-  }
-
   return (
     <ScrollView
       style={{ backgroundColor: theme.colors.background, padding: 15 }}

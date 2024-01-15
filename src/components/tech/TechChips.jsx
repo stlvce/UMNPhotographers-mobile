@@ -5,7 +5,7 @@ import techTypeReturner from "../../utils/techTypeReturner";
 const TechChips = ({ userTechInfo, technique, handleUpdateTechList }) => {
   return (
     <View style={styles.container}>
-      {new Set(userTechInfo.technique.map((el) => el.type)).size > 1 &&
+      {new Set(userTechInfo.technique?.map((el) => el.type)).size > 1 &&
         Array.from(
           new Set(userTechInfo.technique.map((item) => item.type)),
         ).map((type) => {

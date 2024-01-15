@@ -7,6 +7,10 @@ const initialState = {
     isVisible: false,
     errorMessage: null,
   },
+  statusUpsertPriority: {
+    isVisible: false,
+    errorMessage: null,
+  },
 };
 
 const eventSlice = createSlice({
@@ -15,6 +19,9 @@ const eventSlice = createSlice({
   reducers: {
     closeStatusUpsertFreeTime: (state) => {
       state.statusUpsertFreeTime = { isVisible: false, errorMessage: null };
+    },
+    closeStatusUpsertPriority: (state) => {
+      state.statusUpsertPriority = { isVisible: false, errorMessage: null };
     },
   },
   extraReducers: (builder) => {
@@ -40,8 +47,25 @@ const eventSlice = createSlice({
           };
         },
       );
+    builder
+      .addMatcher(
+        eventApi.endpoints.savePriority.matchFulfilled,
+        (state, action) => {
+          state.statusUpsertPriority.isVisible = true;
+        },
+      )
+      .addMatcher(
+        eventApi.endpoints.savePriority.matchRejected,
+        (state, action) => {
+          state.statusUpsertPriority = {
+            isVisible: true,
+            errorMessage: "Ошибка",
+          };
+        },
+      );
   },
 });
 
 export default eventSlice.reducer;
-export const { closeStatusUpsertFreeTime } = eventSlice.actions;
+export const { closeStatusUpsertFreeTime, closeStatusUpsertPriority } =
+  eventSlice.actions;

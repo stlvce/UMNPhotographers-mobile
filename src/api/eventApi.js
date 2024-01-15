@@ -22,11 +22,24 @@ export const eventApi = api.injectEndpoints({
       }),
       invalidatesTags: ["UserEventList"],
     }),
+    // Зоны мероприятия
     receiveZonesEvent: builder.query({
       query: (eventId) => ({
         url: `/event/${eventId}/zone?page=0&size=20`,
       }),
     }),
+    receiveActivitiesDatesEvent: builder.query({
+      query: (eventId) => ({
+        url: `/event/${eventId}/activities?page=0&size=100&sort=startTime%2Casc`,
+      }),
+      transformResponse: (response) => {
+        const datesList = response.list.map(
+          (item) => item.startTime.split("T")[0],
+        );
+        return Array.from(new Set(datesList));
+      },
+    }),
+    // Приоритеты фотографа на зону
     receiveZonePriorityUser: builder.query({
       query: (eventId) => ({
         url: `/event/${eventId}/zone_priority`,
@@ -42,6 +55,7 @@ export const eventApi = api.injectEndpoints({
         body: zonePriority,
       }),
     }),
+    // Свободное время фотографа
     receiveFreeTime: builder.query({
       query: (eventId) => ({
         url: `/event/${eventId}/freetime`,
@@ -80,4 +94,5 @@ export const {
   useReceiveFreeTimeQuery,
   useUpsertFreeTimeMutation,
   useDeleteFreeTimeMutation,
+  useReceiveActivitiesDatesEventQuery,
 } = eventApi;

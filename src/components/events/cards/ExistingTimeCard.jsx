@@ -18,7 +18,7 @@ const ExistingTimeCard = ({ item, handleDelete }) => {
 
   return (
     <Card>
-      <Card.Title title="Промежуток съемок" titleVariant="titleMedium" />
+      <Card.Title title="Время на съемку" titleVariant="titleMedium" />
       <Card.Content style={{ paddingHorizontal: 15, gap: 20 }}>
         <View>
           <Text>Дата</Text>
@@ -31,12 +31,16 @@ const ExistingTimeCard = ({ item, handleDelete }) => {
           }}
         >
           <View>
-            <Text>Время начала</Text>
-            <Text>{dateStart.toLocaleTimeString()}</Text>
+            <Text>Начало</Text>
+            <Text>
+              {dateStart.toLocaleTimeString([], { timeStyle: "short" })}
+            </Text>
           </View>
           <View>
-            <Text>Время окончания</Text>
-            <Text>{dateEnd.toLocaleTimeString()}</Text>
+            <Text>Окончание</Text>
+            <Text>
+              {dateEnd.toLocaleTimeString([], { timeStyle: "short" })}
+            </Text>
           </View>
         </View>
         <Button
