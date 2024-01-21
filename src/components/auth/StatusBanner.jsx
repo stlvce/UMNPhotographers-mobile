@@ -1,7 +1,9 @@
+import { useTheme } from "react-native-paper";
 import { Banner } from "react-native-paper";
 import statusAuth from "../../utils/statusAuth";
 
 const StatusBanner = ({ data, error, visible, changeVisible }) => {
+  const theme = useTheme();
   let bannerMessage = statusAuth(data, error);
 
   return (
@@ -13,6 +15,7 @@ const StatusBanner = ({ data, error, visible, changeVisible }) => {
           onPress: changeVisible,
         },
       ]}
+      style={{ backgroundColor: theme.colors.bannerBackground }}
     >
       {bannerMessage}
     </Banner>

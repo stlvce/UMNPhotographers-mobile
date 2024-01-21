@@ -11,7 +11,7 @@ const EventCard = ({ navigation, event }) => {
 
   return (
     <Card
-      style={styles.card}
+      style={{ ...styles.card, backgroundColor: theme.colors.cardBackground }}
       onPress={() => navigation.navigate("Мероприятие", event)}
     >
       {userEventListID.find((eventId) => eventId === event.id) && (

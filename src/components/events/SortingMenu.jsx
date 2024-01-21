@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { StyleSheet } from "react-native";
-import { Menu, Button, Divider } from "react-native-paper";
+import { Menu, Button, Divider, useTheme } from "react-native-paper";
 
 const sortVariants = [
   {
@@ -30,6 +30,7 @@ const sortVariants = [
 ];
 
 const SortingMenu = ({ visible, changeVisible, initiateSort }) => {
+  const theme = useTheme();
   const [sortStatus, setSortStatus] = useState("");
 
   const chooseSortType = (type, sortVariant) => {
@@ -43,6 +44,7 @@ const SortingMenu = ({ visible, changeVisible, initiateSort }) => {
       visible={visible}
       onDismiss={changeVisible}
       anchorPosition="bottom"
+      contentStyle={{ backgroundColor: theme.colors.dropMenuBackground }}
       anchor={
         <Button
           style={styles.button}

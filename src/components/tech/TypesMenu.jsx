@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { Menu, Button, Divider } from "react-native-paper";
+import { Menu, Button, useTheme } from "react-native-paper";
 
 const typeVariants = [
   { title: "Камера", icon: "camera-outline" },
@@ -10,11 +10,14 @@ const typeVariants = [
 ];
 
 const TypesMenu = ({ visible, changeVisible, selectedType, chooseType }) => {
+  const theme = useTheme();
+
   return (
     <Menu
       visible={visible}
       onDismiss={changeVisible}
       anchorPosition="bottom"
+      contentStyle={{ backgroundColor: theme.colors.dropMenuBackground }}
       anchor={
         <Button
           style={styles.button}

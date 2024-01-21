@@ -16,7 +16,9 @@ const TechCard = ({ tech, nameType, additionalInfo, deleteTech }) => {
   };
 
   return (
-    <Card style={styles.card}>
+    <Card
+      style={{ ...styles.card, backgroundColor: theme.colors.cardBackground }}
+    >
       <Card.Title
         title={tech.model.name}
         titleVariant="titleMedium"

@@ -17,7 +17,7 @@ const ExistingTimeCard = ({ item, handleDelete }) => {
   };
 
   return (
-    <Card>
+    <Card style={{ backgroundColor: theme.colors.cardBackground }}>
       <Card.Title title="Время на съемку" titleVariant="titleMedium" />
       <Card.Content style={{ paddingHorizontal: 15, gap: 20 }}>
         <View>

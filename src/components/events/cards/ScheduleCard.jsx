@@ -22,7 +22,7 @@ const ScheduleCard = ({ scheduleItem }) => {
   );
 
   return (
-    <Card>
+    <Card style={{ backgroundColor: theme.colors.cardBackground }}>
       <Card.Title title={activity?.name} subtitle={location?.name} />
       <Card.Content style={{ gap: 10, marginTop: 15 }}>
         <View>

@@ -36,7 +36,10 @@ const EventsScreen = ({ navigation }) => {
       }
     >
       <Searchbar
-        style={styles.searchBar}
+        style={{
+          ...styles.searchBar,
+          backgroundColor: theme.colors.searchBackground,
+        }}
         placeholder="Поиск"
         onChangeText={setSearchQuery}
         value={searchQuery}

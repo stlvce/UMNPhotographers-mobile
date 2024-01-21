@@ -1,12 +1,13 @@
 import { StyleSheet, View } from "react-native";
-import { MD3Colors, ProgressBar, Text } from "react-native-paper";
+import { MD3Colors, ProgressBar, Text, useTheme } from "react-native-paper";
 
 const LevelBar = ({ level }) => {
+  const theme = useTheme();
   const floatLevel = level / 10;
 
   const levelColor = (value) => {
     if (value < 0.4) {
-      return "#39d039";
+      return theme.colors.success;
     }
 
     if (value >= 0.4 && value <= 0.7) {
